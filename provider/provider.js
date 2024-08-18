@@ -1,71 +1,59 @@
-const Joi = require('joi');
-const express = require('express');
+const express = require('express')
 const Movies = require('./movies')
 
-const server = express();
-server.use(express.json());
+const server = express()
+// without express.json() middleware, you would need to manually parse using JSON.parse(req.body)
+server.use(express.json())
 
-const movies = new Movies();
+const movies = new Movies()
 
 // Load default data into the Movies class
 const importData = () => {
-  const data = require('.././data/movies.json');
-  data.reduce((a, v) => {
-    v.id = a + 1;
-    movies.insertMovie(v);
-    return a + 1;
-  }, 0);
-};
+  const data = require('../data/movies.json')
+  data.forEach((movie) => movies.insertMovie(movie))
+}
+// why set movies.id for each item? It's already in the data
+// keeping this around in case future information gives clarification
+// const importData = () => {
+//   const data = require('../data/movies.json')
+//   data.reduce((acc, movie) => {
+//     movies.id = acc
+//     movies.insertMovie(movie)
+//     return acc + 1
+//   }, 1)
+// }
+
+// Routes are focused on handling HTTP requests and responses,
+// delegating business logic to the Movies class (Separation of Concerns)
 
 server.get('/movies', (req, res) => {
-  res.send(movies.getMovies());
-});
+  return res.send(movies.getMovies())
+})
 
 server.get('/movie/:id', (req, res) => {
-  const movie = movies.getMovieById(req.params.id);
-  if (!movie) {
-    res.status(404).send('Movie not found');
-  } else {
-    res.send(movie);
-  }
-});
+  const movie = movies.getMovieById(req.params.id)
+
+  if (!movie) return res.status(404).send('Movie not found')
+  else return res.send(movie)
+})
 
 server.post('/movies', (req, res) => {
-  const schema = Joi.object({
-    name: Joi.string().required(),
-    year: Joi.number().integer().min(1900).max(2023).required(),
-  });
+  const { movie, status, error } = movies.addMovie(req.body)
 
-  const result = schema.validate(req.body);
-  const movie = {
-    id: movies[movies.length - 1].id + 1,
-    name: req.body.name,
-    year: req.body.year,
-  };
-
-  if (result.error) res.status(404).send(result.error.details[0]);
-
-  if (movies.getMovieByName(req.body.name)) {
-    res.send(`Movie ${req.body.name} already exists`);
-  } else {
-    movies.insertMovie(movie);
-    res.send(movie);
-  }
-});
+  if (error) return res.status(status).send(error)
+  else return res.status(status).send(movie)
+})
 
 server.delete('/movie/:id', (req, res) => {
-  const movie = movies.getMovieById(req.params.id);
-  if (!movie) {
-    res.status(404).send(`Movie ${req.params.id} not found`);
-  } else {
-    const index = movies.indexOf(movie);
-    movies.splice(index, 1);
-    res.send(`Movie ${req.params.id} has been deleted`);
-  }
-});
+  const movieDeleted = movies.deleteMovieById(req.params.id)
+
+  if (!movieDeleted)
+    return res.status(404).send(`Movie ${req.params.id} not found`)
+  else return res.send(`Movie ${req.params.id} has been deleted`)
+})
 
 module.exports = {
   server,
   importData,
-  movies,
-};
+  movies
+}

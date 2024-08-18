@@ -1,39 +1,40 @@
-const axios = require('axios');
-const fetchMovies = async (url) => {
-  const response = await axios
+const axios = require('axios')
+
+const fetchMovies = (url) =>
+  axios
     .get(`${url}/movies`)
     .then((res) => res.data)
-    .catch((err) => err.response);
-  return response;
-};
-const fetchSingleMovie = async (url, id) => {
-  const response = await axios
+    .catch((err) => err.response)
+
+const fetchSingleMovie = (url, id) =>
+  axios
     .get(`${url}/movie/${id}`)
     .then((res) => res.data)
-    .catch((err) => err.response);
-  return response;
-};
+    .catch((err) => err.response)
+
 const addNewMovie = async (url, movieName, movieYear) => {
   const data = {
     name: movieName,
-    year: movieYear,
-  };
+    year: movieYear
+  }
+
   const response = await axios
     .post(`${url}/movies`, data)
     .then((res) => res.data)
-    .catch((err) => err.response.data.message);
-  return response;
-};
-const deleteMovie = async (url, id) => {
-  const response = await axios
+    .catch((err) => err.response.data.message)
+
+  return response
+}
+
+const deleteMovie = (url, id) =>
+  axios
     .delete(`${url}/movie/${id}`)
     .then((res) => res.data.message)
-    .cath((err) => err.response.data.message);
-  return response;
-};
+    .catch((err) => err.response.data.message)
+
 module.exports = {
   fetchMovies,
   fetchSingleMovie,
   addNewMovie,
-  deleteMovie,
-};
+  deleteMovie
+}
