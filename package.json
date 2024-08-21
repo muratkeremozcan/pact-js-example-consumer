@@ -7,8 +7,9 @@
     "start:provider": "cross-env PORT=3001 node provider/provider-service.js",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts|json)\"",
     "fix-format": "npm run prettier -- --write",
-    "test:web-consumer": "jest consumer-web/consumer-contract.spec.js",
-    "publish:pact": "dotenv -e .env -- sh -c 'pact-broker publish ./pacts --consumer-app-version=1.0.0 --tag=main --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN'"
+    "test:consumer": "jest consumer-web/consumer-contract.spec.js",
+    "test:provider": "dotenv -e .env -- sh -c 'GITHUB_SHA=$(git rev-parse HEAD) jest provider/provider-contract.spec.js'",
+    "publish:pact": "dotenv -e .env -- sh -c 'GITHUB_SHA=$(git rev-parse HEAD) pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --tag=main --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN'"
   },
   "author": "",
   "license": "ISC",
