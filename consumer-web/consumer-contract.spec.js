@@ -47,16 +47,23 @@ describe('Movies API', () => {
 
   // PROVIDER STATES: we can simulate certain states of the api (like an empty or non-empty db)
   // in order to cover different scenarios
-
+  // the state could have many more variables; it is a good practice to represent it as an object
+  // note that the consumer state name should match the provider side
+  //
+  // * The purpose of the stateHandlers is to ensure that the provider is in the correct state
+  // to fulfill the consumer's expectations as defined in the contract tests.
+  // * In a real-world scenario, you would typically set up this state by interacting with your service's database
+  // * or through an API provided by the service itself (locally).
+  // * This ensures that the provider test runs in a controlled environment where all the necessary data
+  // and conditions are met, allowing for accurate verification of the consumer's expectations.
   describe('When a GET request is made to a specific movie ID', () => {
     test('it should return a specific movie', async () => {
       const testId = 100
       const EXPECTED_BODY = { id: testId, name: 'My movie', year: 1999 }
+      const state = { id: testId }
 
       provider
-        // the state could have many more variables; it is a good practice to represent it as an object
-        // note that the same state name is used on the provider side
-        .given(`Has a movie with a specific ID`, { id: testId })
+        .given(`Has a movie with a specific ID`, state)
         .uponReceiving('a request to a specific movie')
         .withRequest({
           method: 'GET',
