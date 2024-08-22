@@ -4,39 +4,6 @@
   },
   "interactions": [
     {
-      "description": "a request to all movies",
-      "request": {
-        "method": "GET",
-        "path": "/movies"
-      },
-      "response": {
-        "body": [
-          {
-            "id": 1,
-            "name": "My movie",
-            "year": 1999
-          }
-        ],
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "body": {
-            "$": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type",
-                  "min": 1
-                }
-              ]
-            }
-          }
-        },
-        "status": 200
-      }
-    },
-    {
       "description": "a request to get all movies",
       "request": {
         "method": "GET",
@@ -74,60 +41,6 @@
       "providerStates": [
         {
           "name": "Has a movie with a specific ID",
-          "params": {
-            "id": 100
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "path": "/movie/100"
-      },
-      "response": {
-        "body": {
-          "id": 100,
-          "name": "My movie",
-          "year": 1999
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "body": {
-            "$.id": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "integer"
-                }
-              ]
-            },
-            "$.name": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            },
-            "$.year": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "integer"
-                }
-              ]
-            }
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request to a specific movie",
-      "providerStates": [
-        {
-          "name": "Has a movie with specific ID",
           "params": {
             "id": 100
           }

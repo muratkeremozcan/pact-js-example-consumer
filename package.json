@@ -8,8 +8,8 @@
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts|json)\"",
     "fix-format": "npm run prettier -- --write",
     "test:consumer": "jest consumer-web/consumer-contract.spec.js",
-    "test:provider": "dotenv -e .env -- sh -c 'jest provider/provider-contract.spec.js --testTimeout=20000'",
-    "publish:pact": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse HEAD) && export GITHUB_BRANCH=$(git rev-parse --abbrev-ref HEAD) && pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN'"
+    "test:provider": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse HEAD) && export GITHUB_BRANCH=$(git rev-parse --abbrev-ref HEAD) && jest provider/provider-contract.spec.js --testTimeout=20000'",
+    "publish:pact": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse HEAD) && export GITHUB_BRANCH=$(git rev-parse --abbrev-ref HEAD) && pact-broker publish ./pacts --consumer-app-version $(npx -y absolute-version) --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN'"
   },
   "author": "",
   "license": "ISC",
