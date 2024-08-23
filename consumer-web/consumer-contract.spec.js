@@ -143,4 +143,42 @@ describe('Movies API', () => {
       })
     })
   })
+
+  describe('When a DELETE request is made to /movies', () => {
+    test('it should throw an error if movie to delete does not exist', async () => {
+      const testId = 123456789
+
+      provider
+        .uponReceiving('a request to delete a non-existing movie')
+        .withRequest({
+          method: 'DELETE',
+          path: `/movie/${testId}`
+        })
+        .willRespondWith({
+          status: 409,
+          body: {
+            error: `Movie ${testId} not found`
+          }
+        })
+    })
+
+    test('it should delete an existing movie successfully', async () => {
+      const testId = 100
+      const state = { id: testId }
+
+      provider
+        .given(`Has a movie with a specific ID`, state)
+        .uponReceiving('a request to delete a movie that exists')
+        .withRequest({
+          method: 'DELETE',
+          path: `/movie/${testId}`
+        })
+        .willRespondWith({
+          status: 200,
+          body: {
+            message: `Movie ${testId} has been deleted`
+          }
+        })
+    })
+  })
 })

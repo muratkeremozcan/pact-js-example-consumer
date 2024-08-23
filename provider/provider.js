@@ -40,8 +40,6 @@ server.get('/movie/:id', (req, res) => {
 server.post('/movies', (req, res) => {
   const { movie, status, error } = movies.addMovie(req.body)
 
-  console.log(error)
-
   if (error) {
     return res.status(status).json({ error })
   } else if (movie) {
