@@ -4,6 +4,68 @@
   },
   "interactions": [
     {
+      "description": "a request to add a new movie",
+      "request": {
+        "body": {
+          "name": "New movie",
+          "year": 1999
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/movies"
+      },
+      "response": {
+        "body": {
+          "id": 101,
+          "name": "New movie",
+          "year": 1999
+        },
+        "generators": {
+          "body": {
+            "$.id": {
+              "max": 10,
+              "min": 0,
+              "type": "RandomInt"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.year": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
       "description": "a request to get all movies",
       "request": {
         "method": "GET",
@@ -34,6 +96,38 @@
           }
         },
         "status": 200
+      }
+    },
+    {
+      "description": "a request a request to the existing movie",
+      "providerStates": [
+        {
+          "name": "An existing movie exists",
+          "params": {
+            "name": "My existing movie",
+            "year": 2001
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "name": "My existing movie",
+          "year": 2001
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/movies"
+      },
+      "response": {
+        "body": {
+          "error": "Movie My existing movie already exists"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 409
       }
     },
     {
