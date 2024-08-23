@@ -1,5 +1,5 @@
 const path = require('path')
-const { fetchMovies, fetchSingleMovie } = require('./consumer')
+const { fetchMovies, fetchSingleMovie, addNewMovie } = require('./consumer')
 const { PactV3, MatchersV3 } = require('@pact-foundation/pact')
 
 // full list of matchers:
@@ -38,9 +38,9 @@ describe('Movies API', () => {
 
       // 3) Call the consumer against the mock provider
       await provider.executeTest(async (mockProvider) => {
-        const movies = await fetchMovies(mockProvider.url)
+        const res = await fetchMovies(mockProvider.url)
         // 4) Verify the consumer test and generate the contract
-        expect(movies[0]).toEqual(EXPECTED_BODY)
+        expect(res[0]).toEqual(EXPECTED_BODY)
       })
     })
   })
@@ -79,8 +79,67 @@ describe('Movies API', () => {
         })
 
       await provider.executeTest(async (mockProvider) => {
-        const movie = await fetchSingleMovie(mockProvider.url, testId)
-        expect(movie).toEqual(EXPECTED_BODY)
+        const res = await fetchSingleMovie(mockProvider.url, testId)
+        expect(res).toEqual(EXPECTED_BODY)
+      })
+    })
+  })
+
+  describe('When a POST request is made to /movies', () => {
+    test('it should add a new movie', async () => {
+      const { name, year } = { name: 'New movie', year: 1999 }
+
+      provider
+        .uponReceiving('a request to add a new movie')
+        .withRequest({
+          method: 'POST',
+          path: '/movies',
+          body: { name, year }
+        })
+        .willRespondWith({
+          status: 200,
+          body: {
+            id: integer(), // if the example value is omitted, a random number is used
+            name: string(name),
+            year: integer(year)
+          }
+        })
+
+      await provider.executeTest(async (mockProvider) => {
+        const res = await addNewMovie(mockProvider.url, name, year)
+        expect(res).toEqual({
+          id: expect.any(Number),
+          name,
+          year
+        })
+      })
+    })
+
+    test('it should not add a movie that already exists', async () => {
+      const { name, year } = {
+        name: 'My existing movie',
+        year: 2001
+      }
+      const state = { name, year }
+
+      provider
+        .given(`An existing movie exists`, state)
+        .uponReceiving('a request a request to the existing movie')
+        .withRequest({
+          method: 'POST',
+          path: '/movies',
+          body: { name, year }
+        })
+        .willRespondWith({
+          status: 409,
+          body: {
+            error: `Movie ${name} already exists`
+          }
+        })
+
+      await provider.executeTest(async (mockProvider) => {
+        const res = await addNewMovie(mockProvider.url, name, year)
+        expect(res.error).toEqual(`Movie ${name} already exists`)
       })
     })
   })

@@ -54,6 +54,12 @@ const options = {
       return Promise.resolve({
         description: `Movie with ID ${state.id} added!`
       })
+    },
+    'An existing movie exists': (state) => {
+      movies.addMovie(state)
+      return Promise.resolve({
+        description: `Movie with ID ${state.id} added!`
+      })
     }
   }
 }

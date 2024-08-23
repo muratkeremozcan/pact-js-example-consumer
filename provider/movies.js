@@ -36,6 +36,31 @@ class Movie {
     return true
   }
 
+  // TODO: refactor later to return standardized responses
+  // addMovie(data) {
+  //   const schema = Joi.object({
+  //     name: Joi.string().required(),
+  //     year: Joi.number().integer().min(1900).max(2023).required()
+  //   })
+
+  //   const result = schema.validate(data)
+  //   if (result.error)
+  //     return { status: 400, message: result.error.details[0].message }
+
+  //   if (this.getMovieByName(data.name))
+  //     return { status: 409, message: `Movie ${data.name} already exists` }
+
+  //   const lastMovie = this.movies[this.movies.length - 1]
+
+  //   const movie = {
+  //     id: lastMovie ? lastMovie.id + 1 : 1,
+  //     name: data.name,
+  //     year: data.year
+  //   }
+
+  //   this.insertMovie(movie)
+  //   return { status: 200, data: movie }
+  // }
   addMovie(data) {
     const schema = Joi.object({
       name: Joi.string().required(),
@@ -43,11 +68,13 @@ class Movie {
     })
 
     const result = schema.validate(data)
-    if (result.error)
-      return { error: result.error.details[0].message, status: 400 }
+    if (result.error) {
+      return { status: 400, error: result.error.details[0].message }
+    }
 
-    if (this.getMovieByName(data.name))
-      return { error: `Movie ${data.name} already exists`, status: 409 }
+    if (this.getMovieByName(data.name)) {
+      return { status: 409, error: `Movie ${data.name} already exists` }
+    }
 
     const lastMovie = this.movies[this.movies.length - 1]
 
@@ -58,7 +85,7 @@ class Movie {
     }
 
     this.insertMovie(movie)
-    return { movie, status: 200 }
+    return { status: 200, movie }
   }
 }
 

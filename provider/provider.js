@@ -40,8 +40,16 @@ server.get('/movie/:id', (req, res) => {
 server.post('/movies', (req, res) => {
   const { movie, status, error } = movies.addMovie(req.body)
 
-  if (error) return res.status(status).send(error)
-  else return res.status(status).send(movie)
+  console.log(error)
+
+  if (error) {
+    return res.status(status).json({ error })
+  } else if (movie) {
+    return res.status(status).json(movie)
+  } else {
+    // In case neither movie nor error is defined, ensure something is returned
+    return res.status(500).json({ error: 'Unexpected error occurred' })
+  }
 })
 
 server.delete('/movie/:id', (req, res) => {
