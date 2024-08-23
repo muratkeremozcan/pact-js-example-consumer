@@ -66,6 +66,22 @@
       }
     },
     {
+      "description": "a request to delete a non-existing movie",
+      "request": {
+        "method": "DELETE",
+        "path": "/movie/123456789"
+      },
+      "response": {
+        "body": {
+          "error": "Movie 123456789 not found"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 409
+      }
+    },
+    {
       "description": "a request to get all movies",
       "request": {
         "method": "GET",
@@ -180,6 +196,30 @@
               ]
             }
           }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to delete a movie that exists",
+      "providerStates": [
+        {
+          "name": "Has a movie with a specific ID",
+          "params": {
+            "id": 100
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "path": "/movie/100"
+      },
+      "response": {
+        "body": {
+          "message": "Movie 100 has been deleted"
+        },
+        "headers": {
+          "Content-Type": "application/json"
         },
         "status": 200
       }

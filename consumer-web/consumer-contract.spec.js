@@ -1,5 +1,10 @@
 const path = require('path')
-const { fetchMovies, fetchSingleMovie, addNewMovie } = require('./consumer')
+const {
+  fetchMovies,
+  fetchSingleMovie,
+  addNewMovie,
+  deleteMovie
+} = require('./consumer')
 const { PactV3, MatchersV3 } = require('@pact-foundation/pact')
 
 // full list of matchers:
@@ -160,6 +165,11 @@ describe('Movies API', () => {
             error: `Movie ${testId} not found`
           }
         })
+
+      await provider.executeTest(async (mockProvider) => {
+        const movies = await deleteMovie(mockProvider.url, testId)
+        expect(movies.error).toEqual(`Movie ${testId} not found`)
+      })
     })
 
     test('it should delete an existing movie successfully', async () => {
@@ -179,6 +189,11 @@ describe('Movies API', () => {
             message: `Movie ${testId} has been deleted`
           }
         })
+
+      await provider.executeTest(async (mockProvider) => {
+        const movies = await deleteMovie(mockProvider.url, testId)
+        expect(movies.message).toEqual(`Movie ${testId} has been deleted`)
+      })
     })
   })
 })
