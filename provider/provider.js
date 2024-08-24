@@ -53,9 +53,13 @@ server.post('/movies', (req, res) => {
 server.delete('/movie/:id', (req, res) => {
   const movieDeleted = movies.deleteMovieById(req.params.id)
 
-  if (!movieDeleted)
-    return res.status(404).send(`Movie ${req.params.id} not found`)
-  else return res.send(`Movie ${req.params.id} has been deleted`)
+  if (!movieDeleted) {
+    return res.status(404).json({ error: `Movie ${req.params.id} not found` })
+  } else {
+    return res
+      .status(200)
+      .json({ message: `Movie ${req.params.id} has been deleted` })
+  }
 })
 
 module.exports = {
