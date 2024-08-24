@@ -160,7 +160,7 @@ describe('Movies API', () => {
           path: `/movie/${testId}`
         })
         .willRespondWith({
-          status: 409,
+          status: 404,
           body: {
             error: `Movie ${testId} not found`
           }
