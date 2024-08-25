@@ -13,9 +13,9 @@
     "publish:pact": ". ./scripts/env-setup.sh && pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
     "test:provider": ". ./scripts/env-setup.sh && jest provider/provider-contract.spec.js --testTimeout=20000",
     "can:i:deploy:provider": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant MoviesAPI --version=$GITHUB_SHA --to-environment dev --broker-base-url=$PACT_BROKER_BASE_URL",
-    "record:provider:deployment": ". ./scripts/env-setup.sh && pact-broker record-deployment --pacticipant MoviesAPI --version $GITHUB_SHA --environment dev",
+    "record:provider:deployment": ". ./scripts/env-setup.sh && if [ \"$GITHUB_BRANCH\" = \"main\" ]; then pact-broker record-deployment --pacticipant MoviesAPI --version $GITHUB_SHA --environment dev; fi",
     "can:i:deploy:consumer": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant WebConsumer --version=$GITHUB_SHA --to-environment dev",
-    "record:consumer:deployment": ". ./scripts/env-setup.sh && pact-broker record-deployment --pacticipant WebConsumer --version $GITHUB_SHA --environment dev"
+    "record:consumer:deployment": ". ./scripts/env-setup.sh && if [ \"$GITHUB_BRANCH\" = \"main\" ]; then pact-broker record-deployment --pacticipant WebConsumer --version $GITHUB_SHA --environment dev; fi"
   },
   "dependencies": {
     "express": "4.18.2",

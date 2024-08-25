@@ -31,11 +31,12 @@ const options = {
   pactBrokerUrl: process.env.PACT_BROKER_BASE_URL,
   pactBrokerToken: process.env.PACT_BROKER_TOKEN,
   providerVersion: process.env.GITHUB_SHA,
-  providerVersionBranch: process.env.GITHUB_BRANCH,
+  providerVersionBranch: process.env.GITHUB_BRANCH, // represents which contracts the provider should verify against
   consumerVersionSelectors: [
-    { mainBranch: true },
-    { matchingBranch: true },
-    { deployedOrReleased: true }
+    { mainBranch: true }, // tests against consumer's main branch
+    { deployedOrReleased: true } // tests against consumer's currently deployed and currently released versions
+    // { matchingBranch: true }, // Used for coordinated development between consumer and provider teams using matching feature branch names
+    // more at https://docs.pact.io/pact_broker/advanced_topics/consumer_version_selectors#properties
   ],
   // PROVIDER STATES: we can simulate certain states of the api (like an empty or non-empty db)
   // in order to cover different scenarios
