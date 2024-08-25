@@ -3,20 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "author": "Murat Ozcan",
+  "license": "ISC",
   "scripts": {
     "start:provider": "cross-env PORT=3001 node provider/provider-service.js",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts|json)\"",
     "fix-format": "npm run prettier -- --write",
     "test:consumer": "jest consumer-web/consumer-contract.spec.js",
-    "publish:pact": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse --short HEAD) && export GITHUB_BRANCH=$(git rev-parse --abbrev-ref HEAD) && if [ \"$GITHUB_BRANCH\" = \"main\" ]; then export CONSUMER_VERSION=$GITHUB_SHA; else export CONSUMER_VERSION=${GITHUB_SHA}-$(uuidgen); fi && pact-broker publish ./pacts --consumer-app-version=$CONSUMER_VERSION --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN'",
-    "test:provider": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse --abbrev-ref HEAD) && export GITHUB_BRANCH=$(git rev-parse --abbrev-ref HEAD) && jest provider/provider-contract.spec.js --testTimeout=20000'",
-    "can:i:deploy:provider": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse --abbrev-ref HEAD) && pact-broker can-i-deploy --pacticipant MoviesAPI --version=$GITHUB_SHA --to-environment production --broker-base-url=$PACT_BROKER_BASE_URL'",
-    "record:provider:deployment": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse --abbrev-ref HEAD) && pact-broker record-deployment --pacticipant MoviesAPI --version $GITHUB_SHA --environment production'",
-    "can:i:deploy:consumer": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse --abbrev-ref HEAD) && pact-broker can-i-deploy --pacticipant WebConsumer --version=$GITHUB_SHA --to-environment production'",
-    "record:consumer:deployment": "dotenv -e .env -- sh -c 'export GITHUB_SHA=$(git rev-parse --abbrev-ref HEAD) && pact-broker record-deployment --pacticipant WebConsumer --version $GITHUB_SHA --environment production'"
+    "publish:pact": ". ./scripts/env-setup.sh && pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
+    "test:provider": ". ./scripts/env-setup.sh && jest provider/provider-contract.spec.js --testTimeout=20000",
+    "can:i:deploy:provider": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant MoviesAPI --version=$GITHUB_SHA --to-environment dev --broker-base-url=$PACT_BROKER_BASE_URL",
+    "record:provider:deployment": ". ./scripts/env-setup.sh && pact-broker record-deployment --pacticipant MoviesAPI --version $GITHUB_SHA --environment dev",
+    "can:i:deploy:consumer": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant WebConsumer --version=$GITHUB_SHA --to-environment dev",
+    "record:consumer:deployment": ". ./scripts/env-setup.sh && pact-broker record-deployment --pacticipant WebConsumer --version $GITHUB_SHA --environment dev"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "express": "4.18.2",
     "joi": "17.10.2"

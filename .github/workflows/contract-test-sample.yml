@@ -31,7 +31,7 @@ jobs:
       - name: Record provider deployment
         run: npm run record:provider:deployment
 
-      # - name: Can I deploy consumer?
-      #   run: npm run can:i:deploy:consumer
-      # - name: Record web consumer deployment
-      #   run: npm run record:consumer:deployment
+      - name: Can I deploy consumer?
+        run: npm run can:i:deploy:consumer
+      - name: Record web consumer deployment
+        run: npm run record:consumer:deployment
