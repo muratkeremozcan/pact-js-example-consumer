@@ -25,7 +25,7 @@ const provider = new PactV3({
 
 describe('Movies API', () => {
   describe('When a GET request is made to /movies', () => {
-    test('it should return all movies', async () => {
+    it('should return all movies', async () => {
       // loose matching: the consumer should care more about the shape of the data
       const EXPECTED_BODY = { id: 1, name: 'My movie', year: 1999 }
 
@@ -62,7 +62,7 @@ describe('Movies API', () => {
   // * This ensures that the provider test runs in a controlled environment where all the necessary data
   // and conditions are met, allowing for accurate verification of the consumer's expectations.
   describe('When a GET request is made to a specific movie ID', () => {
-    test('it should return a specific movie', async () => {
+    it('should return a specific movie', async () => {
       const testId = 100
       const EXPECTED_BODY = { id: testId, name: 'My movie', year: 1999 }
       const state = { id: testId }
@@ -91,7 +91,7 @@ describe('Movies API', () => {
   })
 
   describe('When a POST request is made to /movies', () => {
-    test('it should add a new movie', async () => {
+    it('should add a new movie', async () => {
       const { name, year } = { name: 'New movie', year: 1999 }
 
       provider
@@ -120,7 +120,7 @@ describe('Movies API', () => {
       })
     })
 
-    test('it should not add a movie that already exists', async () => {
+    it('should not add a movie that already exists', async () => {
       const { name, year } = {
         name: 'My existing movie',
         year: 2001
@@ -150,7 +150,7 @@ describe('Movies API', () => {
   })
 
   describe('When a DELETE request is made to /movies', () => {
-    test('it should throw an error if movie to delete does not exist', async () => {
+    it('should throw an error if movie to delete does not exist', async () => {
       const testId = 123456789
 
       provider
@@ -172,7 +172,7 @@ describe('Movies API', () => {
       })
     })
 
-    test('it should delete an existing movie successfully', async () => {
+    it('should delete an existing movie successfully', async () => {
       const testId = 100
       const state = { id: testId }
 
