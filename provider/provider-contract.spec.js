@@ -71,7 +71,7 @@ describe('Pact Verification', () => {
     app.close()
   })
 
-  test('should validate the expectations of movie-consumer', () => {
+  it('should validate the expectations of movie-consumer', () => {
     // 3) Write & execute the provider contract test (you have to return)
     return verifier.verifyProvider().then((output) => {
       console.log('Pact Verification Complete!')
