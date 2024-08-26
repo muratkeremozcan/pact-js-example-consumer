@@ -21,7 +21,61 @@ PACT_BROKER_TOKEN=***********
 PACT_BROKER_BASE_URL=https://yourownorg.pactflow.io
 ```
 
+### Webhook setup
+
+1. [Create a GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with the public_repo access granted.
+
+   You can test your GitHub token like so (change your repo url):
+
+   ```bash
+   curl -X POST https://api.github.com/repos/muratkeremozcan/pact-js-example-provider/issues \
+       -H "Accept: application/vnd.github.v3+json" \
+       -H "Authorization: Bearer your github token" \
+       -d '{"title": "Test issue", "body": "This is a test issue created via API."}'
+   ```
+
+2. Add the GitHub token to PactFlow (Settings>Secrets>Add Secret, name it `githubToken`).
+
+3. Create the Pact web hook (Settings>Webhooks>Add Webhook).
+
+   > There are no values under Authentication section.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/be9ywm042qtxj9i5h6nu.png)
+
+Alternatively, use the CLI to add the webhook.
+First [install pact broker](https://github.com/pact-foundation/pact-ruby-standalone/releases), run the below while setting your PACT_BROKER_TOKEN (.env file) and your Github token (Github UI).
+
+```bash
+PACT_BROKER_BASE_URL=https://ozcan.pactflow.io \
+PACT_BROKER_TOKEN=yourPactFlowToken \
+    
+pact-broker create-webhook https://api.github.com/repos/muratkeremozcan/pact-js-example-provider/dispatches \
+        --request=POST \
+        --header 'Content-Type: application/json' \
+        --header 'Accept: application/vnd.github.everest-preview+json' \
+        --header 'Authorization: Bearer yourGithubToken' \
+        --data '{ 
+            "event_type": "contract_requiring_verification_published", 
+            "client_payload": { 
+                "pact_url": "${pactbroker.pactUrl}", 
+                "sha": "${pactbroker.providerVersionNumber}", 
+                "branch": "${pactbroker.providerVersionBranch}",
+                "message": "Verify changed pact for ${pactbroker.consumerName} version ${pactbroker.consumerVersionNumber} branch ${pactbroker.consumerVersionBranch} by ${pactbroker.providerVersionNumber} (${pactbroker.providerVersionDescriptions})"
+            } 
+        }'  \
+        --broker-base-url=$PACT_BROKER_BASE_URL \
+        --broker-token=$PACT_BROKER_TOKEN \
+        --consumer=WebConsumer \
+        --provider=MoviesAPI \
+        --description 'Webhook for MoviesAPI provider' \
+        --contract-requiring-verification-published
+```
+
 ### Consumer flow
+
+The numbers indicate the order the commands should occur when running them locally.
+
+> For CI, check out the Webhooks section below.
 
 ```bash
 npm run test:consumer # (1) 
@@ -41,8 +95,6 @@ npm run can:i:deploy:provider # (5)
 # only on main
 npm run record:provider:deployment # (5)
 ```
-
-
 
 ## Consumer Tests
 

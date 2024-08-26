@@ -10,7 +10,7 @@
     "fix-format": "npm run prettier -- --write",
     "test:consumer": "jest src/consumer-contract.spec.js",
     "publish:pact": ". ./scripts/env-setup.sh && pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
-    "can:i:deploy:consumer": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant WebConsumer --version=$GITHUB_SHA --to-environment dev",
+    "can:i:deploy:consumer": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant WebConsumer --version=$GITHUB_SHA --to-environment dev --retry-while-unknown=10",
     "record:consumer:deployment": ". ./scripts/env-setup.sh && if [ \"$GITHUB_BRANCH\" = \"main\" ]; then pact-broker record-deployment --pacticipant WebConsumer --version $GITHUB_SHA --environment dev; fi"
   },
   "devDependencies": {
