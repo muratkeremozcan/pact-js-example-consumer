@@ -24,11 +24,11 @@ PACT_BROKER_BASE_URL=https://yourownorg.pactflow.io
 ### Consumer flow
 
 ```bash
-npm run test:consumer 
-npm run publish:pact
-npm run can:i:deploy:consumer
+npm run test:consumer # (1) 
+npm run publish:pact  # (2)
+npm run can:i:deploy:consumer # (4)
 # only on main
-npm run record:consumer:deployment
+npm run record:consumer:deployment # (5)
 ```
 
 ### Provider flow
@@ -36,10 +36,10 @@ npm run record:consumer:deployment
 ```bash
 # start the provider service
 # npm run start:provider # Todo: use start-server instead of starting the app in the test, then enable this instruction
-npm run test:provider
-npm run can:i:deploy:provider
+npm run test:provider # (3)
+npm run can:i:deploy:provider # (5)
 # only on main
-npm run record:provider:deployment
+npm run record:provider:deployment # (5)
 ```
 
 
@@ -207,6 +207,27 @@ Record the consumer deployment:
 
 ```bash
 npm run record:consumer:deployment
+```
+
+## Webhooks
+
+Recall the consumer and provider flow. 
+
+The key is that, when there are multiple repos, the provider has to run `test:provider` `(#3)` after the consumer runs  `publish:pact` `(#2)` but before the consumer can run `can:i:deploy:consumer` `(#4)` . The trigger to run `test:provider` `(#3)` has to happen automatically, webhooks handle this.
+
+```bash
+# Consumer
+npm run test:consumer # (1) 
+npm run publish:pact  # (2)
+npm run can:i:deploy:consumer # (4)
+# only on main
+npm run record:consumer:deployment # (5)
+
+# Provider
+npm run test:provider # (3) triggered by webhooks
+npm run can:i:deploy:provider # (4)
+# only on main
+npm run record:consumer:deployment # (5)
 ```
 
 

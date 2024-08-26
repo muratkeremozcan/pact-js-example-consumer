@@ -1,31 +1,21 @@
 {
-  "name": "pact",
+  "name": "pact-js-example-consumer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "author": "Murat Ozcan",
   "license": "ISC",
   "scripts": {
-    "start:provider": "cross-env PORT=3001 node provider/provider-service.js",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts|json)\"",
     "fix-format": "npm run prettier -- --write",
-    "test:consumer": "jest consumer-web/consumer-contract.spec.js",
+    "test:consumer": "jest src/consumer-contract.spec.js",
     "publish:pact": ". ./scripts/env-setup.sh && pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
-    "test:provider": ". ./scripts/env-setup.sh && jest provider/provider-contract.spec.js --testTimeout=20000",
-    "can:i:deploy:provider": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant MoviesAPI --version=$GITHUB_SHA --to-environment dev --broker-base-url=$PACT_BROKER_BASE_URL",
-    "record:provider:deployment": ". ./scripts/env-setup.sh && if [ \"$GITHUB_BRANCH\" = \"main\" ]; then pact-broker record-deployment --pacticipant MoviesAPI --version $GITHUB_SHA --environment dev; fi",
     "can:i:deploy:consumer": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant WebConsumer --version=$GITHUB_SHA --to-environment dev",
     "record:consumer:deployment": ". ./scripts/env-setup.sh && if [ \"$GITHUB_BRANCH\" = \"main\" ]; then pact-broker record-deployment --pacticipant WebConsumer --version $GITHUB_SHA --environment dev; fi"
-  },
-  "dependencies": {
-    "express": "4.18.2",
-    "joi": "17.10.2"
   },
   "devDependencies": {
     "@pact-foundation/pact": "12.1.0",
     "axios": "1.5.1",
-    "cross-env": "^7.0.3",
-    "dotenv-cli": "^7.4.2",
     "jest": "29.7.0",
     "prettier": "^3.3.3"
   }
