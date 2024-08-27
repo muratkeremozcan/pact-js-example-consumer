@@ -54,7 +54,7 @@ describe('Movies API', () => {
   // in order to cover different scenarios
   // the state could have many more variables; it is a good practice to represent it as an object
   // note that the consumer state name should match the provider side
-  //
+
   // * The purpose of the stateHandlers is to ensure that the provider is in the correct state
   // to fulfill the consumer's expectations as defined in the contract tests.
   // * In a real-world scenario, you would typically set up this state by interacting with your service's database
