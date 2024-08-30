@@ -167,7 +167,7 @@ Here is how it works
 Here is how the test generally looks:
 
 ```js
-const options = {..} // most the work is here
+const options = {..} // most the work is here (ex: provider states)
 const verifier = new Verifier(options)
 
 it('should validate the expectations..', () => {
@@ -188,15 +188,20 @@ npm run start:provider
 
 > The provider API has to be running locally for the provider tests to be executed.
 
-Run the consumer tests:
+Run the provider test:
 
 ```bash
-npm run test:consumer
+npm run test:provider
 ```
+
+**Provider States**:  We can simulate certain states of the api (like an empty or non-empty db) in order to cover different scenarios
+
+- Provider states help maintain the correct data setup before verification.
+- State handlers must match the provider states defined in consumer tests.
 
 ### Can I Deploy?
 
-Before deploying to an environment, we verify if the consumer and provider versions are compatible using the `can-i-deploy` tool. This step ensures that any changes made to the consumer or provider do not break existing integrations and that the application remains stable across different environments.
+Before deploying to an environment, we verify if the consumer and provider versions are compatible using the `can-i-deploy` tool. This step ensures that any changes made to the consumer or provider do not break existing integrations across environments.
 
 In the current setup, the provider is tested against the consumer's main branch and currently deployed versions (`dev`).
 
@@ -288,5 +293,3 @@ Example matrix:
 | `def456`                   | `xyz789`                   | `main`      | `staging`       | Passed                  | The same provider version is compatible with a newer consumer version in staging.                        |
 | `ghi789`                   | `xyz789`                   | `feature-x` | `development`   | Failed                  | The consumer from a feature branch failed verification with the provider in the development environment. |
 | `jkl012`                   | `uvw345`                   | `main`      | `production`    | Pending                 | A new provider version is pending verification against the consumer in production.                       |
-
-##
