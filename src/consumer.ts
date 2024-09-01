@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios'
 
-type Movie = {
+export type Movie = {
   name: string
   year: number
 }

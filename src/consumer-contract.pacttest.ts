@@ -1,5 +1,10 @@
 import path from 'path'
-import type { ErrorResponse, MovieResponse, SuccessResponse } from './consumer'
+import type {
+  ErrorResponse,
+  Movie,
+  MovieResponse,
+  SuccessResponse
+} from './consumer'
 import {
   fetchMovies,
   fetchSingleMovie,
@@ -8,6 +13,7 @@ import {
 } from './consumer'
 import { PactV3, MatchersV3 } from '@pact-foundation/pact'
 import type { V3MockServer } from '@pact-foundation/pact'
+import { createProviderState } from './test-helpers/helpers'
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
@@ -71,10 +77,14 @@ describe('Movies API', () => {
     it('should return a specific movie', async () => {
       const testId = 100
       const EXPECTED_BODY = { id: testId, name: 'My movie', year: 1999 }
-      const state = { id: testId }
+
+      const [stateName, stateParams] = createProviderState({
+        name: 'Has a movie with a specific ID',
+        params: { id: testId }
+      })
 
       provider
-        .given('Has a movie with a specific ID', state)
+        .given(stateName, stateParams)
         .uponReceiving('a request to a specific movie')
         .withRequest({
           method: 'GET',
@@ -127,34 +137,38 @@ describe('Movies API', () => {
     })
 
     it('should not add a movie that already exists', async () => {
-      const { name, year } = {
+      const movie: Movie = {
         name: 'My existing movie',
         year: 2001
       }
-      const state = { name, year }
+
+      const [stateName, stateParams] = createProviderState({
+        name: 'An existing movie exists',
+        params: movie
+      })
 
       provider
-        .given('An existing movie exists', state)
+        .given(stateName, stateParams)
         .uponReceiving('a request to the existing movie')
         .withRequest({
           method: 'POST',
           path: '/movies',
-          body: { name, year }
+          body: { ...movie }
         })
         .willRespondWith({
           status: 409,
           body: {
-            error: `Movie ${name} already exists`
+            error: `Movie ${movie.name} already exists`
           }
         })
 
       await provider.executeTest(async (mockServer: V3MockServer) => {
         const res = (await addNewMovie(
           mockServer.url,
-          name,
-          year
+          movie.name,
+          movie.year
         )) as ErrorResponse
-        expect(res.error).toEqual(`Movie ${name} already exists`)
+        expect(res.error).toEqual(`Movie ${movie.name} already exists`)
       })
     })
   })
@@ -187,10 +201,13 @@ describe('Movies API', () => {
 
     it('should delete an existing movie successfully', async () => {
       const testId = 100
-      const state = { id: testId }
+      const [stateName, stateParams] = createProviderState({
+        name: 'Has a movie with a specific ID',
+        params: { id: String(testId) }
+      })
 
       provider
-        .given('Has a movie with a specific ID', state)
+        .given(stateName, stateParams)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest({
           method: 'DELETE',
