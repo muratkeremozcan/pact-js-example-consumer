@@ -1,11 +1,13 @@
-const path = require('path')
-const {
+import path from 'path'
+import type { ErrorResponse, MovieResponse, SuccessResponse } from './consumer'
+import {
   fetchMovies,
   fetchSingleMovie,
   addNewMovie,
   deleteMovie
-} = require('./consumer')
-const { PactV3, MatchersV3 } = require('@pact-foundation/pact')
+} from './consumer'
+import { PactV3, MatchersV3 } from '@pact-foundation/pact'
+import type { V3MockServer } from '@pact-foundation/pact'
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
@@ -27,7 +29,11 @@ describe('Movies API', () => {
   describe('When a GET request is made to /movies', () => {
     it('should return all movies', async () => {
       // loose matching: the consumer should care more about the shape of the data
-      const EXPECTED_BODY = { id: 1, name: 'My movie', year: 1999 }
+      const EXPECTED_BODY = {
+        id: 1,
+        name: 'My movie',
+        year: 1999
+      }
 
       // 2) Register the consumer's expectations against the (mock) provider
       provider
@@ -42,8 +48,8 @@ describe('Movies API', () => {
         })
 
       // 3) Call the consumer against the mock provider
-      await provider.executeTest(async (mockProvider) => {
-        const res = await fetchMovies(mockProvider.url)
+      await provider.executeTest(async (mockServer: V3MockServer) => {
+        const res = (await fetchMovies(mockServer.url)) as MovieResponse[]
         // 4) Verify the consumer test and generate the contract
         expect(res[0]).toEqual(EXPECTED_BODY)
       })
@@ -68,7 +74,7 @@ describe('Movies API', () => {
       const state = { id: testId }
 
       provider
-        .given(`Has a movie with a specific ID`, state)
+        .given('Has a movie with a specific ID', state)
         .uponReceiving('a request to a specific movie')
         .withRequest({
           method: 'GET',
@@ -83,8 +89,8 @@ describe('Movies API', () => {
           }
         })
 
-      await provider.executeTest(async (mockProvider) => {
-        const res = await fetchSingleMovie(mockProvider.url, testId)
+      await provider.executeTest(async (mockServer: V3MockServer) => {
+        const res = await fetchSingleMovie(mockServer.url, testId)
         expect(res).toEqual(EXPECTED_BODY)
       })
     })
@@ -110,8 +116,8 @@ describe('Movies API', () => {
           }
         })
 
-      await provider.executeTest(async (mockProvider) => {
-        const res = await addNewMovie(mockProvider.url, name, year)
+      await provider.executeTest(async (mockServer: V3MockServer) => {
+        const res = await addNewMovie(mockServer.url, name, year)
         expect(res).toEqual({
           id: expect.any(Number),
           name,
@@ -128,8 +134,8 @@ describe('Movies API', () => {
       const state = { name, year }
 
       provider
-        .given(`An existing movie exists`, state)
-        .uponReceiving('a request a request to the existing movie')
+        .given('An existing movie exists', state)
+        .uponReceiving('a request to the existing movie')
         .withRequest({
           method: 'POST',
           path: '/movies',
@@ -142,8 +148,12 @@ describe('Movies API', () => {
           }
         })
 
-      await provider.executeTest(async (mockProvider) => {
-        const res = await addNewMovie(mockProvider.url, name, year)
+      await provider.executeTest(async (mockServer: V3MockServer) => {
+        const res = (await addNewMovie(
+          mockServer.url,
+          name,
+          year
+        )) as ErrorResponse
         expect(res.error).toEqual(`Movie ${name} already exists`)
       })
     })
@@ -166,8 +176,11 @@ describe('Movies API', () => {
           }
         })
 
-      await provider.executeTest(async (mockProvider) => {
-        const movies = await deleteMovie(mockProvider.url, testId)
+      await provider.executeTest(async (mockServer: V3MockServer) => {
+        const movies = (await deleteMovie(
+          mockServer.url,
+          testId
+        )) as ErrorResponse
         expect(movies.error).toEqual(`Movie ${testId} not found`)
       })
     })
@@ -177,7 +190,7 @@ describe('Movies API', () => {
       const state = { id: testId }
 
       provider
-        .given(`Has a movie with a specific ID`, state)
+        .given('Has a movie with a specific ID', state)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest({
           method: 'DELETE',
@@ -190,8 +203,11 @@ describe('Movies API', () => {
           }
         })
 
-      await provider.executeTest(async (mockProvider) => {
-        const movies = await deleteMovie(mockProvider.url, testId)
+      await provider.executeTest(async (mockServer: V3MockServer) => {
+        const movies = (await deleteMovie(
+          mockServer.url,
+          testId
+        )) as SuccessResponse
         expect(movies.message).toEqual(`Movie ${testId} has been deleted`)
       })
     })
