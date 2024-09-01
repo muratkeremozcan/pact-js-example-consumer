@@ -147,6 +147,38 @@
       }
     },
     {
+      "description": "a request to the existing movie",
+      "providerStates": [
+        {
+          "name": "An existing movie exists",
+          "params": {
+            "name": "My existing movie",
+            "year": 2001
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "name": "My existing movie",
+          "year": 2001
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/movies"
+      },
+      "response": {
+        "body": {
+          "error": "Movie My existing movie already exists"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 409
+      }
+    },
+    {
       "description": "a request to a specific movie",
       "providerStates": [
         {
