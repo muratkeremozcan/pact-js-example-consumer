@@ -201,13 +201,13 @@ describe('Movies API', () => {
 
     it('should delete an existing movie successfully', async () => {
       const testId = 100
-      const [stateName, stateParams] = createProviderState({
+      const state = createProviderState({
         name: 'Has a movie with a specific ID',
-        params: { id: String(testId) }
+        params: { id: testId }
       })
 
       provider
-        .given(stateName, stateParams)
+        .given(...state)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest({
           method: 'DELETE',
