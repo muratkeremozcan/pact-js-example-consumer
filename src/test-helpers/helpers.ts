@@ -1,27 +1,39 @@
 import type { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes'
 
 /**
- * Converts an object with arbitrary value types to a JsonMap where all values are strings.
- * This is useful for ensuring compatibility with functions that expect all values in the map
- * to be strings, such as in Pact state management.
+ * Converts an object with arbitrary value types to a `JsonMap` where all values are compatible with Pact's expectations.
+ * This is useful for ensuring compatibility with functions that expect all values in the map to be of specific types,
+ * such as in Pact state management.
  *
- * The function handles `null`, `undefined`, and object values by converting them to a string representation.
- * If a value is an object, it will be serialized using `JSON.stringify`.
+ * The function handles various data types as follows:
+ * - `null` and `undefined`: Converted to the string `"null"`.
+ * - `object`: Serialized using `JSON.stringify` unless it's a Date or Array.
+ * - `number` and `boolean`: Preserved as is, ensuring numeric and boolean types remain unaltered.
+ * - `Date`: Converted to an ISO string format (`toISOString()`).
+ * - `Array`: Preserved in its original form, as arrays should not be converted to strings.
  *
  * @param {Record<string, unknown>} obj - The object to convert, with string keys and values of any type.
- * @returns {JsonMap} - A new object where all values are strings.
+ * @returns {JsonMap} - A new object where all values are in a format compatible with Pact.
  *
  * @example
- * const movie = { name: 'Inception', year: 2010, director: { firstName: 'Christopher', lastName: 'Nolan' } }
- * toJsonMap(movie) // { name: 'Inception', year: '2010', director: '{"firstName":"Christopher","lastName":"Nolan"}' }
+ * const movie = { name: 'Inception', year: 2010, released: new Date(), tags: ['Sci-Fi', 'Thriller'], director: { firstName: 'Christopher', lastName: 'Nolan' } }
+ * toJsonMap(movie) // { name: 'Inception', year: 2010, released: '2024-09-01T12:00:00.000Z', tags: ['Sci-Fi', 'Thriller'], director: '{"firstName":"Christopher","lastName":"Nolan"}' }
  */
 const toJsonMap = (obj: Record<string, unknown>): JsonMap =>
   Object.fromEntries(
     Object.entries(obj).map(([key, value]) => {
       if (value === null || value === undefined) {
         return [key, 'null']
-      } else if (typeof value === 'object') {
+      } else if (
+        typeof value === 'object' &&
+        !(value instanceof Date) &&
+        !Array.isArray(value)
+      ) {
         return [key, JSON.stringify(value)]
+      } else if (typeof value === 'number' || typeof value === 'boolean') {
+        return [key, value] // Preserve numbers and booleans
+      } else if (value instanceof Date) {
+        return [key, value.toISOString()] // Convert dates to ISO strings
       } else {
         return [key, String(value)]
       }
