@@ -19,17 +19,7 @@ export type SuccessResponse = {
 }
 
 // Helper function to extract data from Axios response
-const yieldData = <T>(
-  res: AxiosResponse<T>
-): {
-  status: number
-  body: T
-} => {
-  return {
-    status: res.status,
-    body: res.data
-  }
-}
+const yieldData = <T>(res: AxiosResponse<T>): T => res.data
 
 // Helper function to handle errors
 const handleError = (err: AxiosError): ErrorResponse => {
@@ -38,16 +28,14 @@ const handleError = (err: AxiosError): ErrorResponse => {
 }
 
 // Fetch all movies
-const fetchMovies = (
-  url: string
-): Promise<{ status: number; body: Movie[] } | ErrorResponse> =>
+const fetchMovies = (url: string): Promise<Movie[] | ErrorResponse> =>
   axios.get(`${url}/movies`).then(yieldData).catch(handleError)
 
 // Fetch a single movie by ID
 const fetchSingleMovie = (
   url: string,
   id: number
-): Promise<{ status: number; body: Movie } | ErrorResponse> =>
+): Promise<Movie | ErrorResponse> =>
   axios.get(`${url}/movie/${id}`).then(yieldData).catch(handleError)
 
 // Add a new movie (don't specify id)
@@ -55,7 +43,7 @@ const addNewMovie = async (
   url: string,
   movieName: string,
   movieYear: number
-): Promise<{ status: number; body: Movie } | ErrorResponse> => {
+): Promise<Movie | ErrorResponse> => {
   const data: Omit<Movie, 'id'> = {
     name: movieName,
     year: movieYear
@@ -73,7 +61,7 @@ const addNewMovie = async (
 const deleteMovie = (
   url: string,
   id: number
-): Promise<{ status: number; body: SuccessResponse } | ErrorResponse> =>
+): Promise<SuccessResponse | ErrorResponse> =>
   axios.delete(`${url}/movie/${id}`).then(yieldData).catch(handleError)
 
 export { fetchMovies, fetchSingleMovie, addNewMovie, deleteMovie }

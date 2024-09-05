@@ -15,50 +15,26 @@ describe('CRUD movie', () => {
       method: 'GET',
       url: '/'
     })
-      .tap()
-      .should(
-        spok({
-          status: 200,
-          body: { message: 'Server is running' }
-        })
-      )
+      .its('body.message')
+      .should('eq', 'Server is running')
   })
 
   it('should crud', () => {
     cy.addMovie(movie)
-      .should(
-        spok({
-          status: 200,
-          body: movieProps
-        })
-      )
-      .its('body.id')
+      .should(spok(movieProps))
+      .its('id')
       .then((id) => {
-        cy.getAllMovies()
-          .should(
-            spok({
-              status: 200,
-              body: spok.array
-            })
-          )
-          .its('body')
-          .findOne({ name: movie.name })
+        cy.getAllMovies().should(spok(spok.array)).findOne({ name: movie.name })
 
         cy.getMovieById(id).should(
           spok({
-            status: 200,
-            body: {
-              ...movieProps,
-              id
-            }
+            ...movieProps,
+            id
           })
         )
 
         cy.deleteMovie(id)
-        cy.getAllMovies()
-          .its('body')
-          .findOne({ name: movie.name })
-          .should('not.exist')
+        cy.getAllMovies().findOne({ name: movie.name }).should('not.exist')
       })
   })
 })
