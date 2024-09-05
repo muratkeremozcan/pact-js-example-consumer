@@ -8,12 +8,8 @@ concurrency:
   group: ${{ github.ref }} && ${{ github.workflow }}
   cancel-in-progress: true
 
-# env:
-#   # CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
-  validate:
+  pr-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,3 +26,6 @@ jobs:
 
       - name: Run lint
         run: npm run lint
+
+      # - name: Run unit test
+      #   run: npm run test

@@ -1,0 +1,409 @@
+{
+  "uuid": "17f0c9ff-89f9-4682-a07b-47f4efece198",
+  "lastMigration": 32,
+  "name": "provider-mock",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3000,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "542b2a9e-e149-4b39-a31b-82a0a6991fb5",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "",
+      "responses": [
+        {
+          "uuid": "52d8b229-a19b-4b7e-95c8-f38f48b8e08c",
+          "body": "{\n  \"message\": \"Server is running\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "access-control-allow-headers",
+              "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+            },
+            {
+              "key": "access-control-allow-methods",
+              "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "connection",
+              "value": "close"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"1f-wj0DLAYn9zOzb8xGWeBYucEznE4\""
+            },
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-length",
+              "value": "36"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "bc406e2b-2369-4022-8ce8-70fffc454366",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "movies",
+      "responses": [
+        {
+          "uuid": "602c5ba6-733b-4a31-9f63-99a95815f0d0",
+          "body": "{\n  \"id\": 1,\n  \"name\": \"deinde utpote tabesco\",\n  \"year\": 1976\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "access-control-allow-headers",
+              "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+            },
+            {
+              "key": "access-control-allow-methods",
+              "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "connection",
+              "value": "close"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"33-LO5ZaoodQ+10tW6NCsohefIIjxA\""
+            },
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-length",
+              "value": "64"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "d846435e-70de-4a18-9c00-a4e9a2865337",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "movies",
+      "responses": [
+        {
+          "uuid": "fe895386-5ec8-421c-ab2e-9785003b2127",
+          "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"deinde utpote tabesco\",\n    \"year\": 1976\n  }\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "access-control-allow-headers",
+              "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+            },
+            {
+              "key": "access-control-allow-methods",
+              "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "connection",
+              "value": "close"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"35-6OTIw+M3XpaHaS7MKmhX0ICCt8E\""
+            },
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-length",
+              "value": "78"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "0373e3df-e077-4561-ad0f-a4477fdc7ccb",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "movie/1",
+      "responses": [
+        {
+          "uuid": "de4ddaf0-f1bb-4fe5-b626-a6282f268ead",
+          "body": "{\n  \"id\": 1,\n  \"name\": \"deinde utpote tabesco\",\n  \"year\": 1976\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "access-control-allow-headers",
+              "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+            },
+            {
+              "key": "access-control-allow-methods",
+              "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "connection",
+              "value": "close"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"33-LO5ZaoodQ+10tW6NCsohefIIjxA\""
+            },
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-length",
+              "value": "64"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "46eeb4cc-28e0-4858-90df-9318caeaf320",
+      "type": "http",
+      "documentation": "",
+      "method": "delete",
+      "endpoint": "movie/1",
+      "responses": [
+        {
+          "uuid": "0da3c5a8-2008-4247-bfae-63ae4e70955d",
+          "body": "{\n  \"message\": \"Movie 1 has been deleted\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "access-control-allow-headers",
+              "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+            },
+            {
+              "key": "access-control-allow-methods",
+              "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "connection",
+              "value": "close"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"26-8XWBY2kWG6LsOM7QEVaCeIGxwTE\""
+            },
+            {
+              "key": "x-powered-by",
+              "value": "Express"
+            },
+            {
+              "key": "content-length",
+              "value": "43"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "542b2a9e-e149-4b39-a31b-82a0a6991fb5"
+    },
+    {
+      "type": "route",
+      "uuid": "bc406e2b-2369-4022-8ce8-70fffc454366"
+    },
+    {
+      "type": "route",
+      "uuid": "d846435e-70de-4a18-9c00-a4e9a2865337"
+    },
+    {
+      "type": "route",
+      "uuid": "0373e3df-e077-4561-ad0f-a4477fdc7ccb"
+    },
+    {
+      "type": "route",
+      "uuid": "46eeb4cc-28e0-4858-90df-9318caeaf320"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "http://localhost:3001",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}

@@ -1,10 +1,5 @@
 import path from 'path'
-import type {
-  ErrorResponse,
-  Movie,
-  MovieResponse,
-  SuccessResponse
-} from './consumer'
+import type { ErrorResponse, Movie, SuccessResponse } from './consumer'
 import {
   fetchMovies,
   fetchSingleMovie,
@@ -55,7 +50,7 @@ describe('Movies API', () => {
 
       // 3) Call the consumer against the mock provider
       await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = (await fetchMovies(mockServer.url)) as MovieResponse[]
+        const res = (await fetchMovies(mockServer.url)) as Movie[]
         // 4) Verify the consumer test and generate the contract
         expect(res[0]).toEqual(EXPECTED_BODY)
       })
@@ -137,7 +132,7 @@ describe('Movies API', () => {
     })
 
     it('should not add a movie that already exists', async () => {
-      const movie: Movie = {
+      const movie: Omit<Movie, 'id'> = {
         name: 'My existing movie',
         year: 2001
       }
