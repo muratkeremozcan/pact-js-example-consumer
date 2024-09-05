@@ -23,7 +23,7 @@ export default function tasks(on: Cypress.PluginEvents) {
   on('task', {
     // the cy task
     fetchSingleMovie: ({ url, id }: { url: string; id: number }) =>
-      // the original function signature
+      // the original function
       fetchSingleMovie(url, id)
   })
   on('task', {
