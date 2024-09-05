@@ -26,6 +26,11 @@ export const config: JestConfigWithTsJest = {
   testMatch: ['**/*.test.(ts)', '**/*.pacttest.(ts)'],
   testEnvironment: 'node',
   modulePathIgnorePatterns: ['dist'],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.jest.json'
+    }
+  },
   coverageThreshold: {
     global: {
       statements: 0,

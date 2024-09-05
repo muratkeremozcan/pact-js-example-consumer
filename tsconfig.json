@@ -3,9 +3,10 @@
     "src",
     "./jest.config.ts",
     "./.eslintrc.js",
+    "cypress",
     "./cypress/cypress.d.ts"
   ],
-  "exclude": ["node_modules", "cdk", "dist"],
+  "exclude": ["node_modules", "coverage", "dist", "**/*.*test.ts*"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
     /* Projects */
