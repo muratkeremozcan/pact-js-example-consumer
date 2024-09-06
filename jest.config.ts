@@ -21,16 +21,11 @@ export const config: JestConfigWithTsJest = {
   ],
   moduleDirectories: ['node_modules', 'src'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }]
   },
   testMatch: ['**/*.test.(ts)', '**/*.pacttest.(ts)'],
   testEnvironment: 'node',
   modulePathIgnorePatterns: ['dist'],
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.jest.json'
-    }
-  },
   coverageThreshold: {
     global: {
       statements: 0,

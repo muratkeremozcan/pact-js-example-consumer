@@ -103,7 +103,10 @@ describe('Movies API', () => {
 
   describe('When a POST request is made to /movies', () => {
     it('should add a new movie', async () => {
-      const { name, year } = { name: 'New movie', year: 1999 }
+      const { name, year }: Omit<Movie, 'id'> = {
+        name: 'New movie',
+        year: 1999
+      }
 
       provider
         .uponReceiving('a request to add a new movie')
@@ -136,6 +139,9 @@ describe('Movies API', () => {
         name: 'My existing movie',
         year: 2001
       }
+      const errorRes: ErrorResponse = {
+        error: `Movie ${movie.name} already exists`
+      }
 
       const [stateName, stateParams] = createProviderState({
         name: 'An existing movie exists',
@@ -152,50 +158,23 @@ describe('Movies API', () => {
         })
         .willRespondWith({
           status: 409,
-          body: {
-            error: `Movie ${movie.name} already exists`
-          }
+          body: errorRes
         })
 
       await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = (await addNewMovie(
-          mockServer.url,
-          movie.name,
-          movie.year
-        )) as ErrorResponse
-        expect(res.error).toEqual(`Movie ${movie.name} already exists`)
+        const res = await addNewMovie(mockServer.url, movie.name, movie.year)
+        expect(res).toEqual(errorRes)
       })
     })
   })
 
   describe('When a DELETE request is made to /movies', () => {
-    it('should throw an error if movie to delete does not exist', async () => {
-      const testId = 123456789
-
-      provider
-        .uponReceiving('a request to delete a non-existing movie')
-        .withRequest({
-          method: 'DELETE',
-          path: `/movie/${testId}`
-        })
-        .willRespondWith({
-          status: 404,
-          body: {
-            error: `Movie ${testId} not found`
-          }
-        })
-
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const movies = (await deleteMovie(
-          mockServer.url,
-          testId
-        )) as ErrorResponse
-        expect(movies.error).toEqual(`Movie ${testId} not found`)
-      })
-    })
-
     it('should delete an existing movie successfully', async () => {
       const testId = 100
+      const successRes: SuccessResponse = {
+        message: `Movie ${testId} has been deleted`
+      }
+
       const state = createProviderState({
         name: 'Has a movie with a specific ID',
         params: { id: testId }
@@ -210,17 +189,35 @@ describe('Movies API', () => {
         })
         .willRespondWith({
           status: 200,
-          body: {
-            message: `Movie ${testId} has been deleted`
-          }
+          body: successRes
         })
 
       await provider.executeTest(async (mockServer: V3MockServer) => {
-        const movies = (await deleteMovie(
-          mockServer.url,
-          testId
-        )) as SuccessResponse
-        expect(movies.message).toEqual(`Movie ${testId} has been deleted`)
+        const res = await deleteMovie(mockServer.url, testId)
+        expect(res).toEqual(successRes)
+      })
+    })
+
+    it('should throw an error if movie to delete does not exist', async () => {
+      const testId = 123456789
+      const errorRes: ErrorResponse = {
+        error: `Movie ${testId} not found`
+      }
+
+      provider
+        .uponReceiving('a request to delete a non-existing movie')
+        .withRequest({
+          method: 'DELETE',
+          path: `/movie/${testId}`
+        })
+        .willRespondWith({
+          status: 404,
+          body: errorRes
+        })
+
+      await provider.executeTest(async (mockServer: V3MockServer) => {
+        const res = await deleteMovie(mockServer.url, testId)
+        expect(res).toEqual(errorRes)
       })
     })
   })
