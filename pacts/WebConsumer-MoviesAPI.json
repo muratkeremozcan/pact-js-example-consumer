@@ -4,22 +4,6 @@
   },
   "interactions": [
     {
-      "description": "a request to a non-existing movie",
-      "request": {
-        "method": "GET",
-        "path": "/movie/999"
-      },
-      "response": {
-        "body": {
-          "error": "Movie not found"
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "status": 404
-      }
-    },
-    {
       "description": "a request to add a new movie",
       "request": {
         "body": {
