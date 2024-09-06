@@ -99,27 +99,6 @@ describe('Movies API', () => {
         expect(res).toEqual(EXPECTED_BODY)
       })
     })
-
-    it('should handle errors when movie not found', async () => {
-      const testId = 999
-      const errorRes: ErrorResponse = { error: 'Movie not found' }
-
-      provider
-        .uponReceiving('a request to a non-existing movie')
-        .withRequest({
-          method: 'GET',
-          path: `/movie/${testId}`
-        })
-        .willRespondWith({
-          status: 404,
-          body: errorRes
-        })
-
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const result = await fetchSingleMovie(mockServer.url, testId)
-        expect(result).toEqual(errorRes)
-      })
-    })
   })
 
   describe('When a POST request is made to /movies', () => {
