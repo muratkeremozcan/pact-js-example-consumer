@@ -5,6 +5,8 @@ export const config: JestConfigWithTsJest = {
   testTimeout: 10000,
   collectCoverageFrom: [
     'src/**/*.ts',
+    '!src/**/*.pacttest.ts', // Exclude pacttest files
+    '!**/test-helpers/**', // Exclude test helpers
     '!**/*.json',
     '!?(**)/?(*.|*-)types.ts',
     '!**/models/*',
@@ -19,13 +21,6 @@ export const config: JestConfigWithTsJest = {
     ['text', { skipFull: true }],
     'json-summary'
   ],
-  moduleDirectories: ['node_modules', 'src'],
-  transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }]
-  },
-  testMatch: ['**/*.test.(ts)', '**/*.pacttest.(ts)'],
-  testEnvironment: 'node',
-  modulePathIgnorePatterns: ['dist'],
   coverageThreshold: {
     global: {
       statements: 0,
@@ -33,7 +28,14 @@ export const config: JestConfigWithTsJest = {
       lines: 0,
       functions: 0
     }
-  }
+  },
+  moduleDirectories: ['node_modules', 'src'],
+  modulePathIgnorePatterns: ['dist'],
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }]
+  },
+  testMatch: ['**/*.test.ts'],
+  testEnvironment: 'node'
 }
 
 export default config
