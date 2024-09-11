@@ -1,14 +1,14 @@
+import type { V3MockServer } from '@pact-foundation/pact'
+import { MatchersV3, PactV4 } from '@pact-foundation/pact'
 import path from 'path'
 import type { ErrorResponse, Movie, SuccessResponse } from './consumer'
 import {
-  fetchMovies,
-  fetchSingleMovie,
   addNewMovie,
-  deleteMovie
+  deleteMovie,
+  fetchMovies,
+  fetchSingleMovie
 } from './consumer'
-import { PactV4, MatchersV3 } from '@pact-foundation/pact'
-import type { V3MockServer } from '@pact-foundation/pact'
-import { createProviderState } from './test-helpers/helpers'
+import { createProviderState, setJsonBody } from './test-helpers/helpers'
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
@@ -84,8 +84,9 @@ describe('Movies API', () => {
         .given(stateName, stateParams)
         .uponReceiving('a request to a specific movie')
         .withRequest('GET', `/movie/${testId}`)
-        .willRespondWith(200, (builder) =>
-          builder.jsonBody({
+        .willRespondWith(
+          200,
+          setJsonBody({
             id: integer(testId),
             name: string(EXPECTED_BODY.name),
             year: integer(EXPECTED_BODY.year)
@@ -109,11 +110,10 @@ describe('Movies API', () => {
         .addInteraction()
         .given('No movies exist')
         .uponReceiving('a request to add a new movie')
-        .withRequest('POST', '/movies', (builder) =>
-          builder.jsonBody({ name, year })
-        )
-        .willRespondWith(200, (builder) =>
-          builder.jsonBody({
+        .withRequest('POST', '/movies', setJsonBody({ name, year }))
+        .willRespondWith(
+          200,
+          setJsonBody({
             id: integer(), // if the example value is omitted, a random number is used
             name: string(name),
             year: integer(year)
@@ -147,10 +147,8 @@ describe('Movies API', () => {
         .addInteraction()
         .given(stateName, stateParams)
         .uponReceiving('a request to the existing movie')
-        .withRequest('POST', '/movies', (builder) =>
-          builder.jsonBody({ ...movie })
-        )
-        .willRespondWith(409, (builder) => builder.jsonBody(errorRes))
+        .withRequest('POST', '/movies', setJsonBody({ ...movie }))
+        .willRespondWith(409, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await addNewMovie(mockServer.url, movie.name, movie.year)
           expect(res).toEqual(errorRes)
@@ -175,7 +173,7 @@ describe('Movies API', () => {
         .given(...state)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest('DELETE', `/movie/${testId}`)
-        .willRespondWith(200, (builder) => builder.jsonBody(successRes))
+        .willRespondWith(200, setJsonBody(successRes))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovie(mockServer.url, testId)
           expect(res).toEqual(successRes)
@@ -192,7 +190,7 @@ describe('Movies API', () => {
         .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
         .withRequest('DELETE', `/movie/${testId}`)
-        .willRespondWith(404, (builder) => builder.jsonBody(errorRes))
+        .willRespondWith(404, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovie(mockServer.url, testId)
           expect(res).toEqual(errorRes)

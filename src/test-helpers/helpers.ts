@@ -1,4 +1,5 @@
 import type { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes'
+import type { V4ResponseBuilder } from '@pact-foundation/pact/src/v4/http/types'
 
 /**
  * Converts an object with arbitrary value types to a `JsonMap` where all values are compatible with Pact's expectations.
@@ -85,3 +86,32 @@ export const createProviderState = ({
   name,
   params
 }: ProviderStateInput): [string, JsonMap] => [name, toJsonMap(params)]
+
+/**
+ * Utility function to set a JSON body on a Pact V4 response.
+ *
+ * This improves readability using currying.
+ *
+ * @param {Record<string, unknown>} body - The JSON body object to set in the response.
+ * @returns {(builder: V4ResponseBuilder) => V4ResponseBuilder} - A function to set the JSON body.
+ *
+ * Example usage:
+ * ```js
+ * // Before
+ * .willRespondWith(200, (builder) => builder.jsonBody({
+ *   id: integer(),
+ *   name: string(name),
+ *   year: integer(year)
+ * }))
+ *
+ * // After
+ * .willRespondWith(200, setJsonBody({
+ *   id: integer(),
+ *   name: string(name),
+ *   year: integer(year)
+ * }))
+ * ```
+ */
+export const setJsonBody =
+  (body: Record<string, unknown>) => (builder: V4ResponseBuilder) =>
+    builder.jsonBody(body)
