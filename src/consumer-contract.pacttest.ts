@@ -37,9 +37,16 @@ describe('Movies API', () => {
         year: 1999
       }
 
+      // we want to ensure at least 1 movie is returned in the array of movies
+      const [stateName, stateParams] = createProviderState({
+        name: 'An existing movie exists',
+        params: EXPECTED_BODY
+      })
+
       // 2) Register the consumer's expectations against the (mock) provider
       await pact
         .addInteraction()
+        .given(stateName, stateParams)
         .uponReceiving('a request to get all movies')
         .withRequest('GET', '/movies')
         .willRespondWith(200, (b) => b.jsonBody(eachLike(EXPECTED_BODY)))
