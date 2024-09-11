@@ -6,7 +6,7 @@ import {
   addNewMovie,
   deleteMovie
 } from './consumer'
-import { PactV4, MatchersV3, SpecificationVersion } from '@pact-foundation/pact'
+import { PactV4, MatchersV3 } from '@pact-foundation/pact'
 import type { V3MockServer } from '@pact-foundation/pact'
 import { createProviderState } from './test-helpers/helpers'
 
@@ -23,8 +23,7 @@ const { eachLike, integer, string } = MatchersV3
 const pact = new PactV4({
   dir: path.resolve(process.cwd(), 'pacts'),
   consumer: 'WebConsumer',
-  provider: 'MoviesAPI',
-  spec: SpecificationVersion.SPECIFICATION_VERSION_V4
+  provider: 'MoviesAPI'
   // logLevel: 'debug'
 })
 
