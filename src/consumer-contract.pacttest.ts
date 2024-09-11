@@ -6,7 +6,7 @@ import {
   addNewMovie,
   deleteMovie
 } from './consumer'
-import { PactV3, MatchersV3 } from '@pact-foundation/pact'
+import { PactV4, MatchersV3 } from '@pact-foundation/pact'
 import type { V3MockServer } from '@pact-foundation/pact'
 import { createProviderState } from './test-helpers/helpers'
 
@@ -20,10 +20,11 @@ const { eachLike, integer, string } = MatchersV3
 // 4) Verify the consumer test and generate the contract
 
 // 1) Setup the mock provider for the consumer
-const provider = new PactV3({
+const pact = new PactV4({
   dir: path.resolve(process.cwd(), 'pacts'),
   consumer: 'WebConsumer',
   provider: 'MoviesAPI'
+  // logLevel: 'debug'
 })
 
 describe('Movies API', () => {
@@ -36,24 +37,24 @@ describe('Movies API', () => {
         year: 1999
       }
 
-      // 2) Register the consumer's expectations against the (mock) provider
-      provider
-        .uponReceiving('a request to get all movies')
-        .withRequest({
-          method: 'GET',
-          path: '/movies'
-        })
-        .willRespondWith({
-          status: 200,
-          body: eachLike(EXPECTED_BODY)
-        })
-
-      // 3) Call the consumer against the mock provider
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = (await fetchMovies(mockServer.url)) as Movie[]
-        // 4) Verify the consumer test and generate the contract
-        expect(res[0]).toEqual(EXPECTED_BODY)
+      // we want to ensure at least 1 movie is returned in the array of movies
+      const [stateName, stateParams] = createProviderState({
+        name: 'An existing movie exists',
+        params: EXPECTED_BODY
       })
+
+      // 2) Register the consumer's expectations against the (mock) provider
+      await pact
+        .addInteraction()
+        .given(stateName, stateParams)
+        .uponReceiving('a request to get all movies')
+        .withRequest('GET', '/movies')
+        .willRespondWith(200, (b) => b.jsonBody(eachLike(EXPECTED_BODY)))
+        .executeTest(async (mockServer: V3MockServer) => {
+          const res = (await fetchMovies(mockServer.url)) as Movie[]
+          // 4) Verify the consumer test and generate the contract
+          expect(res[0]).toEqual(EXPECTED_BODY)
+        })
     })
   })
 
@@ -78,26 +79,22 @@ describe('Movies API', () => {
         params: { id: testId }
       })
 
-      provider
+      await pact
+        .addInteraction()
         .given(stateName, stateParams)
         .uponReceiving('a request to a specific movie')
-        .withRequest({
-          method: 'GET',
-          path: `/movie/${testId}`
-        })
-        .willRespondWith({
-          status: 200,
-          body: {
+        .withRequest('GET', `/movie/${testId}`)
+        .willRespondWith(200, (builder) =>
+          builder.jsonBody({
             id: integer(testId),
             name: string(EXPECTED_BODY.name),
             year: integer(EXPECTED_BODY.year)
-          }
+          })
+        )
+        .executeTest(async (mockServer: V3MockServer) => {
+          const res = await fetchSingleMovie(mockServer.url, testId)
+          expect(res).toEqual(EXPECTED_BODY)
         })
-
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = await fetchSingleMovie(mockServer.url, testId)
-        expect(res).toEqual(EXPECTED_BODY)
-      })
     })
   })
 
@@ -108,30 +105,28 @@ describe('Movies API', () => {
         year: 1999
       }
 
-      provider
+      await pact
+        .addInteraction()
+        .given('No movies exist')
         .uponReceiving('a request to add a new movie')
-        .withRequest({
-          method: 'POST',
-          path: '/movies',
-          body: { name, year }
-        })
-        .willRespondWith({
-          status: 200,
-          body: {
+        .withRequest('POST', '/movies', (builder) =>
+          builder.jsonBody({ name, year })
+        )
+        .willRespondWith(200, (builder) =>
+          builder.jsonBody({
             id: integer(), // if the example value is omitted, a random number is used
             name: string(name),
             year: integer(year)
-          }
+          })
+        )
+        .executeTest(async (mockServer: V3MockServer) => {
+          const res = await addNewMovie(mockServer.url, name, year)
+          expect(res).toEqual({
+            id: expect.any(Number),
+            name,
+            year
+          })
         })
-
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = await addNewMovie(mockServer.url, name, year)
-        expect(res).toEqual({
-          id: expect.any(Number),
-          name,
-          year
-        })
-      })
     })
 
     it('should not add a movie that already exists', async () => {
@@ -148,23 +143,18 @@ describe('Movies API', () => {
         params: movie
       })
 
-      provider
+      await pact
+        .addInteraction()
         .given(stateName, stateParams)
         .uponReceiving('a request to the existing movie')
-        .withRequest({
-          method: 'POST',
-          path: '/movies',
-          body: { ...movie }
+        .withRequest('POST', '/movies', (builder) =>
+          builder.jsonBody({ ...movie })
+        )
+        .willRespondWith(409, (builder) => builder.jsonBody(errorRes))
+        .executeTest(async (mockServer: V3MockServer) => {
+          const res = await addNewMovie(mockServer.url, movie.name, movie.year)
+          expect(res).toEqual(errorRes)
         })
-        .willRespondWith({
-          status: 409,
-          body: errorRes
-        })
-
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = await addNewMovie(mockServer.url, movie.name, movie.year)
-        expect(res).toEqual(errorRes)
-      })
     })
   })
 
@@ -180,22 +170,16 @@ describe('Movies API', () => {
         params: { id: testId }
       })
 
-      provider
+      await pact
+        .addInteraction()
         .given(...state)
         .uponReceiving('a request to delete a movie that exists')
-        .withRequest({
-          method: 'DELETE',
-          path: `/movie/${testId}`
+        .withRequest('DELETE', `/movie/${testId}`)
+        .willRespondWith(200, (builder) => builder.jsonBody(successRes))
+        .executeTest(async (mockServer: V3MockServer) => {
+          const res = await deleteMovie(mockServer.url, testId)
+          expect(res).toEqual(successRes)
         })
-        .willRespondWith({
-          status: 200,
-          body: successRes
-        })
-
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = await deleteMovie(mockServer.url, testId)
-        expect(res).toEqual(successRes)
-      })
     })
 
     it('should throw an error if movie to delete does not exist', async () => {
@@ -204,21 +188,15 @@ describe('Movies API', () => {
         error: `Movie ${testId} not found`
       }
 
-      provider
+      await pact
+        .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
-        .withRequest({
-          method: 'DELETE',
-          path: `/movie/${testId}`
+        .withRequest('DELETE', `/movie/${testId}`)
+        .willRespondWith(404, (builder) => builder.jsonBody(errorRes))
+        .executeTest(async (mockServer: V3MockServer) => {
+          const res = await deleteMovie(mockServer.url, testId)
+          expect(res).toEqual(errorRes)
         })
-        .willRespondWith({
-          status: 404,
-          body: errorRes
-        })
-
-      await provider.executeTest(async (mockServer: V3MockServer) => {
-        const res = await deleteMovie(mockServer.url, testId)
-        expect(res).toEqual(errorRes)
-      })
     })
   })
 })
