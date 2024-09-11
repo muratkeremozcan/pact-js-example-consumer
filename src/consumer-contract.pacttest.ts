@@ -100,6 +100,7 @@ describe('Movies API', () => {
 
       await pact
         .addInteraction()
+        .given('No movies exist')
         .uponReceiving('a request to add a new movie')
         .withRequest('POST', '/movies', (builder) =>
           builder.jsonBody({ name, year })
