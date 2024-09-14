@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "7.18.0",
     "axios": "1.5.1",
     "cy-spok": "1.6.2",
-    "cypress": "13.14.1",
+    "cypress": "13.14.2",
     "cypress-data-session": "2.8.4",
     "cypress-each": "1.14.0",
     "cypress-map": "1.40.0",
