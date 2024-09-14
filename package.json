@@ -38,7 +38,7 @@
     "axios": "1.7.7",
     "cy-spok": "1.6.2",
     "cypress": "13.14.2",
-    "cypress-data-session": "2.8.4",
+    "cypress-data-session": "2.8.5",
     "cypress-each": "1.14.0",
     "cypress-map": "1.40.0",
     "dotenv": "16.4.5",
