@@ -25,7 +25,7 @@ jobs:
           node-version: 18
 
       - name: Cypress e2e tests 🧪
-        uses: cypress-io/github-action@v6.6.1
+        uses: cypress-io/github-action@v6.7.6
         with:
           start: npm run mock:server
           config-file: cypress/config/local.config.ts
