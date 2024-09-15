@@ -150,6 +150,67 @@ npm run optic:update # executes the e2e, and interactively update the OpenAPI do
 npm run optic:verify-ci # the above, but it also starts the server, in case you're not running it on the side
 ```
 
+#### Provider selective testing
+
+By default, the tests from the consumers execute in their entirety, for all the consumers. That can be hard to diagnose. 
+
+We can filter that by a specific consumer, and with pact selectors.
+
+https://docs.pact.io/implementation_guides/javascript/docs/troubleshooting
+
+`PACT_DESCRIPTION`: select all tests that contain this string in its description (from the test output, or the pact file).
+
+`PACT_PROVIDER_STATE`:  select all tests that contain this string in one of its providerStates.
+
+`PACT_PROVIDER_NO_STATE`: set to TRUE to select all tests what don't have any providerStates.
+
+```bash
+PACT_DESCRIPTION="a request to get all movies" npm run test:provider
+
+PACT_DESCRIPTION="a request to get all movies" PACT_PROVIDER_STATE="An existing movie exists" npm run test:provider
+
+PACT_PROVIDER_STATE="Has a movie with a specific ID" npm run test:provider
+
+PACT_DESCRIPTION="a request to a specific movie" PACT_PROVIDER_STATE="Has a movie with a specific ID" npm run test:provider
+
+PACT_DESCRIPTION="a request to delete a movie that exists" PACT_PROVIDER_STATE="Has a movie with a specific ID" npm run test:provider
+
+PACT_PROVIDER_NO_STATE=true npm run test:provider
+```
+
+To run tests from a certain consumer:
+
+```bash
+PACT_CONSUMER="MoviesAPI" npm run test:provider
+```
+
+#### Dealing with breaking changes on the Provider side
+
+When verifying consumer tests, we have default settings for:
+
+* `matchingBranch` *used for coordinated development between consumer and provider teams using matching feature branch names*
+
+* `mainBranch` *tests against consumer's main branch*
+
+* `deployedOrReleased` *tests against consumer's currently deployed or released versions*
+
+   
+
+When introducing breaking changes, we may want to to relax verifications and check against `matchingBranches`.
+For that We use `PACT_BREAKING_CHANGE` environment variable.
+
+```bash
+PACT_BREAKING_CHANGE=true npm run test:provider
+```
+
+For CI, in the PR description we include a string and check the box. If it is unchecked or not included in the PR description, the env var is off.
+
+```readme
+- [x] Pact breaking change 
+```
+
+
+
 ## Consumer Tests
 
 The consumer can be any client that makes API calls. Can be an API service, can be a web app (using Axios for example); it does not make a difference.
