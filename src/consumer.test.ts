@@ -100,17 +100,25 @@ describe('Consumer API functions', () => {
       }
       // with pact we can keep the response generic
       // with nock it has to be concrete response
-      nock(MOCKSERVER_URL).post('/movies', { name, year }).reply(200, {
-        id: 1,
-        name,
-        year
-      })
+      nock(MOCKSERVER_URL)
+        .post('/movies', { name, year })
+        .reply(200, {
+          status: 200,
+          movie: {
+            id: 1,
+            name,
+            year
+          }
+        })
 
       const res = await addNewMovie(MOCKSERVER_URL, name, year)
       expect(res).toEqual({
-        id: expect.any(Number),
-        name,
-        year
+        status: 200,
+        movie: {
+          id: expect.any(Number),
+          name,
+          year
+        }
       })
     })
 
