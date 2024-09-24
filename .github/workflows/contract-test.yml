@@ -38,7 +38,7 @@ jobs:
       - name: Publish contract to Pactflow
         run: npm run publish:pact
 
-      # a web hook is triggered on the provider side
+      # a web hook is triggered on the provider repo
       # which executes the provider tests
 
       - name: Can I deploy consumer?
