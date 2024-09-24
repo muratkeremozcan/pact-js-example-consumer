@@ -204,6 +204,26 @@ In CI, you can enable this behavior by including a checkbox in the PR descriptio
 - [x] Pact breaking change
 ```
 
+#### Breaking change - consumer flow
+
+```bash
+# (2) UPDATE the consumer test 
+npm run test:consumer # (2) execute it
+npm run publish:pact  # (3) publish the pact
+npm run can:i:deploy:consumer # (6)
+# only on main
+npm run record:consumer:deployment --env=dev # (7)
+```
+
+#### Breaking change - provider flow
+
+```bash
+# (1) create a branch with the breaking (source code) change
+PACT_BREAKING_CHANGE=true npm run test:provider-ci # (4) start the provider service and run the tests
+# note: can:i:deploy:provider is skipped because we are introducing the breaking change
+# (5) merge to main
+```
+
 ## Consumer Tests
 
 The consumer can be any client that makes API calls. Can be an API service, can be a web app (using Axios for example); it does not make a difference.

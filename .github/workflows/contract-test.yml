@@ -11,13 +11,15 @@ env:
   PACT_BROKER_BASE_URL: ${{ secrets.PACT_BROKER_BASE_URL }}
   PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
   GITHUB_SHA: ${{ github.sha }}
-  GITHUB_BRANCH: ${{ github.ref_name }}
+  GITHUB_BRANCH: ${{ github.head_ref }}
 
 jobs:
   contract-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }} # Ensure you're on the correct branch
 
       - name: Read Node version from .nvmrc
         id: node_version
@@ -36,7 +38,7 @@ jobs:
       - name: Publish contract to Pactflow
         run: npm run publish:pact
 
-      # a web hook is triggered on the provider side
+      # a web hook is triggered on the provider
       # which executes the provider tests
 
       - name: Can I deploy consumer?

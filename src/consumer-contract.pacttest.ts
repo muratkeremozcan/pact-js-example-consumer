@@ -114,17 +114,23 @@ describe('Movies API', () => {
         .willRespondWith(
           200,
           setJsonBody({
-            id: integer(), // if the example value is omitted, a random number is used
-            name: string(name),
-            year: integer(year)
+            status: 200,
+            movie: {
+              id: integer(), // if the example value is omitted, a random number is used
+              name: string(name),
+              year: integer(year)
+            }
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await addNewMovie(mockServer.url, name, year)
           expect(res).toEqual({
-            id: expect.any(Number),
-            name,
-            year
+            status: 200,
+            movie: {
+              id: expect.any(Number),
+              name,
+              year
+            }
           })
         })
     })
