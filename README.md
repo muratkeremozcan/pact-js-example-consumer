@@ -142,12 +142,15 @@ npm run mock:server # starts the mock backend/provider server
 npm run db:migrate
 npm run reset:db
 
-npm run generate:openapi # generates an OpenAPI doc from Zod schemas
 npm run optic:lint # verifies the OpenAPI doc
 npm run optic:diff # compares the OpenAPI on the PR to main, to find breaking changes
 npm run optic:verify # executes the e2e against the OpenAPI doc to gain API coverage and validate it
 npm run optic:update # executes the e2e, and interactively update the OpenAPI doc
 npm run optic:verify-ci # the above, but it also starts the server, in case you're not running it on the side
+
+npm run generate:openapi # generates an OpenAPI doc from Zod schemas
+npm run publish:pact-openapi # publishes the open api spec to Pact Broker for BDCT
+npm run record:provider:bidirectional:deployment --env=dev # records the bi-directional provider deployment
 ```
 
 #### Provider selective testing
@@ -207,7 +210,7 @@ In CI, you can enable this behavior by including a checkbox in the PR descriptio
 #### Breaking change - consumer flow
 
 ```bash
-# (2) UPDATE the consumer test 
+# (2) UPDATE the consumer test
 npm run test:consumer # (2) execute it
 npm run publish:pact  # (3) publish the pact
 npm run can:i:deploy:consumer # (6)
