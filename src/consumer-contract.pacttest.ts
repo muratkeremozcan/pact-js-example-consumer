@@ -98,7 +98,7 @@ describe('Movies API', () => {
         .addInteraction()
         .given(stateName, stateParams)
         .uponReceiving('a request to a specific movie')
-        .withRequest('GET', `/movie/${testId}`)
+        .withRequest('GET', `/movies/${testId}`)
         .willRespondWith(
           200,
           setJsonBody({
@@ -193,7 +193,7 @@ describe('Movies API', () => {
         .addInteraction()
         .given(...state)
         .uponReceiving('a request to delete a movie that exists')
-        .withRequest('DELETE', `/movie/${testId}`)
+        .withRequest('DELETE', `/movies/${testId}`)
         .willRespondWith(200, setJsonBody(successRes))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovie(mockServer.url, testId)
@@ -210,7 +210,7 @@ describe('Movies API', () => {
       await pact
         .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
-        .withRequest('DELETE', `/movie/${testId}`)
+        .withRequest('DELETE', `/movies/${testId}`)
         .willRespondWith(404, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovie(mockServer.url, testId)

@@ -75,7 +75,7 @@ describe('Consumer API functions', () => {
       }
 
       // in pact the provider state would be specified here
-      nock(MOCKSERVER_URL).get('/movie/1').reply(200, EXPECTED_BODY)
+      nock(MOCKSERVER_URL).get('/movies/1').reply(200, EXPECTED_BODY)
 
       const res = await fetchSingleMovie(MOCKSERVER_URL, 1)
       expect(res).toEqual(EXPECTED_BODY)
@@ -84,7 +84,7 @@ describe('Consumer API functions', () => {
     it('should handle errors when movie not found', async () => {
       const testId = 999
       const errorRes: ErrorResponse = { error: 'Movie not found' }
-      nock(MOCKSERVER_URL).get(`/movie/${testId}`).reply(404, errorRes)
+      nock(MOCKSERVER_URL).get(`/movies/${testId}`).reply(404, errorRes)
 
       const result = await fetchSingleMovie(MOCKSERVER_URL, testId)
       expect(result).toEqual(errorRes)
@@ -151,7 +151,7 @@ describe('Consumer API functions', () => {
       }
 
       // in pact the provider state would be specified here
-      nock(MOCKSERVER_URL).delete(`/movie/${testId}`).reply(200, successRes)
+      nock(MOCKSERVER_URL).delete(`/movies/${testId}`).reply(200, successRes)
 
       const res = await deleteMovie(MOCKSERVER_URL, testId)
       expect(res).toEqual(successRes)
@@ -164,7 +164,7 @@ describe('Consumer API functions', () => {
       }
 
       // in pact the provider state would be specified here
-      nock(MOCKSERVER_URL).delete(`/movie/${testId}`).reply(404, errorRes)
+      nock(MOCKSERVER_URL).delete(`/movies/${testId}`).reply(404, errorRes)
 
       const res = await deleteMovie(MOCKSERVER_URL, testId)
       expect(res).toEqual(errorRes)
