@@ -36,7 +36,7 @@ const fetchSingleMovie = (
   url: string,
   id: number
 ): Promise<Movie | ErrorResponse> =>
-  axios.get(`${url}/movie/${id}`).then(yieldData).catch(handleError)
+  axios.get(`${url}/movies/${id}`).then(yieldData).catch(handleError)
 
 // Add a new movie (don't specify id)
 const addNewMovie = async (
@@ -62,6 +62,6 @@ const deleteMovie = (
   url: string,
   id: number
 ): Promise<SuccessResponse | ErrorResponse> =>
-  axios.delete(`${url}/movie/${id}`).then(yieldData).catch(handleError)
+  axios.delete(`${url}/movies/${id}`).then(yieldData).catch(handleError)
 
 export { fetchMovies, fetchSingleMovie, addNewMovie, deleteMovie }

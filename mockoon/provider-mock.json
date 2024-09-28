@@ -211,7 +211,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "movie/1",
+      "endpoint": "movies/1",
       "responses": [
         {
           "uuid": "de4ddaf0-f1bb-4fe5-b626-a6282f268ead",
@@ -277,7 +277,7 @@
       "type": "http",
       "documentation": "",
       "method": "delete",
-      "endpoint": "movie/1",
+      "endpoint": "movies/1",
       "responses": [
         {
           "uuid": "0da3c5a8-2008-4247-bfae-63ae4e70955d",
