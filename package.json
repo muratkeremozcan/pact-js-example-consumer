@@ -11,7 +11,7 @@
     "mock:server": ". ./scripts/env-setup.sh && npx mockoon-cli start --data ./mockoon/provider-mock.json --port ${PORT}",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts|json)\"",
     "fix:format": "npm run prettier -- --write",
-    "validate": "npm-run-all --parallel typecheck lint fix:format",
+    "validate": "npm-run-all --parallel typecheck lint test fix:format",
     "test": "jest --detectOpenHandles --verbose --silent --config jest.config.ts",
     "test:watch": "jest --watch --config jest.config.ts",
     "test:consumer": "rm -rf ./pacts && jest --config jest-pact.config.ts",

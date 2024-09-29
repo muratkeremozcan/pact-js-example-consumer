@@ -26,5 +26,5 @@ Cypress.Commands.add('addMovie', (body: Omit<Movie, 'id'>, url = apiUrl) => {
 
 Cypress.Commands.add('deleteMovie', (id: number, url = apiUrl) => {
   cy.log('**deleteMovie by id: ${id}**')
-  return cy.task('deleteMovie', { url, id })
+  return cy.task('deleteMovieById', { url, id })
 })
