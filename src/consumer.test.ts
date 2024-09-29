@@ -3,7 +3,7 @@ import {
   fetchMovies,
   fetchSingleMovie,
   addNewMovie,
-  deleteMovie
+  deleteMovieById
 } from './consumer'
 import type { Movie, ErrorResponse, SuccessResponse } from './consumer'
 
@@ -141,7 +141,7 @@ describe('Consumer API functions', () => {
     })
   })
 
-  describe('deleteMovie', () => {
+  describe('deleteMovieById', () => {
     // this is similar to its pacttest version
     // a key difference in pact is using provider states, to fully simulate the provider side
     it('should delete an existing movie successfully', async () => {
@@ -153,7 +153,7 @@ describe('Consumer API functions', () => {
       // in pact the provider state would be specified here
       nock(MOCKSERVER_URL).delete(`/movies/${testId}`).reply(200, successRes)
 
-      const res = await deleteMovie(MOCKSERVER_URL, testId)
+      const res = await deleteMovieById(MOCKSERVER_URL, testId)
       expect(res).toEqual(successRes)
     })
 
@@ -166,7 +166,7 @@ describe('Consumer API functions', () => {
       // in pact the provider state would be specified here
       nock(MOCKSERVER_URL).delete(`/movies/${testId}`).reply(404, errorRes)
 
-      const res = await deleteMovie(MOCKSERVER_URL, testId)
+      const res = await deleteMovieById(MOCKSERVER_URL, testId)
       expect(res).toEqual(errorRes)
     })
   })

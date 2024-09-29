@@ -4,7 +4,7 @@ import path from 'path'
 import type { ErrorResponse, Movie, SuccessResponse } from './consumer'
 import {
   addNewMovie,
-  deleteMovie,
+  deleteMovieById,
   fetchMovies,
   fetchSingleMovie
 } from './consumer'
@@ -196,7 +196,7 @@ describe('Movies API', () => {
         .withRequest('DELETE', `/movies/${testId}`)
         .willRespondWith(200, setJsonBody(successRes))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await deleteMovie(mockServer.url, testId)
+          const res = await deleteMovieById(mockServer.url, testId)
           expect(res).toEqual(successRes)
         })
     })
@@ -213,7 +213,7 @@ describe('Movies API', () => {
         .withRequest('DELETE', `/movies/${testId}`)
         .willRespondWith(404, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await deleteMovie(mockServer.url, testId)
+          const res = await deleteMovieById(mockServer.url, testId)
           expect(res).toEqual(errorRes)
         })
     })

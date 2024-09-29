@@ -3,7 +3,7 @@ import {
   fetchMovies,
   fetchSingleMovie,
   addNewMovie,
-  deleteMovie
+  deleteMovieById
 } from '../../src/consumer'
 
 /**
@@ -38,7 +38,7 @@ export default function tasks(on: Cypress.PluginEvents) {
     }) => addNewMovie(url, movieName, movieYear)
   })
   on('task', {
-    deleteMovie: ({ url, id }: { url: string; id: number }) =>
-      deleteMovie(url, id)
+    deleteMovieById: ({ url, id }: { url: string; id: number }) =>
+      deleteMovieById(url, id)
   })
 }
