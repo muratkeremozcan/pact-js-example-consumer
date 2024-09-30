@@ -21,17 +21,28 @@ describe('CRUD movie', () => {
 
   it('should crud', () => {
     cy.addMovie(movie)
-      .should(spok(movieProps))
-      .its('id')
+      .should(spok({ movie: movieProps, status: 200 }))
+      .print()
+      .its('movie.id')
       .then((id) => {
         cy.getAllMovies().should(spok(spok.array)).findOne({ name: movie.name })
 
-        cy.getMovieById(id).should(
-          spok({
-            ...movieProps,
-            id
+        cy.getMovieById(id)
+          .should(
+            spok({
+              ...movieProps,
+              id
+            })
+          )
+          .its('name')
+          .then((name) => {
+            cy.getMovieByName(name).should(
+              spok({
+                ...movieProps,
+                id
+              })
+            )
           })
-        )
 
         cy.deleteMovie(id)
         cy.getAllMovies().findOne({ name: movie.name }).should('not.exist')

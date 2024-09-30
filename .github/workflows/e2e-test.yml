@@ -10,7 +10,7 @@ concurrency:
 
 env:
   DATABASE_URL: 'file:./dev.db'
-  PORT: 3001
+  SERVERPORT: 3001
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 

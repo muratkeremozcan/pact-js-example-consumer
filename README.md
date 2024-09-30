@@ -29,7 +29,7 @@ Use the sample `.env.example` file to create a `.env` file of your own. These va
 # https://pactflow.io/try-for-free/
 PACT_BROKER_TOKEN=***********
 PACT_BROKER_BASE_URL=https://yourownorg.pactflow.io
-PORT=3000 # technically this is the backend, but Mockoon is used for the backend at the moment
+SERVERPORT=3001 # technically this is the backend, but Mockoon is used for the backend at the moment
 ```
 
 ### Webhook setup
@@ -127,8 +127,7 @@ npm run cy:run-local-fast  # no video or screen shots
 #### Consumer specific scripts
 
 To exercise the e2e of the consumer side, we need a running backend.
-If using the real backend, we can set the PORT at `.env` to the backend port (3001).
-If using a back backend, we use `Mockoon` which runs on PORT 3000.
+Specify the SERVERPORT env var accordingly with your backend's port.
 
 ```bash
 npm run mock:server # starts the mock backend/provider server

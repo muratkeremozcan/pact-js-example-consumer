@@ -4,19 +4,19 @@
   "name": "provider-mock",
   "endpointPrefix": "",
   "latency": 0,
-  "port": 3000,
+  "port": 3001,
   "hostname": "",
   "folders": [],
   "routes": [
     {
-      "uuid": "542b2a9e-e149-4b39-a31b-82a0a6991fb5",
+      "uuid": "52930cff-667c-478f-b29d-12857ddd9c99",
       "type": "http",
       "documentation": "",
       "method": "get",
       "endpoint": "",
       "responses": [
         {
-          "uuid": "52d8b229-a19b-4b7e-95c8-f38f48b8e08c",
+          "uuid": "6c1f6b11-64da-45e8-a0d6-9843d042350f",
           "body": "{\n  \"message\": \"Server is running\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -44,7 +44,7 @@
             },
             {
               "key": "date",
-              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+              "value": "Mon, 30 Sep 2024 14:26:25 GMT"
             },
             {
               "key": "etag",
@@ -75,15 +75,15 @@
       "responseMode": null
     },
     {
-      "uuid": "bc406e2b-2369-4022-8ce8-70fffc454366",
+      "uuid": "90558399-6827-4184-9dfd-79aac26d0467",
       "type": "http",
       "documentation": "",
       "method": "post",
       "endpoint": "movies",
       "responses": [
         {
-          "uuid": "602c5ba6-733b-4a31-9f63-99a95815f0d0",
-          "body": "{\n  \"id\": 1,\n  \"name\": \"deinde utpote tabesco\",\n  \"year\": 1976\n}",
+          "uuid": "6fbf034c-9de8-454d-bb39-68538273a290",
+          "body": "{\n  \"status\": 200,\n  \"movie\": {\n    \"id\": 1,\n    \"name\": \"arca vesco conatus\",\n    \"year\": 2019\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -110,11 +110,11 @@
             },
             {
               "key": "date",
-              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+              "value": "Mon, 30 Sep 2024 14:26:26 GMT"
             },
             {
               "key": "etag",
-              "value": "W/\"33-LO5ZaoodQ+10tW6NCsohefIIjxA\""
+              "value": "W/\"47-68S3dNPa/3GZ9tMaV8OY2n2Quos\""
             },
             {
               "key": "x-powered-by",
@@ -122,7 +122,7 @@
             },
             {
               "key": "content-length",
-              "value": "64"
+              "value": "101"
             }
           ],
           "bodyType": "INLINE",
@@ -141,15 +141,15 @@
       "responseMode": null
     },
     {
-      "uuid": "d846435e-70de-4a18-9c00-a4e9a2865337",
+      "uuid": "40583115-30f2-4c4b-83d4-c00d4b98fb9d",
       "type": "http",
       "documentation": "",
       "method": "get",
       "endpoint": "movies",
       "responses": [
         {
-          "uuid": "fe895386-5ec8-421c-ab2e-9785003b2127",
-          "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"deinde utpote tabesco\",\n    \"year\": 1976\n  }\n]",
+          "uuid": "df99f8bc-f4f6-4bf2-a561-6f08acbb33d0",
+          "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"arca vesco conatus\",\n    \"year\": 2019\n  }\n]",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -176,11 +176,11 @@
             },
             {
               "key": "date",
-              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+              "value": "Mon, 30 Sep 2024 14:26:26 GMT"
             },
             {
               "key": "etag",
-              "value": "W/\"35-6OTIw+M3XpaHaS7MKmhX0ICCt8E\""
+              "value": "W/\"32-Ag0t/qCPQ79obJqIbGWkgoBDhoQ\""
             },
             {
               "key": "x-powered-by",
@@ -188,7 +188,7 @@
             },
             {
               "key": "content-length",
-              "value": "78"
+              "value": "75"
             }
           ],
           "bodyType": "INLINE",
@@ -202,20 +202,47 @@
           "default": false,
           "crudKey": "id",
           "callbacks": []
+        },
+        {
+          "uuid": "1f4e020a-38c8-4aa7-ac12-9a470630721a",
+          "body": "{\n  \"id\": 1,\n  \"name\": \"arca vesco conatus\",\n  \"year\": 2019\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "name",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
         }
       ],
       "responseMode": null
     },
     {
-      "uuid": "0373e3df-e077-4561-ad0f-a4477fdc7ccb",
+      "uuid": "3f0aa233-005d-4992-ac5c-8de4cf26aa6c",
       "type": "http",
       "documentation": "",
       "method": "get",
       "endpoint": "movies/1",
       "responses": [
         {
-          "uuid": "de4ddaf0-f1bb-4fe5-b626-a6282f268ead",
-          "body": "{\n  \"id\": 1,\n  \"name\": \"deinde utpote tabesco\",\n  \"year\": 1976\n}",
+          "uuid": "d5444b85-4e4b-44b6-83a1-117ae34fdb31",
+          "body": "{\n  \"id\": 1,\n  \"name\": \"arca vesco conatus\",\n  \"year\": 2019\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -242,11 +269,11 @@
             },
             {
               "key": "date",
-              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+              "value": "Mon, 30 Sep 2024 14:26:26 GMT"
             },
             {
               "key": "etag",
-              "value": "W/\"33-LO5ZaoodQ+10tW6NCsohefIIjxA\""
+              "value": "W/\"30-Et98wuv6C/EDTRp12GTSpBOPhTg\""
             },
             {
               "key": "x-powered-by",
@@ -254,7 +281,7 @@
             },
             {
               "key": "content-length",
-              "value": "64"
+              "value": "61"
             }
           ],
           "bodyType": "INLINE",
@@ -273,15 +300,15 @@
       "responseMode": null
     },
     {
-      "uuid": "46eeb4cc-28e0-4858-90df-9318caeaf320",
+      "uuid": "116a867d-0f86-44e6-8d67-5df4135ab49f",
       "type": "http",
       "documentation": "",
       "method": "delete",
       "endpoint": "movies/1",
       "responses": [
         {
-          "uuid": "0da3c5a8-2008-4247-bfae-63ae4e70955d",
-          "body": "{\n  \"message\": \"Movie 1 has been deleted\"\n}",
+          "uuid": "9b383d45-e113-4670-b31d-485426d2461c",
+          "body": "{\n  \"message\": \"Movie 1 has been deleted\",\n  \"status\": 200\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -308,11 +335,11 @@
             },
             {
               "key": "date",
-              "value": "Thu, 05 Sep 2024 15:55:46 GMT"
+              "value": "Mon, 30 Sep 2024 14:26:26 GMT"
             },
             {
               "key": "etag",
-              "value": "W/\"26-8XWBY2kWG6LsOM7QEVaCeIGxwTE\""
+              "value": "W/\"33-jEW629KkTfkgMdLVsEJumZjnoDo\""
             },
             {
               "key": "x-powered-by",
@@ -320,7 +347,7 @@
             },
             {
               "key": "content-length",
-              "value": "43"
+              "value": "60"
             }
           ],
           "bodyType": "INLINE",
@@ -334,6 +361,114 @@
           "default": false,
           "crudKey": "id",
           "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "db9bfdc1-7c20-482f-8d4a-1f0c9255e994",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "__messages__",
+      "responses": [
+        {
+          "uuid": "ecfb01ca-bbd0-49d5-8901-61e8e54e6832",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [
+            {
+              "key": "access-control-allow-headers",
+              "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+            },
+            {
+              "key": "access-control-allow-methods",
+              "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'none'"
+            },
+            {
+              "key": "content-type",
+              "value": "text/html; charset=utf-8"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": [],
+          "body": "{}"
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "7a0a2816-d312-4b95-ace4-98fccc55319b",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "__messages__",
+      "responses": [
+        {
+          "uuid": "ba6ddae3-ddb9-4879-b760-412823293f4f",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [
+            {
+              "key": "access-control-allow-headers",
+              "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+            },
+            {
+              "key": "access-control-allow-methods",
+              "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'none'"
+            },
+            {
+              "key": "content-type",
+              "value": "text/html; charset=utf-8"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": [],
+          "body": "{}"
         }
       ],
       "responseMode": null
@@ -342,27 +477,35 @@
   "rootChildren": [
     {
       "type": "route",
-      "uuid": "542b2a9e-e149-4b39-a31b-82a0a6991fb5"
+      "uuid": "52930cff-667c-478f-b29d-12857ddd9c99"
     },
     {
       "type": "route",
-      "uuid": "bc406e2b-2369-4022-8ce8-70fffc454366"
+      "uuid": "90558399-6827-4184-9dfd-79aac26d0467"
     },
     {
       "type": "route",
-      "uuid": "d846435e-70de-4a18-9c00-a4e9a2865337"
+      "uuid": "40583115-30f2-4c4b-83d4-c00d4b98fb9d"
     },
     {
       "type": "route",
-      "uuid": "0373e3df-e077-4561-ad0f-a4477fdc7ccb"
+      "uuid": "3f0aa233-005d-4992-ac5c-8de4cf26aa6c"
     },
     {
       "type": "route",
-      "uuid": "46eeb4cc-28e0-4858-90df-9318caeaf320"
+      "uuid": "116a867d-0f86-44e6-8d67-5df4135ab49f"
+    },
+    {
+      "type": "route",
+      "uuid": "db9bfdc1-7c20-482f-8d4a-1f0c9255e994"
+    },
+    {
+      "type": "route",
+      "uuid": "7a0a2816-d312-4b95-ace4-98fccc55319b"
     }
   ],
   "proxyMode": false,
-  "proxyHost": "http://localhost:3001",
+  "proxyHost": "http://localhost:3002",
   "proxyRemovePrefix": false,
   "tlsOptions": {
     "enabled": false,

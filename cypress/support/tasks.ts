@@ -2,6 +2,7 @@ import log from './log'
 import {
   getMovies,
   getMovieById,
+  getMovieByName,
   addNewMovie,
   deleteMovieById
 } from '../../src/consumer'
@@ -24,9 +25,11 @@ export default function tasks(on: Cypress.PluginEvents) {
     // the cy task
     getMovieById: ({ url, id }: { url: string; id: number }) =>
       // the original function
-      getMovieById(url, id)
-  })
-  on('task', {
+      getMovieById(url, id),
+
+    getMovieByName: ({ url, name }: { url: string; name: string }) =>
+      getMovieByName(url, name),
+
     addNewMovie: ({
       url,
       movieName,
@@ -37,6 +40,7 @@ export default function tasks(on: Cypress.PluginEvents) {
       movieYear: number
     }) => addNewMovie(url, movieName, movieYear)
   })
+  // we can add them all together in one 'task', or separately
   on('task', {
     deleteMovieById: ({ url, id }: { url: string; id: number }) =>
       deleteMovieById(url, id)
