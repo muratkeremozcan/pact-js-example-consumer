@@ -7,12 +7,12 @@ const apiUrl = Cypress.config('baseUrl') || 'http://localhost:3000'
 
 Cypress.Commands.add('getAllMovies', (url = apiUrl) => {
   cy.log('**getAllMovies**')
-  return cy.task('fetchMovies', url)
+  return cy.task('getMovies', url)
 })
 
 Cypress.Commands.add('getMovieById', (id: number, url = apiUrl) => {
   cy.log(`**getMovieById: ${id}**`)
-  return cy.task('fetchSingleMovie', { url, id }) // Pass an object with `url` and `id`
+  return cy.task('getMovieById', { url, id }) // Pass an object with `url` and `id`
 })
 
 Cypress.Commands.add('addMovie', (body: Omit<Movie, 'id'>, url = apiUrl) => {

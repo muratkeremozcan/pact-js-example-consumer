@@ -1,7 +1,7 @@
 import log from './log'
 import {
-  fetchMovies,
-  fetchSingleMovie,
+  getMovies,
+  getMovieById,
   addNewMovie,
   deleteMovieById
 } from '../../src/consumer'
@@ -13,7 +13,7 @@ import {
 export default function tasks(on: Cypress.PluginEvents) {
   on('task', { log })
 
-  on('task', { fetchMovies })
+  on('task', { getMovies: getMovies })
 
   // KEY: a pattern to fine tune cy task when handling multiple arguments
   // Cypress tasks only accept a single argument, but we can pass multiple values
@@ -22,9 +22,9 @@ export default function tasks(on: Cypress.PluginEvents) {
   // Adjust functions to expect an object, even if the original function took multiple arguments.
   on('task', {
     // the cy task
-    fetchSingleMovie: ({ url, id }: { url: string; id: number }) =>
+    getMovieById: ({ url, id }: { url: string; id: number }) =>
       // the original function
-      fetchSingleMovie(url, id)
+      getMovieById(url, id)
   })
   on('task', {
     addNewMovie: ({
