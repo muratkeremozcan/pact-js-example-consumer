@@ -1,7 +1,8 @@
 import nock, { cleanAll } from 'nock'
 import {
-  fetchMovies,
-  fetchSingleMovie,
+  getMovies,
+  getMovieById,
+  getMovieByName,
   addNewMovie,
   deleteMovieById
 } from './consumer'
@@ -36,7 +37,7 @@ describe('Consumer API functions', () => {
     cleanAll()
   })
 
-  describe('fetchMovies', () => {
+  describe('getMovies, getMovieByName', () => {
     // this is 1:1 with the pacttest version
     it('should return all movies', async () => {
       const EXPECTED_BODY: Movie = {
@@ -47,7 +48,7 @@ describe('Consumer API functions', () => {
 
       nock(MOCKSERVER_URL).get('/movies').reply(200, [EXPECTED_BODY])
 
-      const res = (await fetchMovies(MOCKSERVER_URL)) as Movie[]
+      const res = (await getMovies(MOCKSERVER_URL)) as Movie[]
       expect(res[0]).toEqual(EXPECTED_BODY)
     })
 
@@ -58,12 +59,27 @@ describe('Consumer API functions', () => {
       const errorRes: ErrorResponse = { error: 'Not found' }
       nock(MOCKSERVER_URL).get('/movies').reply(404, errorRes)
 
-      const res = await fetchMovies(MOCKSERVER_URL)
+      const res = await getMovies(MOCKSERVER_URL)
       expect(res).toEqual(errorRes)
+    })
+
+    it('should return a specific movie by name', async () => {
+      const EXPECTED_BODY: Movie = {
+        id: 1,
+        name: 'My movie',
+        year: 1999
+      }
+
+      nock(MOCKSERVER_URL)
+        .get(`/movies?name=${EXPECTED_BODY.name}`)
+        .reply(200, EXPECTED_BODY)
+
+      const res = await getMovieByName(MOCKSERVER_URL, EXPECTED_BODY.name)
+      expect(res).toEqual(EXPECTED_BODY)
     })
   })
 
-  describe('fetchSingleMovie', () => {
+  describe('getMovieById', () => {
     // this is similar to its pacttest version
     // a key difference in pact is using provider states, to fully simulate the provider side
     // in nock, we are not concerned with running our tests against the provider...
@@ -77,7 +93,7 @@ describe('Consumer API functions', () => {
       // in pact the provider state would be specified here
       nock(MOCKSERVER_URL).get('/movies/1').reply(200, EXPECTED_BODY)
 
-      const res = await fetchSingleMovie(MOCKSERVER_URL, 1)
+      const res = await getMovieById(MOCKSERVER_URL, 1)
       expect(res).toEqual(EXPECTED_BODY)
     })
 
@@ -86,7 +102,7 @@ describe('Consumer API functions', () => {
       const errorRes: ErrorResponse = { error: 'Movie not found' }
       nock(MOCKSERVER_URL).get(`/movies/${testId}`).reply(404, errorRes)
 
-      const result = await fetchSingleMovie(MOCKSERVER_URL, testId)
+      const result = await getMovieById(MOCKSERVER_URL, testId)
       expect(result).toEqual(errorRes)
     })
   })
