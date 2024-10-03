@@ -231,9 +231,12 @@ describe('Movies API', () => {
         .willRespondWith(
           200,
           setJsonBody({
-            id: integer(testId),
-            name: updatedMovieData.name,
-            year: updatedMovieData.year
+            status: 200,
+            movie: {
+              id: integer(testId),
+              name: updatedMovieData.name,
+              year: updatedMovieData.year
+            }
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
