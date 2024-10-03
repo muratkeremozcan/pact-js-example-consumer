@@ -170,7 +170,7 @@ describe('Consumer API functions', () => {
       }
 
       nock(MOCKSERVER_URL)
-        .put('/movies/1', updatedMovieData)
+        .put(`/movies/${testId}}`, updatedMovieData)
         .reply(200, { status: 200, movie: EXPECTED_BODY })
 
       const res = await updateMovie(
