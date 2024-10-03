@@ -245,9 +245,12 @@ describe('Movies API', () => {
           )
 
           expect(res).toEqual({
-            id: testId,
-            name: updatedMovieData.name,
-            year: updatedMovieData.year
+            status: 200,
+            movie: {
+              id: testId,
+              name: updatedMovieData.name,
+              year: updatedMovieData.year
+            }
           })
         })
     })
