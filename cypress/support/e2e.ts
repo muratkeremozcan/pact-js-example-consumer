@@ -33,3 +33,16 @@ Cypress.Commands.add('deleteMovie', (id: number, url = apiUrl) => {
   cy.log('**deleteMovie by id: ${id}**')
   return cy.task('deleteMovieById', { url, id })
 })
+
+Cypress.Commands.add(
+  'updateMovie',
+  (id: number, body: Partial<Movie>, url = apiUrl) => {
+    cy.log('**updateMovie by id: ${id}**')
+    return cy.task('updateMovie', {
+      url,
+      id,
+      movieName: body.name,
+      movieYear: body.year
+    })
+  }
+)

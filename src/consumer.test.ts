@@ -4,7 +4,8 @@ import {
   getMovieById,
   getMovieByName,
   addNewMovie,
-  deleteMovieById
+  deleteMovieById,
+  updateMovie
 } from './consumer'
 import type { Movie, ErrorResponse, SuccessResponse } from './consumer'
 
@@ -185,5 +186,52 @@ describe('Consumer API functions', () => {
       const res = await deleteMovieById(MOCKSERVER_URL, testId)
       expect(res).toEqual(errorRes)
     })
+  })
+
+  describe('updateMovie', () => {
+    it('should update an existing movie successfully', async () => {
+      const testId = 1
+      const updatedMovieData = { name: 'Updated movie', year: 2000 }
+
+      const EXPECTED_BODY: Movie = {
+        id: testId,
+        name: updatedMovieData.name,
+        year: updatedMovieData.year
+      }
+
+      nock(MOCKSERVER_URL)
+        .put('/movies/1', updatedMovieData)
+        .reply(200, EXPECTED_BODY)
+
+      const res = await updateMovie(
+        MOCKSERVER_URL,
+        testId,
+        updatedMovieData.name,
+        updatedMovieData.year
+      )
+
+      expect(res).toEqual(EXPECTED_BODY)
+    })
+  })
+
+  it('should return an error if movie to update does not exist', async () => {
+    const testId = 999
+    const updatedMovieData = { name: 'Updated movie', year: 2000 }
+    const errorRes: ErrorResponse = {
+      error: `Movie with ID ${testId} no found`
+    }
+
+    nock(MOCKSERVER_URL)
+      .put(`/movies/${testId}`, updatedMovieData)
+      .reply(404, errorRes)
+
+    const res = await updateMovie(
+      MOCKSERVER_URL,
+      testId,
+      updatedMovieData.name,
+      updatedMovieData.year
+    )
+
+    expect(res).toEqual(errorRes)
   })
 })
