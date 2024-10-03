@@ -4,7 +4,8 @@ import {
   getMovieById,
   getMovieByName,
   addNewMovie,
-  deleteMovieById
+  deleteMovieById,
+  updateMovie
 } from '../../src/consumer'
 
 /**
@@ -38,7 +39,19 @@ export default function tasks(on: Cypress.PluginEvents) {
       url: string
       movieName: string
       movieYear: number
-    }) => addNewMovie(url, movieName, movieYear)
+    }) => addNewMovie(url, movieName, movieYear),
+
+    updateMovie: ({
+      url,
+      id,
+      movieName,
+      movieYear
+    }: {
+      url: string
+      id: number
+      movieName: string
+      movieYear: number
+    }) => updateMovie(url, id, movieName, movieYear)
   })
   // we can add them all together in one 'task', or separately
   on('task', {

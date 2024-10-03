@@ -5,6 +5,7 @@ import { retryableBefore } from '../support/retryable-before'
 
 describe('CRUD movie', () => {
   const movie = generateMovie()
+  const updatedMovie = { name: 'Updated Name', year: 2000 }
   const movieProps: Omit<Movie, 'id'> = {
     name: spok.string,
     year: spok.number
@@ -43,6 +44,17 @@ describe('CRUD movie', () => {
               })
             )
           })
+
+        cy.updateMovie(id, updatedMovie).should(
+          spok({
+            movie: {
+              id,
+              name: updatedMovie.name,
+              year: updatedMovie.year
+            },
+            status: 200
+          })
+        )
 
         cy.deleteMovie(id)
         cy.getAllMovies().findOne({ name: movie.name }).should('not.exist')

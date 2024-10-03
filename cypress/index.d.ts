@@ -52,6 +52,13 @@ declare global {
         id: number,
         url?: string
       ): Chainable<Response<Movie> & Messages>
+
+      /** Updates a movie
+       * ```js
+       * cy.updateMovie(1, {name: 'The Great Gatsby Updated', year: 2000})
+       * ```
+       */
+      updateMovie(id: number, body: Partial<Movie>, url?: string)
     }
   }
 }

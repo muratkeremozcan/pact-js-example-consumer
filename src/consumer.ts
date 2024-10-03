@@ -72,3 +72,21 @@ export const deleteMovieById = (
   id: number
 ): Promise<SuccessResponse | ErrorResponse> =>
   axios.delete(`${url}/movies/${id}`).then(yieldData).catch(handleError)
+
+export const updateMovie = async (
+  url: string,
+  id: number,
+  movieName: string,
+  movieYear: number
+): Promise<Movie | ErrorResponse> => {
+  const data: Omit<Movie, 'id'> = {
+    name: movieName,
+    year: movieYear
+  }
+  const response = await axios
+    .put(`${url}/movies/${id}`, data)
+    .then(yieldData)
+    .catch(handleError)
+
+  return response
+}
