@@ -14,7 +14,7 @@ import { createProviderState, setJsonBody } from './test-helpers/helpers'
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
-const { like, eachLike, integer, string } = MatchersV3
+const { eachLike, integer, string } = MatchersV3
 
 // 1) Setup the mock provider for the consumer
 // 2) Register the consumer's expectations against the (mock) provider
@@ -34,9 +34,9 @@ describe('Movies API', () => {
     it('should return all movies', async () => {
       // loose matching: the consumer should care more about the shape of the data
       const EXPECTED_BODY = {
-        id: like(1),
-        name: like('My movie'),
-        year: like(1999)
+        id: 1,
+        name: 'My movie',
+        year: 1999
       }
 
       // we want to ensure at least 1 movie is returned in the array of movies
@@ -61,7 +61,7 @@ describe('Movies API', () => {
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await getMovies(mockServer.url)
           // 4) Verify the consumer test and generate the contract
-          expect(res.data).toEqual([EXPECTED_BODY])
+          expect(res.data![0]).toEqual(EXPECTED_BODY)
         })
     })
 
