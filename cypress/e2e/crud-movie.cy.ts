@@ -22,13 +22,14 @@ describe('CRUD movie', () => {
 
   it('should crud', () => {
     cy.addMovie(movie)
-      .should(spok({ movie: movieProps, status: 200 }))
+      .should(spok({ data: movieProps, status: 200 }))
       .print()
-      .its('movie.id')
+      .its('data.id')
       .then((id) => {
         cy.getAllMovies().should(spok(spok.array)).findOne({ name: movie.name })
 
         cy.getMovieById(id)
+          .its('data')
           .should(
             spok({
               ...movieProps,
@@ -37,17 +38,19 @@ describe('CRUD movie', () => {
           )
           .its('name')
           .then((name) => {
-            cy.getMovieByName(name).should(
-              spok({
-                ...movieProps,
-                id
-              })
-            )
+            cy.getMovieByName(name)
+              .its('data')
+              .should(
+                spok({
+                  ...movieProps,
+                  id
+                })
+              )
           })
 
         cy.updateMovie(id, updatedMovie).should(
           spok({
-            movie: {
+            data: {
               id,
               name: updatedMovie.name,
               year: updatedMovie.year
