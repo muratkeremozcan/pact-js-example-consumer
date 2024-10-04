@@ -47,10 +47,12 @@ describe('Consumer API functions', () => {
         year: 1999
       }
 
-      nock(MOCKSERVER_URL).get('/movies').reply(200, [EXPECTED_BODY])
+      nock(MOCKSERVER_URL)
+        .get('/movies')
+        .reply(200, { status: 200, data: [EXPECTED_BODY] })
 
-      const res = (await getMovies(MOCKSERVER_URL)) as Movie[]
-      expect(res[0]).toEqual(EXPECTED_BODY)
+      const res = await getMovies(MOCKSERVER_URL)
+      expect(res.data).toEqual([EXPECTED_BODY])
     })
 
     // a key difference in nock vs pact is covering the error cases in our code
@@ -73,10 +75,11 @@ describe('Consumer API functions', () => {
 
       nock(MOCKSERVER_URL)
         .get(`/movies?name=${EXPECTED_BODY.name}`)
-        .reply(200, EXPECTED_BODY)
+        .reply(200, { status: 200, data: EXPECTED_BODY })
 
       const res = await getMovieByName(MOCKSERVER_URL, EXPECTED_BODY.name)
-      expect(res).toEqual(EXPECTED_BODY)
+      // @ts-expect-error TS should chill
+      expect(res.data).toEqual(EXPECTED_BODY)
     })
   })
 
@@ -92,10 +95,13 @@ describe('Consumer API functions', () => {
       }
 
       // in pact the provider state would be specified here
-      nock(MOCKSERVER_URL).get('/movies/1').reply(200, EXPECTED_BODY)
+      nock(MOCKSERVER_URL)
+        .get('/movies/1')
+        .reply(200, { status: 200, data: EXPECTED_BODY })
 
       const res = await getMovieById(MOCKSERVER_URL, 1)
-      expect(res).toEqual(EXPECTED_BODY)
+      // @ts-expect-error TS should chill
+      expect(res.data).toEqual(EXPECTED_BODY)
     })
 
     it('should handle errors when movie not found', async () => {
@@ -121,7 +127,7 @@ describe('Consumer API functions', () => {
         .post('/movies', { name, year })
         .reply(200, {
           status: 200,
-          movie: {
+          data: {
             id: 1,
             name,
             year
@@ -131,7 +137,7 @@ describe('Consumer API functions', () => {
       const res = await addNewMovie(MOCKSERVER_URL, name, year)
       expect(res).toEqual({
         status: 200,
-        movie: {
+        data: {
           id: expect.any(Number),
           name,
           year
@@ -170,8 +176,8 @@ describe('Consumer API functions', () => {
       }
 
       nock(MOCKSERVER_URL)
-        .put(`/movies/${testId}}`, updatedMovieData)
-        .reply(200, { status: 200, movie: EXPECTED_BODY })
+        .put(`/movies/${testId}`, updatedMovieData)
+        .reply(200, { status: 200, data: EXPECTED_BODY })
 
       const res = await updateMovie(
         MOCKSERVER_URL,
@@ -179,8 +185,10 @@ describe('Consumer API functions', () => {
         updatedMovieData.name,
         updatedMovieData.year
       )
-
-      expect(res).toEqual({ status: 200, movie: EXPECTED_BODY })
+      expect(res).toEqual({
+        status: 200,
+        data: EXPECTED_BODY
+      })
     })
 
     it('should return an error if movie to update does not exist', async () => {
