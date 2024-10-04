@@ -52,7 +52,7 @@ describe('Consumer API functions', () => {
         .reply(200, { status: 200, data: [EXPECTED_BODY] })
 
       const res = await getMovies(MOCKSERVER_URL)
-      expect(res.data![0]).toEqual(EXPECTED_BODY)
+      expect(res.data).toEqual([EXPECTED_BODY])
     })
 
     // a key difference in nock vs pact is covering the error cases in our code
