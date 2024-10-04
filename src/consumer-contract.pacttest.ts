@@ -310,6 +310,7 @@ describe('Movies API', () => {
         .willRespondWith(404, setJsonBody({ message, status: 404 }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovieById(mockServer.url, testId)
+          console.log('Actual response:', res)
           // @ts-expect-error TS should chill
           expect(res.message).toEqual(message)
         })
