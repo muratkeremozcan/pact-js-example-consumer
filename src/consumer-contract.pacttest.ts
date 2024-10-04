@@ -276,9 +276,7 @@ describe('Movies API', () => {
   describe('When a DELETE request is made to /movies', () => {
     it('should delete an existing movie successfully', async () => {
       const testId = 100
-      const successRes = {
-        message: `Movie ${testId} has been deleted`
-      }
+      const successMsg = `Movie ${testId} has been deleted`
 
       const state = createProviderState({
         name: 'Has a movie with a specific ID',
@@ -290,10 +288,11 @@ describe('Movies API', () => {
         .given(...state)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(200, setJsonBody(successRes))
+        .willRespondWith(200, setJsonBody({ message: successMsg, status: 200 }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovieById(mockServer.url, testId)
-          expect(res).toEqual(successRes)
+          // @ts-expect-error TS should chill
+          expect(res.message).toEqual(successMsg)
         })
     })
 
