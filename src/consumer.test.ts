@@ -7,7 +7,7 @@ import {
   deleteMovieById,
   updateMovie
 } from './consumer'
-import type { Movie, ErrorResponse, SuccessResponse } from './consumer'
+import type { Movie, ErrorResponse } from './consumer'
 
 // Nock can be used to test modules that make HTTP requests to external APIs in isolation.
 // For example, if a module sends HTTP requests to an external API, you can test that module independently of the actual API.
@@ -52,7 +52,7 @@ describe('Consumer API functions', () => {
         .reply(200, { status: 200, data: [EXPECTED_BODY] })
 
       const res = await getMovies(MOCKSERVER_URL)
-      expect(res.data).toEqual([EXPECTED_BODY])
+      expect(res.data![0]).toEqual(EXPECTED_BODY)
     })
 
     // a key difference in nock vs pact is covering the error cases in our code
@@ -218,28 +218,30 @@ describe('Consumer API functions', () => {
     // a key difference in pact is using provider states, to fully simulate the provider side
     it('should delete an existing movie successfully', async () => {
       const testId = 100
-      const successRes: SuccessResponse = {
-        message: `Movie ${testId} has been deleted`
-      }
+      const message = `Movie ${testId} has been deleted`
 
       // in pact the provider state would be specified here
-      nock(MOCKSERVER_URL).delete(`/movies/${testId}`).reply(200, successRes)
+      nock(MOCKSERVER_URL)
+        .delete(`/movies/${testId}`)
+        .reply(200, { message, status: 200 })
 
       const res = await deleteMovieById(MOCKSERVER_URL, testId)
-      expect(res).toEqual(successRes)
+      // @ts-expect-error TS should chill
+      expect(res.message).toEqual(message)
     })
 
     it('should throw an error if movie to delete does not exist', async () => {
       const testId = 123456789
-      const errorRes: ErrorResponse = {
-        error: `Movie ${testId} not found`
-      }
+      const message = `Movie with ID ${testId} not found`
 
       // in pact the provider state would be specified here
-      nock(MOCKSERVER_URL).delete(`/movies/${testId}`).reply(404, errorRes)
+      nock(MOCKSERVER_URL)
+        .delete(`/movies/${testId}`)
+        .reply(404, { message, status: 404 })
 
       const res = await deleteMovieById(MOCKSERVER_URL, testId)
-      expect(res).toEqual(errorRes)
+      // @ts-expect-error TS should chill
+      expect(res.message).toEqual(message)
     })
   })
 })

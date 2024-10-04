@@ -14,7 +14,7 @@ import { createProviderState, setJsonBody } from './test-helpers/helpers'
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
-const { eachLike, integer, string } = MatchersV3
+const { like, eachLike, integer, string } = MatchersV3
 
 // 1) Setup the mock provider for the consumer
 // 2) Register the consumer's expectations against the (mock) provider
@@ -33,7 +33,7 @@ describe('Movies API', () => {
   describe('When a GET request is made to /movies', () => {
     it('should return all movies', async () => {
       // loose matching: the consumer should care more about the shape of the data
-      const EXPECTED_BODY = {
+      const EXPECTED_BODY: Movie = {
         id: 1,
         name: 'My movie',
         year: 1999
@@ -73,7 +73,10 @@ describe('Movies API', () => {
         .given('No movies exist')
         .uponReceiving('a request to get all movies')
         .withRequest('GET', '/movies')
-        .willRespondWith(200, setJsonBody({ status: 200, data: EXPECTED_BODY }))
+        .willRespondWith(
+          200,
+          setJsonBody({ status: 200, data: like(EXPECTED_BODY) })
+        )
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await getMovies(mockServer.url)
           expect(res.data).toEqual(EXPECTED_BODY)
@@ -81,7 +84,7 @@ describe('Movies API', () => {
     })
 
     it('should return a movie by name when requested with query parameters', async () => {
-      const EXPECTED_BODY = {
+      const EXPECTED_BODY: Movie = {
         id: 1,
         name: 'My movie',
         year: 1999
@@ -133,7 +136,7 @@ describe('Movies API', () => {
   describe('When a GET request is made to a specific movie ID', () => {
     it('should return a specific movie', async () => {
       const testId = 100
-      const EXPECTED_BODY = { id: testId, name: 'My movie', year: 1999 }
+      const EXPECTED_BODY: Movie = { id: testId, name: 'My movie', year: 1999 }
 
       const [stateName, stateParams] = createProviderState({
         name: 'Has a movie with a specific ID',
@@ -276,7 +279,7 @@ describe('Movies API', () => {
   describe('When a DELETE request is made to /movies', () => {
     it('should delete an existing movie successfully', async () => {
       const testId = 100
-      const successMsg = `Movie ${testId} has been deleted`
+      const message = `Movie ${testId} has been deleted`
 
       const state = createProviderState({
         name: 'Has a movie with a specific ID',
@@ -288,29 +291,27 @@ describe('Movies API', () => {
         .given(...state)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(200, setJsonBody({ message: successMsg, status: 200 }))
+        .willRespondWith(200, setJsonBody({ message, status: 200 }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovieById(mockServer.url, testId)
           // @ts-expect-error TS should chill
-          expect(res.message).toEqual(successMsg)
+          expect(res.message).toEqual(message)
         })
     })
 
     it('should throw an error if movie to delete does not exist', async () => {
       const testId = 123456789
-      const errorRes: ErrorResponse = {
-        error: `Movie ${testId} not found`
-      }
+      const message = `Movie with ID ${testId} not found`
 
       await pact
         .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(404, setJsonBody({ message: errorRes, status: 404 }))
+        .willRespondWith(404, setJsonBody({ message, status: 404 }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovieById(mockServer.url, testId)
           // @ts-expect-error TS should chill
-          expect(res.message).toEqual(errorRes)
+          expect(res.message).toEqual(message)
         })
     })
   })

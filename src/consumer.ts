@@ -21,11 +21,6 @@ export type ErrorResponse = {
   error: string
 }
 
-// Success response type
-export type SuccessResponse = {
-  message: string
-}
-
 // Helper function to extract data from Axios response
 const yieldData = <T>(res: AxiosResponse<T>): T => res.data
 
