@@ -1,5 +1,13 @@
 import type { AxiosResponse, AxiosError } from 'axios'
 import axios from 'axios'
+import type {
+  ConflictMovieResponse,
+  CreateMovieResponse,
+  DeleteMovieResponse,
+  GetMovieResponse,
+  MovieNotFoundResponse,
+  UpdateMovieResponse
+} from './provider-schema/movie-types'
 
 // Movie type from the provider, in the real world this would come from a published package
 export type Movie = {
@@ -28,20 +36,20 @@ const handleError = (err: AxiosError): ErrorResponse => {
 }
 
 // Fetch all movies
-export const getMovies = (url: string): Promise<Movie[] | ErrorResponse> =>
+export const getMovies = (url: string): Promise<GetMovieResponse> =>
   axios.get(`${url}/movies`).then(yieldData).catch(handleError)
 
 // Fetch a single movie by ID
 export const getMovieById = (
   url: string,
   id: number
-): Promise<Movie | ErrorResponse> =>
+): Promise<GetMovieResponse | MovieNotFoundResponse> =>
   axios.get(`${url}/movies/${id}`).then(yieldData).catch(handleError)
 
 export const getMovieByName = (
   url: string,
   name: string
-): Promise<Movie | ErrorResponse> =>
+): Promise<GetMovieResponse | MovieNotFoundResponse> =>
   axios
     .get(`${url}/movies?name=${encodeURIComponent(name)}`)
     .then(yieldData)
@@ -52,7 +60,7 @@ export const addNewMovie = async (
   url: string,
   movieName: string,
   movieYear: number
-): Promise<Movie | ErrorResponse> => {
+): Promise<CreateMovieResponse | ConflictMovieResponse> => {
   const data: Omit<Movie, 'id'> = {
     name: movieName,
     year: movieYear
@@ -70,7 +78,7 @@ export const addNewMovie = async (
 export const deleteMovieById = (
   url: string,
   id: number
-): Promise<SuccessResponse | ErrorResponse> =>
+): Promise<DeleteMovieResponse | MovieNotFoundResponse> =>
   axios.delete(`${url}/movies/${id}`).then(yieldData).catch(handleError)
 
 export const updateMovie = async (
@@ -78,7 +86,9 @@ export const updateMovie = async (
   id: number,
   movieName: string,
   movieYear: number
-): Promise<Movie | ErrorResponse> => {
+): Promise<
+  UpdateMovieResponse | MovieNotFoundResponse | ConflictMovieResponse
+> => {
   const data: Omit<Movie, 'id'> = {
     name: movieName,
     year: movieYear

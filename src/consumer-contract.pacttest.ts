@@ -1,7 +1,7 @@
 import type { V3MockServer } from '@pact-foundation/pact'
 import { MatchersV3, PactV4 } from '@pact-foundation/pact'
 import path from 'path'
-import type { ErrorResponse, Movie, SuccessResponse } from './consumer'
+import type { ErrorResponse, Movie } from './consumer'
 import {
   addNewMovie,
   deleteMovieById,
@@ -51,11 +51,17 @@ describe('Movies API', () => {
         .given(stateName, stateParams)
         .uponReceiving('a request to get all movies')
         .withRequest('GET', '/movies')
-        .willRespondWith(200, (b) => b.jsonBody(eachLike(EXPECTED_BODY)))
+        .willRespondWith(
+          200,
+          setJsonBody({
+            status: 200,
+            data: eachLike(EXPECTED_BODY)
+          })
+        )
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = (await getMovies(mockServer.url)) as Movie[]
+          const res = await getMovies(mockServer.url)
           // 4) Verify the consumer test and generate the contract
-          expect(res[0]).toEqual(EXPECTED_BODY)
+          expect(res.data).toEqual([EXPECTED_BODY])
         })
     })
 
@@ -67,10 +73,10 @@ describe('Movies API', () => {
         .given('No movies exist')
         .uponReceiving('a request to get all movies')
         .withRequest('GET', '/movies')
-        .willRespondWith(200, setJsonBody(EXPECTED_BODY))
+        .willRespondWith(200, setJsonBody({ status: 200, data: EXPECTED_BODY }))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = (await getMovies(mockServer.url)) as Movie[]
-          expect(res).toEqual(EXPECTED_BODY)
+          const res = await getMovies(mockServer.url)
+          expect(res.data).toEqual(EXPECTED_BODY)
         })
     })
 
@@ -97,14 +103,18 @@ describe('Movies API', () => {
         .willRespondWith(
           200,
           setJsonBody({
-            id: integer(EXPECTED_BODY.id),
-            name: string(EXPECTED_BODY.name),
-            year: integer(EXPECTED_BODY.year)
+            status: 200,
+            data: {
+              id: integer(EXPECTED_BODY.id),
+              name: string(EXPECTED_BODY.name),
+              year: integer(EXPECTED_BODY.year)
+            }
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await getMovieByName(mockServer.url, EXPECTED_BODY.name)
-          expect(res).toEqual(EXPECTED_BODY)
+          // @ts-expect-error TS should chill
+          expect(res.data).toEqual(EXPECTED_BODY)
         })
     })
   })
@@ -138,14 +148,18 @@ describe('Movies API', () => {
         .willRespondWith(
           200,
           setJsonBody({
-            id: integer(testId),
-            name: string(EXPECTED_BODY.name),
-            year: integer(EXPECTED_BODY.year)
+            status: 200,
+            data: {
+              id: integer(testId),
+              name: string(EXPECTED_BODY.name),
+              year: integer(EXPECTED_BODY.year)
+            }
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await getMovieById(mockServer.url, testId)
-          expect(res).toEqual(EXPECTED_BODY)
+          // @ts-expect-error TS should chill
+          expect(res.data).toEqual(EXPECTED_BODY)
         })
     })
   })
@@ -166,7 +180,7 @@ describe('Movies API', () => {
           200,
           setJsonBody({
             status: 200,
-            movie: {
+            data: {
               id: integer(), // if the example value is omitted, a random number is used
               name: string(name),
               year: integer(year)
@@ -177,7 +191,7 @@ describe('Movies API', () => {
           const res = await addNewMovie(mockServer.url, name, year)
           expect(res).toEqual({
             status: 200,
-            movie: {
+            data: {
               id: expect.any(Number),
               name,
               year
@@ -232,7 +246,7 @@ describe('Movies API', () => {
           200,
           setJsonBody({
             status: 200,
-            movie: {
+            data: {
               id: integer(testId),
               name: updatedMovieData.name,
               year: updatedMovieData.year
@@ -249,7 +263,7 @@ describe('Movies API', () => {
 
           expect(res).toEqual({
             status: 200,
-            movie: {
+            data: {
               id: testId,
               name: updatedMovieData.name,
               year: updatedMovieData.year
@@ -262,7 +276,7 @@ describe('Movies API', () => {
   describe('When a DELETE request is made to /movies', () => {
     it('should delete an existing movie successfully', async () => {
       const testId = 100
-      const successRes: SuccessResponse = {
+      const successRes = {
         message: `Movie ${testId} has been deleted`
       }
 
