@@ -307,10 +307,11 @@ describe('Movies API', () => {
         .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(404, setJsonBody(errorRes))
+        .willRespondWith(404, setJsonBody({ message: errorRes, status: 404 }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await deleteMovieById(mockServer.url, testId)
-          expect(res).toEqual(errorRes)
+          // @ts-expect-error TS should chill
+          expect(res.message).toEqual(errorRes)
         })
     })
   })
