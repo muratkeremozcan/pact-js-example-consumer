@@ -8,6 +8,10 @@ import {
   updateMovie
 } from './consumer'
 import type { Movie, ErrorResponse } from './consumer'
+import type {
+  DeleteMovieResponse,
+  GetMovieResponse
+} from './provider-schema/movie-types'
 
 // Nock can be used to test modules that make HTTP requests to external APIs in isolation.
 // For example, if a module sends HTTP requests to an external API, you can test that module independently of the actual API.
@@ -77,8 +81,10 @@ describe('Consumer API functions', () => {
         .get(`/movies?name=${EXPECTED_BODY.name}`)
         .reply(200, { status: 200, data: EXPECTED_BODY })
 
-      const res = await getMovieByName(MOCKSERVER_URL, EXPECTED_BODY.name)
-      // @ts-expect-error TS should chill
+      const res = (await getMovieByName(
+        MOCKSERVER_URL,
+        EXPECTED_BODY.name
+      )) as GetMovieResponse
       expect(res.data).toEqual(EXPECTED_BODY)
     })
   })
@@ -99,8 +105,7 @@ describe('Consumer API functions', () => {
         .get('/movies/1')
         .reply(200, { status: 200, data: EXPECTED_BODY })
 
-      const res = await getMovieById(MOCKSERVER_URL, 1)
-      // @ts-expect-error TS should chill
+      const res = (await getMovieById(MOCKSERVER_URL, 1)) as GetMovieResponse
       expect(res.data).toEqual(EXPECTED_BODY)
     })
 
@@ -225,8 +230,10 @@ describe('Consumer API functions', () => {
         .delete(`/movies/${testId}`)
         .reply(200, { message, status: 200 })
 
-      const res = await deleteMovieById(MOCKSERVER_URL, testId)
-      // @ts-expect-error TS should chill
+      const res = (await deleteMovieById(
+        MOCKSERVER_URL,
+        testId
+      )) as DeleteMovieResponse
       expect(res.message).toEqual(message)
     })
 
@@ -239,8 +246,10 @@ describe('Consumer API functions', () => {
         .delete(`/movies/${testId}`)
         .reply(404, { message, status: 404 })
 
-      const res = await deleteMovieById(MOCKSERVER_URL, testId)
-      // @ts-expect-error TS should chill
+      const res = (await deleteMovieById(
+        MOCKSERVER_URL,
+        testId
+      )) as DeleteMovieResponse
       expect(res.message).toEqual(message)
     })
   })

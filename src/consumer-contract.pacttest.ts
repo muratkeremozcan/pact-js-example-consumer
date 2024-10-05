@@ -11,6 +11,11 @@ import {
   updateMovie
 } from './consumer'
 import { createProviderState, setJsonBody } from './test-helpers/helpers'
+import type {
+  DeleteMovieResponse,
+  GetMovieResponse,
+  MovieNotFoundResponse
+} from './provider-schema/movie-types'
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
@@ -115,8 +120,10 @@ describe('Movies API', () => {
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await getMovieByName(mockServer.url, EXPECTED_BODY.name)
-          // @ts-expect-error TS should chill
+          const res = (await getMovieByName(
+            mockServer.url,
+            EXPECTED_BODY.name
+          )) as GetMovieResponse
           expect(res.data).toEqual(EXPECTED_BODY)
         })
     })
@@ -160,8 +167,10 @@ describe('Movies API', () => {
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await getMovieById(mockServer.url, testId)
-          // @ts-expect-error TS should chill
+          const res = (await getMovieById(
+            mockServer.url,
+            testId
+          )) as GetMovieResponse
           expect(res.data).toEqual(EXPECTED_BODY)
         })
     })
@@ -293,27 +302,30 @@ describe('Movies API', () => {
         .withRequest('DELETE', `/movies/${testId}`)
         .willRespondWith(200, setJsonBody({ message, status: 200 }))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await deleteMovieById(mockServer.url, testId)
-          // @ts-expect-error TS should chill
+          const res = (await deleteMovieById(
+            mockServer.url,
+            testId
+          )) as DeleteMovieResponse
           expect(res.message).toEqual(message)
         })
     })
 
     it('should throw an error if movie to delete does not exist', async () => {
       const testId = 123456789
-      const message = `Movie with ID ${testId} not found`
+      const error = `Movie with ID ${testId} not found`
 
       await pact
         .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(404, setJsonBody({ message, status: 404 }))
+        .willRespondWith(404, setJsonBody({ error, status: 404 }))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await deleteMovieById(mockServer.url, testId)
+          const res = (await deleteMovieById(
+            mockServer.url,
+            testId
+          )) as MovieNotFoundResponse
 
-          console.log('Actual response:', res)
-          // @ts-expect-error TS should chill
-          expect(res.message).toEqual(message)
+          expect(res.error).toEqual(error)
         })
     })
   })
