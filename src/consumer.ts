@@ -30,6 +30,12 @@ const handleError = (err: AxiosError): ErrorResponse => {
   return { error: 'Unexpected error occurred' }
 }
 
+const generateAuthToken = (): string => `Bearer ${new Date().toISOString()}`
+
+const commonHeaders = {
+  headers: { Authorization: generateAuthToken() }
+}
+
 // Fetch all movies
 export const getMovies = (url: string): Promise<GetMovieResponse> =>
   axios.get(`${url}/movies`).then(yieldData).catch(handleError)
@@ -39,14 +45,17 @@ export const getMovieById = (
   url: string,
   id: number
 ): Promise<GetMovieResponse | MovieNotFoundResponse> =>
-  axios.get(`${url}/movies/${id}`).then(yieldData).catch(handleError)
+  axios
+    .get(`${url}/movies/${id}`, commonHeaders)
+    .then(yieldData)
+    .catch(handleError)
 
 export const getMovieByName = (
   url: string,
   name: string
 ): Promise<GetMovieResponse | MovieNotFoundResponse> =>
   axios
-    .get(`${url}/movies?name=${encodeURIComponent(name)}`)
+    .get(`${url}/movies?name=${encodeURIComponent(name)}`, commonHeaders)
     .then(yieldData)
     .catch(handleError)
 
@@ -62,7 +71,7 @@ export const addNewMovie = async (
   }
 
   const response = await axios
-    .post(`${url}/movies`, data)
+    .post(`${url}/movies`, data, commonHeaders)
     .then(yieldData)
     .catch(handleError)
 
@@ -74,7 +83,10 @@ export const deleteMovieById = (
   url: string,
   id: number
 ): Promise<DeleteMovieResponse | MovieNotFoundResponse> =>
-  axios.delete(`${url}/movies/${id}`).then(yieldData).catch(handleError)
+  axios
+    .delete(`${url}/movies/${id}`, commonHeaders)
+    .then(yieldData)
+    .catch(handleError)
 
 export const updateMovie = async (
   url: string,
@@ -89,11 +101,9 @@ export const updateMovie = async (
     year: movieYear
   }
   const response = await axios
-    .put(`${url}/movies/${id}`, data)
+    .put(`${url}/movies/${id}`, data, commonHeaders)
     .then(yieldData)
     .catch(handleError)
 
   return response
 }
-
-// push
