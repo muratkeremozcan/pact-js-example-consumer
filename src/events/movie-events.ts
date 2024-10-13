@@ -8,7 +8,7 @@ import { Kafka } from 'kafkajs'
 import type { MovieEvent } from './movie-event-types'
 
 const kafka = new Kafka({
-  clientId: 'movie-provider',
+  clientId: 'movie-consumer',
   brokers: ['localhost:29092'],
   // reduce retries and delays
   // so that those who don't start docker still have their crud fast
