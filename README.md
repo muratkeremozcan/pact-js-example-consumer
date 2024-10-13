@@ -29,7 +29,8 @@ Use the sample `.env.example` file to create a `.env` file of your own. These va
 # https://pactflow.io/try-for-free/
 PACT_BROKER_TOKEN=***********
 PACT_BROKER_BASE_URL=https://yourownorg.pactflow.io
-SERVERPORT=3001 # technically this is the backend, but Mockoon is used for the backend at the moment
+SERVERPORT=3001 # aka pact provider / event producer / mockoon
+CLIENTPORT=3000 # self aka pact consumer / event consumer
 ```
 
 ### Webhook setup
@@ -131,9 +132,17 @@ Specify the SERVERPORT env var accordingly with your backend's port.
 
 ```bash
 npm run mock:server # starts the mock backend/provider server
+npm start # only used to demo kafka events on the consumer side
 ```
 
 #### Provider specific scripts
+
+Using Kafka and Docker is optional. The Kafka version of the CRUD e2e test checks whether Kafka events are being written to a file, in addition to the standard CRUD operations. This test will only run if Docker is started and the Kafka UI is available. Therefore, make sure to start Docker (e.g., Docker Desktop) before executing the `kafka:start` script and the e2e test `crud-movie-event.cy.ts`.
+
+````bash
+npm run kafka:start # start Docker first, and then run this
+npm run kafka:stop # to stop when we are done
+
 
 ```bash
 # these 2 run as a part of start, and reset the db
@@ -150,7 +159,7 @@ npm run optic:verify-ci # the above, but it also starts the server, in case you'
 npm run generate:openapi # generates an OpenAPI doc from Zod schemas
 npm run publish:pact-openapi # publishes the open api spec to Pact Broker for BDCT
 npm run record:provider:bidirectional:deployment --env=dev # records the bi-directional provider deployment
-```
+````
 
 #### Provider selective testing
 
