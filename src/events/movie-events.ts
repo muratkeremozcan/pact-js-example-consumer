@@ -11,7 +11,6 @@ const kafka = new Kafka({
   clientId: 'movie-consumer',
   brokers: ['localhost:29092'],
   // reduce retries and delays
-  // so that those who don't start docker still have their crud fast
   retry: {
     retries: 2, // default 5
     initialRetryTime: 100, // delay initial (default 300 ms)
