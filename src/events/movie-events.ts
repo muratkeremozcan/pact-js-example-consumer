@@ -45,11 +45,12 @@ export const consumeMovieEvents = async () => {
       }
     })
   } catch (err) {
-    console.error(
-      'Kafka broker unavailable, skipping event consumption: ',
-      err instanceof Error ? err.message : 'Unknown error'
-    )
+    console.error(`\n Kafka broker unavailable, skipping event consumption 
+			\n Kafka is purely optional, but it is there to test events (offline) with Pact. 
+			\n If you want to see Kafka working, start the provider/producer server, 
+			\n start docker desktop, and npm run kafka:start \n`)
 
+    console.error(err instanceof Error ? err.message : 'Unknown error')
     await consumer.disconnect()
   }
 }
