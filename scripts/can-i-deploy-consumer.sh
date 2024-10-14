@@ -3,10 +3,15 @@
 # Load environment variables
 . ./scripts/env-setup.sh
 
-# Run the can-i-deploy check for both WebConsumer and WebConsumer-event-consumer
+# Check if WebConsumer can be deployed
 pact-broker can-i-deploy \
     --pacticipant WebConsumer \
     --version=$GITHUB_SHA \
+    --to-environment dev \
+    --retry-while-unknown=10
+
+# Check if WebConsumer-event-consumer can be deployed
+pact-broker can-i-deploy \
     --pacticipant WebConsumer-event-consumer \
     --version=$GITHUB_SHA \
     --to-environment dev \
