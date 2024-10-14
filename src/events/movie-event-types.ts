@@ -1,7 +1,7 @@
 // these are a copy of the types at the provider/producer
 // in the real world, they would be published as packages and installed here at the consumer
 
-type MovieAction = 'created' | 'updated' | 'deleted'
+export type MovieAction = 'created' | 'updated' | 'deleted'
 type Event<T extends string> = {
   topic: `movie-${T}`
   messages: Array<{

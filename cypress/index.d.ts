@@ -59,6 +59,13 @@ declare global {
        * ```
        */
       updateMovie(id: number, body: Partial<Movie>, url?: string)
+
+      /** https://www.npmjs.com/package/@cypress/skip-test
+       * `cy.skipOn('localhost')` */
+      skipOn(
+        nameOrFlag: string | boolean | (() => boolean),
+        cb?: () => void
+      ): Chainable<Subject>
     }
   }
 }

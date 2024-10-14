@@ -6,6 +6,8 @@
 
 import { Kafka } from 'kafkajs'
 import type { MovieEvent } from './movie-event-types'
+import fs from 'node:fs/promises'
+import { logFilePath } from './log-file-path'
 
 const kafka = new Kafka({
   clientId: 'movie-consumer',
@@ -19,6 +21,28 @@ const kafka = new Kafka({
 })
 
 const consumer = kafka.consumer({ groupId: 'movie-group' })
+
+const logEvent = async (
+  movieEvent: MovieEvent,
+  topic: string,
+  partition: number,
+  logFilePath: string
+) => {
+  console.group('\n Received event from Kafka:')
+  console.log(`Topic: ${topic}`)
+  console.log(`Partition: ${partition}`)
+  console.table(movieEvent)
+  console.groupEnd()
+
+  const eventWithTopic = { ...movieEvent, topic }
+
+  return new Promise<void>((resolve) => {
+    setTimeout(async () => {
+      await fs.appendFile(logFilePath, `${JSON.stringify(eventWithTopic)}\n`)
+      resolve()
+    }, 1000)
+  })
+}
 
 export const consumeMovieEvents = async () => {
   try {
@@ -36,11 +60,7 @@ export const consumeMovieEvents = async () => {
           message.value?.toString() || '{}'
         )
 
-        console.group('\n Received event from Kafka:')
-        console.log(`Topic: ${topic}`)
-        console.log(`Partition: ${partition}`)
-        console.table(movieEvent)
-        console.groupEnd()
+        logEvent(movieEvent, topic, partition, logFilePath)
       }
     })
   } catch (err) {

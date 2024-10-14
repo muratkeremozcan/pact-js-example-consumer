@@ -12,7 +12,8 @@ require('dotenv').config({
 const config = {
   e2e: {
     env: {
-      ENVIRONMENT: 'local'
+      ENVIRONMENT: 'local',
+      KAFKA_UI_URL: 'http://localhost:8085' // defined at the server src/events/kafka-cluster.yml L85, purely optional
     },
     baseUrl: `http://localhost:${process.env.SERVERPORT}`
   }
