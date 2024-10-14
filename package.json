@@ -15,9 +15,9 @@
     "test": "jest --detectOpenHandles --verbose --silent --config jest.config.ts",
     "test:watch": "jest --watch --config jest.config.ts",
     "test:consumer": "rm -rf ./pacts && jest --config jest-pact.config.ts --detectOpenHandles",
-    "publish:pact": ". ./scripts/env-setup.sh && pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
-    "can:i:deploy:consumer": ". ./scripts/env-setup.sh && pact-broker can-i-deploy --pacticipant WebConsumer --version=$GITHUB_SHA --to-environment dev --retry-while-unknown=10",
-    "record:consumer:deployment": ". ./scripts/env-setup.sh && if [ \"$GITHUB_BRANCH\" = \"main\" ]; then pact-broker record-deployment --pacticipant WebConsumer --version $GITHUB_SHA --environment $npm_config_env; fi",
+    "publish:pact": ". ./scripts/publish-pact.sh",
+    "can:i:deploy:consumer": ". ./scripts/can-i-deploy-consumer.sh",
+    "record:consumer:deployment": ". ./scripts/record-consumer-deployment.sh",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.jest.json",
     "lint": "eslint --ext=.js,.ts,.tsx --fix",
     "start": "tsx ./src/events/events-listen.ts"
