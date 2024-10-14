@@ -18,11 +18,11 @@ describe('Kafka Movie Event Consumer', () => {
 
   const messages = eachLike({
     key: like('1'),
-    value: JSON.stringify({
+    value: {
       id: like(1),
       name: like('Inception'),
       year: like(2010)
-    })
+    }
   })
 
   // generate: will be returned during mock consumer testing to simulate a valid response.
