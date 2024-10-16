@@ -28,7 +28,7 @@ Provider repo: https://github.com/muratkeremozcan/pact-js-example-provider
       - [Breaking change - provider flow](#breaking-change---provider-flow)
   - [Consumer Tests](#consumer-tests)
   - [Provider Tests](#provider-tests)
-      - [Execution](#execution)
+    - [Execution](#execution)
   - [Message queue consumer tests in short](#message-queue-consumer-tests-in-short)
   - [Message queue provider tests in short](#message-queue-provider-tests-in-short)
     - [Execution (Same as traditional CDCT)](#execution-same-as-traditional-cdct)
@@ -36,8 +36,8 @@ Provider repo: https://github.com/muratkeremozcan/pact-js-example-provider
   - [Record Deployments](#record-deployments)
   - [Webhooks](#webhooks)
   - [Nuances of the env vars \& scripts](#nuances-of-the-env-vars--scripts)
-      - [Why `GITHUB_SHA` and `GITHUB_BRANCH`?](#why-github_sha-and-github_branch)
-      - [What is the Pact Matrix?](#what-is-the-pact-matrix)
+    - [Why `GITHUB_SHA` and `GITHUB_BRANCH`?](#why-github_sha-and-github_branch)
+    - [What is the Pact Matrix?](#what-is-the-pact-matrix)
 
 ## Setup
 
@@ -560,5 +560,3 @@ Example matrix:
 | `def456`                   | `xyz789`                   | `main`      | `staging`       | Passed                  | The same provider version is compatible with a newer consumer version in staging.                        |
 | `ghi789`                   | `xyz789`                   | `feature-x` | `development`   | Failed                  | The consumer from a feature branch failed verification with the provider in the development environment. |
 | `jkl012`                   | `uvw345`                   | `main`      | `production`    | Pending                 | A new provider version is pending verification against the consumer in production.                       |
-
-<!-- trigger -->
