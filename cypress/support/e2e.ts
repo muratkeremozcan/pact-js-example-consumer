@@ -25,7 +25,8 @@ Cypress.Commands.add('addMovie', (body: Omit<Movie, 'id'>, url = apiUrl) => {
   return cy.task('addNewMovie', {
     url,
     movieName: body.name,
-    movieYear: body.year
+    movieYear: body.year,
+    movieRating: body.rating
   })
 })
 
@@ -42,7 +43,8 @@ Cypress.Commands.add(
       url,
       id,
       movieName: body.name,
-      movieYear: body.year
+      movieYear: body.year,
+      movieRating: body.rating
     })
   }
 )

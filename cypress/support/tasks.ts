@@ -34,24 +34,28 @@ export default function tasks(on: Cypress.PluginEvents) {
     addNewMovie: ({
       url,
       movieName,
-      movieYear
+      movieYear,
+      movieRating
     }: {
       url: string
       movieName: string
       movieYear: number
-    }) => addNewMovie(url, movieName, movieYear),
+      movieRating: number
+    }) => addNewMovie(url, movieName, movieYear, movieRating),
 
     updateMovie: ({
       url,
       id,
       movieName,
-      movieYear
+      movieYear,
+      movieRating
     }: {
       url: string
       id: number
       movieName: string
       movieYear: number
-    }) => updateMovie(url, id, movieName, movieYear)
+      movieRating: number
+    }) => updateMovie(url, id, movieName, movieYear, movieRating)
   })
   // we can add them all together in one 'task', or separately
   on('task', {

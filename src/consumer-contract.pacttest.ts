@@ -19,7 +19,7 @@ import type {
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
-const { like, eachLike, integer, string } = MatchersV3
+const { like, eachLike, integer, decimal, string } = MatchersV3
 
 // 1) Setup the mock provider for the consumer
 // 2) Register the consumer's expectations against the (mock) provider
@@ -41,7 +41,8 @@ describe('Movies API', () => {
       const EXPECTED_BODY: Movie = {
         id: 1,
         name: 'My movie',
-        year: 1999
+        year: 1999,
+        rating: 8.5
       }
 
       // we want to ensure at least 1 movie is returned in the array of movies
@@ -92,7 +93,8 @@ describe('Movies API', () => {
       const EXPECTED_BODY: Movie = {
         id: 1,
         name: 'My movie',
-        year: 1999
+        year: 1999,
+        rating: 8.5
       }
 
       // we want to ensure at least 1 movie is returned in the array of movies
@@ -115,7 +117,8 @@ describe('Movies API', () => {
             data: {
               id: integer(EXPECTED_BODY.id),
               name: string(EXPECTED_BODY.name),
-              year: integer(EXPECTED_BODY.year)
+              year: integer(EXPECTED_BODY.year),
+              rating: decimal(EXPECTED_BODY.rating)
             }
           })
         )
@@ -143,7 +146,12 @@ describe('Movies API', () => {
   describe('When a GET request is made to a specific movie ID', () => {
     it('should return a specific movie', async () => {
       const testId = 100
-      const EXPECTED_BODY: Movie = { id: testId, name: 'My movie', year: 1999 }
+      const EXPECTED_BODY: Movie = {
+        id: testId,
+        name: 'My movie',
+        year: 1999,
+        rating: 8.5
+      }
 
       const [stateName, stateParams] = createProviderState({
         name: 'Has a movie with a specific ID',
@@ -162,7 +170,8 @@ describe('Movies API', () => {
             data: {
               id: integer(testId),
               name: string(EXPECTED_BODY.name),
-              year: integer(EXPECTED_BODY.year)
+              year: integer(EXPECTED_BODY.year),
+              rating: decimal(EXPECTED_BODY.rating)
             }
           })
         )
@@ -178,16 +187,17 @@ describe('Movies API', () => {
 
   describe('When a POST request is made to /movies', () => {
     it('should add a new movie', async () => {
-      const { name, year }: Omit<Movie, 'id'> = {
+      const { name, year, rating }: Omit<Movie, 'id'> = {
         name: 'New movie',
-        year: 1999
+        year: 1999,
+        rating: 8.5
       }
 
       await pact
         .addInteraction()
         .given('No movies exist')
         .uponReceiving('a request to add a new movie')
-        .withRequest('POST', '/movies', setJsonBody({ name, year }))
+        .withRequest('POST', '/movies', setJsonBody({ name, year, rating }))
         .willRespondWith(
           200,
           setJsonBody({
@@ -195,18 +205,20 @@ describe('Movies API', () => {
             data: {
               id: integer(), // if the example value is omitted, a random number is used
               name: string(name),
-              year: integer(year)
+              year: integer(year),
+              rating: decimal(rating)
             }
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await addNewMovie(mockServer.url, name, year)
+          const res = await addNewMovie(mockServer.url, name, year, rating)
           expect(res).toEqual({
             status: 200,
             data: {
               id: expect.any(Number),
               name,
-              year
+              year,
+              rating
             }
           })
         })
@@ -215,7 +227,8 @@ describe('Movies API', () => {
     it('should not add a movie that already exists', async () => {
       const movie: Omit<Movie, 'id'> = {
         name: 'My existing movie',
-        year: 2001
+        year: 2001,
+        rating: 8.5
       }
       const errorRes: ErrorResponse = {
         error: `Movie ${movie.name} already exists`
@@ -233,7 +246,12 @@ describe('Movies API', () => {
         .withRequest('POST', '/movies', setJsonBody({ ...movie }))
         .willRespondWith(409, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await addNewMovie(mockServer.url, movie.name, movie.year)
+          const res = await addNewMovie(
+            mockServer.url,
+            movie.name,
+            movie.year,
+            movie.rating
+          )
           expect(res).toEqual(errorRes)
         })
     })
@@ -242,7 +260,11 @@ describe('Movies API', () => {
   describe('When a PUT request is made to a specific movie ID', () => {
     it('should update an existing movie', async () => {
       const testId = 99
-      const updatedMovieData = { name: 'Updated movie', year: 2000 }
+      const updatedMovieData = {
+        name: 'Updated movie',
+        year: 2000,
+        rating: 8.5
+      }
 
       const [stateName, stateParams] = createProviderState({
         name: 'Has a movie with a specific ID',
@@ -261,7 +283,8 @@ describe('Movies API', () => {
             data: {
               id: integer(testId),
               name: updatedMovieData.name,
-              year: updatedMovieData.year
+              year: updatedMovieData.year,
+              rating: updatedMovieData.rating
             }
           })
         )
@@ -270,7 +293,8 @@ describe('Movies API', () => {
             mockServer.url,
             testId,
             updatedMovieData.name,
-            updatedMovieData.year
+            updatedMovieData.year,
+            updatedMovieData.rating
           )
 
           expect(res).toEqual({
@@ -278,7 +302,8 @@ describe('Movies API', () => {
             data: {
               id: testId,
               name: updatedMovieData.name,
-              year: updatedMovieData.year
+              year: updatedMovieData.year,
+              rating: updatedMovieData.rating
             }
           })
         })
