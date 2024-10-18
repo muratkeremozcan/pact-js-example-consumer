@@ -9,10 +9,11 @@ import { recurse } from 'cypress-recurse'
 
 describe('CRUD movie', () => {
   const movie = generateMovie()
-  const updatedMovie = { name: 'Updated Name', year: 2000 }
+  const updatedMovie = { name: 'Updated Name', year: 2000, rating: 8.5 }
   const movieProps: Omit<Movie, 'id'> = {
     name: spok.string,
-    year: spok.number
+    year: spok.number,
+    rating: spok.number
   }
 
   retryableBefore(() => {

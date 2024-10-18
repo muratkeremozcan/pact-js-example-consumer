@@ -8,7 +8,8 @@ describe('CRUD movie', () => {
   const updatedMovie = { name: 'Updated Name', year: 2000 }
   const movieProps: Omit<Movie, 'id'> = {
     name: spok.string,
-    year: spok.number
+    year: spok.number,
+    rating: spok.number
   }
 
   retryableBefore(() => {
