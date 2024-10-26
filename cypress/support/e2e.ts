@@ -22,7 +22,7 @@ Cypress.Commands.add('getMovieByName', (name: string, url = apiUrl) => {
 
 Cypress.Commands.add('addMovie', (body: Omit<Movie, 'id'>, url = apiUrl) => {
   cy.log('**addMovie**')
-  return cy.task('addNewMovie', {
+  return cy.task('addMovie', {
     url,
     movieName: body.name,
     movieYear: body.year,

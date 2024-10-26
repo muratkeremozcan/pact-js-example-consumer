@@ -61,7 +61,7 @@ export const getMovieByName = (
     .catch(handleError)
 
 // Add a new movie (don't specify id)
-export const addNewMovie = async (
+export const addMovie = async (
   url: string,
   data: Partial<Omit<Movie, 'id'>>
 ): Promise<CreateMovieResponse | ConflictMovieResponse> =>

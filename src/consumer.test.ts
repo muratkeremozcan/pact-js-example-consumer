@@ -3,7 +3,7 @@ import {
   getMovies,
   getMovieById,
   getMovieByName,
-  addNewMovie,
+  addMovie,
   deleteMovieById,
   updateMovie
 } from './consumer'
@@ -105,10 +105,13 @@ describe('Consumer API functions', () => {
 
       // in pact the provider state would be specified here
       nock(MOCKSERVER_URL)
-        .get('/movies/1')
+        .get(`/movies/${EXPECTED_BODY.id}`)
         .reply(200, { status: 200, data: EXPECTED_BODY })
 
-      const res = (await getMovieById(MOCKSERVER_URL, 1)) as GetMovieResponse
+      const res = (await getMovieById(
+        MOCKSERVER_URL,
+        EXPECTED_BODY.id
+      )) as GetMovieResponse
       expect(res.data).toEqual(EXPECTED_BODY)
     })
 
@@ -122,14 +125,15 @@ describe('Consumer API functions', () => {
     })
   })
 
-  describe('addNewMovie', () => {
+  describe('addMovie', () => {
     // this is similar to its pacttest version
+
+    const movie: Omit<Movie, 'id'> = {
+      name: 'My existing movie',
+      year: 2001,
+      rating: 8.5
+    }
     it('should add a new movie', async () => {
-      const movie: Omit<Movie, 'id'> = {
-        name: 'New movie',
-        year: 1999,
-        rating: 8.5
-      }
       // with pact we can keep the response generic
       // with nock it has to be concrete response
       nock(MOCKSERVER_URL)
@@ -138,20 +142,16 @@ describe('Consumer API functions', () => {
           status: 200,
           data: {
             id: 1,
-            name: movie.name,
-            year: movie.year,
-            rating: movie.rating
+            ...movie
           }
         })
 
-      const res = await addNewMovie(MOCKSERVER_URL, movie)
+      const res = await addMovie(MOCKSERVER_URL, movie)
       expect(res).toEqual({
         status: 200,
         data: {
-          id: expect.any(Number),
-          name: movie.name,
-          year: movie.year,
-          rating: movie.rating
+          id: 1,
+          ...movie
         }
       })
     })
@@ -159,11 +159,6 @@ describe('Consumer API functions', () => {
     // this is similar to its pacttest version
     // a key difference in pact is using provider states, to fully simulate the provider side
     it('should not add a movie that already exists', async () => {
-      const movie: Omit<Movie, 'id'> = {
-        name: 'My existing movie',
-        year: 2001,
-        rating: 8.5
-      }
       const errorRes: ErrorResponse = {
         error: `Movie ${movie.name} already exists`
       }
@@ -171,25 +166,23 @@ describe('Consumer API functions', () => {
       // in pact the provider state would be specified here
       nock(MOCKSERVER_URL).post('/movies', movie).reply(409, errorRes)
 
-      const res = await addNewMovie(MOCKSERVER_URL, movie)
+      const res = await addMovie(MOCKSERVER_URL, movie)
       expect(res).toEqual(errorRes)
     })
   })
 
   describe('updateMovie', () => {
+    const updatedMovieData = {
+      name: 'Updated movie',
+      year: 2000,
+      rating: 8.5
+    }
     it('should update an existing movie successfully', async () => {
       const testId = 1
-      const updatedMovieData = {
-        name: 'Updated movie',
-        year: 2000,
-        rating: 8.5
-      }
 
       const EXPECTED_BODY: Movie = {
         id: testId,
-        name: updatedMovieData.name,
-        year: updatedMovieData.year,
-        rating: updatedMovieData.rating
+        ...updatedMovieData
       }
 
       nock(MOCKSERVER_URL)
@@ -205,11 +198,6 @@ describe('Consumer API functions', () => {
 
     it('should return an error if movie to update does not exist', async () => {
       const testId = 999
-      const updatedMovieData = {
-        name: 'Updated movie',
-        year: 2000,
-        rating: 8.5
-      }
       const errorRes: ErrorResponse = {
         error: `Movie with ID ${testId} no found`
       }
