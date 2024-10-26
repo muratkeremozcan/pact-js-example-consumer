@@ -4,7 +4,7 @@ import {
   getMovies,
   getMovieById,
   getMovieByName,
-  addNewMovie,
+  addMovie,
   deleteMovieById,
   updateMovie
 } from '../../src/consumer'
@@ -32,8 +32,8 @@ export default function tasks(on: Cypress.PluginEvents) {
     getMovieByName: ({ url, name }: { url: string; name: string }) =>
       getMovieByName(url, name),
 
-    addNewMovie: ({ url, movie }: { url: string; movie: Omit<Movie, 'id'> }) =>
-      addNewMovie(url, movie),
+    addMovie: ({ url, movie }: { url: string; movie: Omit<Movie, 'id'> }) =>
+      addMovie(url, movie),
 
     updateMovie: ({
       url,

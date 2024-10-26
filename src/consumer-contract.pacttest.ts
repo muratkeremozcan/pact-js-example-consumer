@@ -3,7 +3,7 @@ import { MatchersV3, PactV4 } from '@pact-foundation/pact'
 import path from 'path'
 import type { ErrorResponse, Movie } from './consumer'
 import {
-  addNewMovie,
+  addMovie,
   deleteMovieById,
   getMovies,
   getMovieById,
@@ -211,7 +211,7 @@ describe('Movies API', () => {
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await addNewMovie(mockServer.url, movie)
+          const res = await addMovie(mockServer.url, movie)
           expect(res).toEqual({
             status: 200,
             data: {
@@ -246,7 +246,7 @@ describe('Movies API', () => {
         .withRequest('POST', '/movies', setJsonBody({ ...movie }))
         .willRespondWith(409, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await addNewMovie(mockServer.url, movie)
+          const res = await addMovie(mockServer.url, movie)
           expect(res).toEqual(errorRes)
         })
     })
