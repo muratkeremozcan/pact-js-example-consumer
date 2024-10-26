@@ -187,7 +187,7 @@ describe('Movies API', () => {
 
   describe('When a POST request is made to /movies', () => {
     it('should add a new movie', async () => {
-      const { name, year, rating }: Omit<Movie, 'id'> = {
+      const movie: Omit<Movie, 'id'> = {
         name: 'New movie',
         year: 1999,
         rating: 8.5
@@ -197,28 +197,28 @@ describe('Movies API', () => {
         .addInteraction()
         .given('No movies exist')
         .uponReceiving('a request to add a new movie')
-        .withRequest('POST', '/movies', setJsonBody({ name, year, rating }))
+        .withRequest('POST', '/movies', setJsonBody(movie))
         .willRespondWith(
           200,
           setJsonBody({
             status: 200,
             data: {
               id: integer(), // if the example value is omitted, a random number is used
-              name: string(name),
-              year: integer(year),
-              rating: decimal(rating)
+              name: string(movie.name),
+              year: integer(movie.year),
+              rating: decimal(movie.rating)
             }
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await addNewMovie(mockServer.url, name, year, rating)
+          const res = await addNewMovie(mockServer.url, movie)
           expect(res).toEqual({
             status: 200,
             data: {
               id: expect.any(Number),
-              name,
-              year,
-              rating
+              name: movie.name,
+              year: movie.year,
+              rating: movie.rating
             }
           })
         })
@@ -246,12 +246,7 @@ describe('Movies API', () => {
         .withRequest('POST', '/movies', setJsonBody({ ...movie }))
         .willRespondWith(409, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
-          const res = await addNewMovie(
-            mockServer.url,
-            movie.name,
-            movie.year,
-            movie.rating
-          )
+          const res = await addNewMovie(mockServer.url, movie)
           expect(res).toEqual(errorRes)
         })
     })
@@ -292,9 +287,7 @@ describe('Movies API', () => {
           const res = await updateMovie(
             mockServer.url,
             testId,
-            updatedMovieData.name,
-            updatedMovieData.year,
-            updatedMovieData.rating
+            updatedMovieData
           )
 
           expect(res).toEqual({

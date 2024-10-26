@@ -63,16 +63,8 @@ export const getMovieByName = (
 // Add a new movie (don't specify id)
 export const addNewMovie = async (
   url: string,
-  movieName: string,
-  movieYear: number,
-  movieRating: number
+  data: Partial<Omit<Movie, 'id'>>
 ): Promise<CreateMovieResponse | ConflictMovieResponse> => {
-  const data: Omit<Movie, 'id'> = {
-    name: movieName,
-    year: movieYear,
-    rating: movieRating
-  }
-
   const response = await axios
     .post(`${url}/movies`, data, commonHeaders)
     .then(yieldData)
@@ -94,17 +86,10 @@ export const deleteMovieById = (
 export const updateMovie = async (
   url: string,
   id: number,
-  movieName: string,
-  movieYear: number,
-  movieRating: number
+  data: Partial<Omit<Movie, 'id'>>
 ): Promise<
   UpdateMovieResponse | MovieNotFoundResponse | ConflictMovieResponse
 > => {
-  const data: Omit<Movie, 'id'> = {
-    name: movieName,
-    year: movieYear,
-    rating: movieRating
-  }
   const response = await axios
     .put(`${url}/movies/${id}`, data, commonHeaders)
     .then(yieldData)
