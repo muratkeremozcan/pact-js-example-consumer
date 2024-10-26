@@ -32,18 +32,19 @@ export default function tasks(on: Cypress.PluginEvents) {
     getMovieByName: ({ url, name }: { url: string; name: string }) =>
       getMovieByName(url, name),
 
-    addMovie: ({ url, movie }: { url: string; movie: Omit<Movie, 'id'> }) =>
-      addMovie(url, movie),
+    addMovie: ({ url, data }: { url: string; data: Omit<Movie, 'id'> }) => {
+      return addMovie(url, data)
+    },
 
     updateMovie: ({
       url,
       id,
-      movie
+      data
     }: {
       url: string
       id: number
-      movie: Omit<Movie, 'id'>
-    }) => updateMovie(url, id, movie)
+      data: Omit<Movie, 'id'>
+    }) => updateMovie(url, id, data)
   })
   // we can add them all together in one 'task', or separately
   on('task', {
