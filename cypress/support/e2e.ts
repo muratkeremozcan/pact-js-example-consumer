@@ -20,13 +20,11 @@ Cypress.Commands.add('getMovieByName', (name: string, url = apiUrl) => {
   return cy.task('getMovieByName', { url, name })
 })
 
-Cypress.Commands.add('addMovie', (body: Omit<Movie, 'id'>, url = apiUrl) => {
+Cypress.Commands.add('addMovie', (data: Omit<Movie, 'id'>, url = apiUrl) => {
   cy.log('**addMovie**')
   return cy.task('addMovie', {
     url,
-    movieName: body.name,
-    movieYear: body.year,
-    movieRating: body.rating
+    data
   })
 })
 
@@ -37,14 +35,12 @@ Cypress.Commands.add('deleteMovie', (id: number, url = apiUrl) => {
 
 Cypress.Commands.add(
   'updateMovie',
-  (id: number, body: Partial<Movie>, url = apiUrl) => {
+  (id: number, data: Partial<Movie>, url = apiUrl) => {
     cy.log('**updateMovie by id: ${id}**')
     return cy.task('updateMovie', {
       url,
       id,
-      movieName: body.name,
-      movieYear: body.year,
-      movieRating: body.rating
+      data
     })
   }
 )
