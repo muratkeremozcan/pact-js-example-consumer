@@ -64,14 +64,11 @@ export const getMovieByName = (
 export const addNewMovie = async (
   url: string,
   data: Partial<Omit<Movie, 'id'>>
-): Promise<CreateMovieResponse | ConflictMovieResponse> => {
-  const response = await axios
+): Promise<CreateMovieResponse | ConflictMovieResponse> =>
+  axios
     .post(`${url}/movies`, data, commonHeaders)
     .then(yieldData)
     .catch(handleError)
-
-  return response
-}
 
 // Delete a movie by ID
 export const deleteMovieById = (
@@ -89,11 +86,8 @@ export const updateMovie = async (
   data: Partial<Omit<Movie, 'id'>>
 ): Promise<
   UpdateMovieResponse | MovieNotFoundResponse | ConflictMovieResponse
-> => {
-  const response = await axios
+> =>
+  axios
     .put(`${url}/movies/${id}`, data, commonHeaders)
     .then(yieldData)
     .catch(handleError)
-
-  return response
-}
