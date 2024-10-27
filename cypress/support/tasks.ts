@@ -16,7 +16,10 @@ import {
 export default function tasks(on: Cypress.PluginEvents) {
   on('task', { log })
 
-  on('task', { getMovies: getMovies })
+  // (a) => f(a)
+  // () => f()
+  // f
+  on('task', { getMovies })
 
   // KEY: a pattern to fine tune cy task when handling multiple arguments
   // Cypress tasks only accept a single argument, but we can pass multiple values
@@ -32,9 +35,8 @@ export default function tasks(on: Cypress.PluginEvents) {
     getMovieByName: ({ url, name }: { url: string; name: string }) =>
       getMovieByName(url, name),
 
-    addMovie: ({ url, data }: { url: string; data: Omit<Movie, 'id'> }) => {
-      return addMovie(url, data)
-    },
+    addMovie: ({ url, data }: { url: string; data: Omit<Movie, 'id'> }) =>
+      addMovie(url, data),
 
     updateMovie: ({
       url,

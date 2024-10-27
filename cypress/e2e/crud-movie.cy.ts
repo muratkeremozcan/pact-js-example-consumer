@@ -27,7 +27,7 @@ describe('CRUD movie', () => {
       .print()
       .its('data.id')
       .then((id) => {
-        cy.getAllMovies().should(spok(spok.array)).findOne({ name: movie.name })
+        cy.getMovies().should(spok(spok.array)).findOne({ name: movie.name })
 
         cy.getMovieById(id)
           .its('data')
@@ -61,7 +61,7 @@ describe('CRUD movie', () => {
         )
 
         cy.deleteMovie(id)
-        cy.getAllMovies().findOne({ name: movie.name }).should('not.exist')
+        cy.getMovies().findOne({ name: movie.name }).should('not.exist')
       })
   })
 })

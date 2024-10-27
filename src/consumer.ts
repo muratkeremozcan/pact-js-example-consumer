@@ -63,7 +63,7 @@ export const getMovieByName = (
 // Add a new movie (don't specify id)
 export const addMovie = async (
   url: string,
-  data: Partial<Omit<Movie, 'id'>>
+  data: Omit<Movie, 'id'>
 ): Promise<CreateMovieResponse | ConflictMovieResponse> =>
   axios
     .post(`${url}/movies`, data, commonHeaders)
