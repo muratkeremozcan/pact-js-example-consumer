@@ -27,7 +27,9 @@ describe('CRUD movie', () => {
       .print()
       .its('data.id')
       .then((id) => {
-        cy.getMovies().should(spok(spok.array)).findOne({ name: movie.name })
+        cy.getMovies()
+          .should(spok({ data: spok.array, status: 200 }))
+          .findOne({ name: movie.name })
 
         cy.getMovieById(id)
           .its('data')
@@ -60,8 +62,10 @@ describe('CRUD movie', () => {
           })
         )
 
-        cy.deleteMovie(id)
-        cy.getMovies().findOne({ name: movie.name }).should('not.exist')
+        cy.deleteMovie(id).should(
+          spok({ status: 200, message: `Movie ${id} has been deleted` })
+        )
+        cy.getMovies().findOne({ name: updatedMovie.name }).should('not.exist')
       })
   })
 })
