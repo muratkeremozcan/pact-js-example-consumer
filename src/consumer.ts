@@ -39,7 +39,7 @@ const commonHeaders = {
 
 // Fetch all movies
 export const getMovies = (url: string): Promise<GetMovieResponse> =>
-  axios.get(`${url}/movies`).then(yieldData).catch(handleError)
+  axios.get(`${url}/movies`, commonHeaders).then(yieldData).catch(handleError)
 
 // Fetch a single movie by ID
 export const getMovieById = (

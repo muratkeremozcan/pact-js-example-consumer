@@ -35,7 +35,7 @@ Cypress.Commands.add('deleteMovie', (id: number, url = apiUrl) => {
 
 Cypress.Commands.add(
   'updateMovie',
-  (id: number, data: Partial<Movie>, url = apiUrl) => {
+  (id: number, data: Partial<Omit<Movie, 'id'>>, url = apiUrl) => {
     cy.log('**updateMovie by id: ${id}**')
     return cy.task('updateMovie', {
       url,
