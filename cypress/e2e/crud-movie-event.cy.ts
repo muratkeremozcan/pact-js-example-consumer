@@ -53,7 +53,7 @@ describe('CRUD movie', () => {
           ])
         )
 
-        cy.getAllMovies().should(spok(spok.array)).findOne({ name: movie.name })
+        cy.getMovies().should(spok(spok.array)).findOne({ name: movie.name })
 
         cy.getMovieById(id)
           .its('data')
@@ -109,7 +109,7 @@ describe('CRUD movie', () => {
             }
           ])
         )
-        cy.getAllMovies().findOne({ name: movie.name }).should('not.exist')
+        cy.getMovies().findOne({ name: movie.name }).should('not.exist')
       })
   })
 })

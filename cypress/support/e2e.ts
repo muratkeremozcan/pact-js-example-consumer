@@ -5,8 +5,8 @@ import type { Movie } from '../../src/consumer'
 
 const apiUrl = Cypress.config('baseUrl') || 'http://localhost:3001'
 
-Cypress.Commands.add('getAllMovies', (url = apiUrl) => {
-  cy.log('**getAllMovies**')
+Cypress.Commands.add('getMovies', (url = apiUrl) => {
+  cy.log('**getMovies**')
   return cy.task('getMovies', url)
 })
 

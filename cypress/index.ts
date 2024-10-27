@@ -1,6 +1,5 @@
-import type { UserData } from './support/register-login-user'
+/* eslint-disable @typescript-eslint/no-namespace */
 import type { Movie } from '../src/consumer'
-
 export {}
 
 declare global {
@@ -8,10 +7,10 @@ declare global {
     interface Chainable<Subject> {
       /** Gets a list of movies
        * ```js
-       * cy.getAllMovies()
+       * cy.getMovies()
        * ```
        */
-      getAllMovies(url?: string): Chainable<Response<Movie[]> & Messages>
+      getMovies(url?: string): Chainable<Response<Movie[]> & Messages>
 
       /** Gets a movie by id
        * ```js
@@ -39,7 +38,7 @@ declare global {
        * ```
        */
       addMovie(
-        body: Omit<Movie, 'id'>,
+        data: Omit<Movie, 'id'>,
         url?: string
       ): Chainable<Response<Omit<Movie, 'id'>> & Messages>
 
@@ -58,11 +57,22 @@ declare global {
        * cy.updateMovie(1, {name: 'The Great Gatsby Updated', year: 2000})
        * ```
        */
-      updateMovie(id: number, body: Partial<Movie>, url?: string)
+      updateMovie(
+        id: number,
+        body: Partial<Movie>,
+        url?: string
+      ): Chainable<Response<Movie> & Messages>
 
       /** https://www.npmjs.com/package/@cypress/skip-test
        * `cy.skipOn('localhost')` */
       skipOn(
+        nameOrFlag: string | boolean | (() => boolean),
+        cb?: () => void
+      ): Chainable<Subject>
+
+      /** https://www.npmjs.com/package/@cypress/skip-test
+       * `cy.onlyOn('localhost')` */
+      onlyOn(
         nameOrFlag: string | boolean | (() => boolean),
         cb?: () => void
       ): Chainable<Subject>
