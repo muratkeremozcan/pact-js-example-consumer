@@ -78,7 +78,7 @@ describe('Movies API', () => {
       await pact
         .addInteraction()
         .given('No movies exist')
-        .uponReceiving('a request to get all movies')
+        .uponReceiving('a request to get all movies TRIGGER')
         .withRequest('GET', '/movies')
         .willRespondWith(
           200,
