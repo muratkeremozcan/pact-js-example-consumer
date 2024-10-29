@@ -55,7 +55,7 @@ describe('Movies API', () => {
       await pact
         .addInteraction()
         .given(stateName, stateParams)
-        .uponReceiving('a request to get all movies')
+        .uponReceiving('a request to get all movies TRIGGER')
         .withRequest('GET', '/movies')
         .willRespondWith(
           200,
