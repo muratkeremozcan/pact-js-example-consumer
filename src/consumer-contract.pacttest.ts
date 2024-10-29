@@ -65,6 +65,7 @@ describe('Movies API', () => {
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
+          // 3) Call the consumer against the mock provider
           const res = await getMovies(mockServer.url)
           // 4) Verify the consumer test and generate the contract
           expect(res.data).toEqual([EXPECTED_BODY])
@@ -243,7 +244,7 @@ describe('Movies API', () => {
         .addInteraction()
         .given(stateName, stateParams)
         .uponReceiving('a request to the existing movie')
-        .withRequest('POST', '/movies', setJsonBody({ ...movie }))
+        .withRequest('POST', '/movies', setJsonBody(movie))
         .willRespondWith(409, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await addMovie(mockServer.url, movie)
@@ -318,7 +319,7 @@ describe('Movies API', () => {
         .given(...state)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(200, setJsonBody({ message, status: 200 }))
+        .willRespondWith(200, setJsonBody({ status: 200, message }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = (await deleteMovieById(
             mockServer.url,
@@ -336,7 +337,7 @@ describe('Movies API', () => {
         .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(404, setJsonBody({ error, status: 404 }))
+        .willRespondWith(404, setJsonBody({ status: 404, error }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = (await deleteMovieById(
             mockServer.url,
