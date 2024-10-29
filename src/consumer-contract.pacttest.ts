@@ -244,7 +244,7 @@ describe('Movies API', () => {
         .addInteraction()
         .given(stateName, stateParams)
         .uponReceiving('a request to the existing movie')
-        .withRequest('POST', '/movies', setJsonBody({ ...movie }))
+        .withRequest('POST', '/movies', setJsonBody(movie))
         .willRespondWith(409, setJsonBody(errorRes))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = await addMovie(mockServer.url, movie)
