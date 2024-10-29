@@ -337,7 +337,7 @@ describe('Movies API', () => {
         .addInteraction()
         .uponReceiving('a request to delete a non-existing movie')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(404, setJsonBody({ error, status: 404 }))
+        .willRespondWith(404, setJsonBody({ status: 404, error }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = (await deleteMovieById(
             mockServer.url,
