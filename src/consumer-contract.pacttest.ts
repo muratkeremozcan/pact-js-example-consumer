@@ -319,7 +319,7 @@ describe('Movies API', () => {
         .given(...state)
         .uponReceiving('a request to delete a movie that exists')
         .withRequest('DELETE', `/movies/${testId}`)
-        .willRespondWith(200, setJsonBody({ message, status: 200 }))
+        .willRespondWith(200, setJsonBody({ status: 200, message }))
         .executeTest(async (mockServer: V3MockServer) => {
           const res = (await deleteMovieById(
             mockServer.url,
