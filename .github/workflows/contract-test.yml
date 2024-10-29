@@ -47,5 +47,3 @@ jobs:
       - name: Record web consumer deployment
         if: github.ref == 'refs/heads/main'
         run: npm run record:consumer:deployment --env=dev
-
-        # trigger
