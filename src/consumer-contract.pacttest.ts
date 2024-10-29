@@ -65,9 +65,10 @@ describe('Movies API', () => {
           })
         )
         .executeTest(async (mockServer: V3MockServer) => {
+          // 3) Call the consumer against the mock provider
           const res = await getMovies(mockServer.url)
           // 4) Verify the consumer test and generate the contract
-          expect(res.data).toEqual([EXPECTED_BODY])
+          expect(res.data).toEqual(eachLike(EXPECTED_BODY))
         })
     })
 
