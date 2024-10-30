@@ -14,8 +14,6 @@ type Entry = Movie & { topic: string }
 const filterByTopicAndId =
   (movieId: number, topic: string) => (entries: Entry[]) =>
     entries.filter((entry: Entry) => {
-      console.log(topic)
-      console.log(entry.topic)
       return entry.topic === topic && entry.id === movieId
     })
 
