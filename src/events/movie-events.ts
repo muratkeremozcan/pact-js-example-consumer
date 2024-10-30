@@ -60,7 +60,7 @@ export const consumeMovieEvents = async () => {
           message.value?.toString() || '{}'
         )
 
-        logEvent(movieEvent, topic, partition, logFilePath)
+        await logEvent(movieEvent, topic, partition, logFilePath)
       }
     })
   } catch (err) {
