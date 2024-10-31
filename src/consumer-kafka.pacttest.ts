@@ -41,7 +41,7 @@ describe('Kafka Movie Event Consumer', () => {
 
   it('should receive a movie-created event from Kafka', async () => {
     await messagePact
-      .given('No movies exist')
+      .given('No movies exist balala')
       .expectsToReceive('a movie-created event')
       .withContent({
         topic: term({ generate: 'movie-created', matcher }),
@@ -55,7 +55,7 @@ describe('Kafka Movie Event Consumer', () => {
 
   it('should receive a movie-updated event from Kafka', async () => {
     await messagePact
-      .given('An existing movie exists')
+      .given('An existing movie exists balalal')
       .expectsToReceive('a movie-updated event')
       .withContent({
         topic: term({ generate: 'movie-updated', matcher }),
@@ -69,7 +69,7 @@ describe('Kafka Movie Event Consumer', () => {
 
   it('should receive a movie-deleted event from Kafka', async () => {
     await messagePact
-      .given('An existing movie exists')
+      .given('An existing movie exists balalal')
       .expectsToReceive('a movie-deleted event')
       .withContent({
         topic: term({ generate: 'movie-deleted', matcher }),
