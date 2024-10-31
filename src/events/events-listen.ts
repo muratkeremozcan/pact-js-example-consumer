@@ -10,7 +10,7 @@ import { consumeMovieEvents } from './movie-events'
 const app = express()
 const port = process.env.CLIENTPORT || 3000
 
-// Start the Kafka consumer when the application starts
+// start the Kafka consumer when the application starts
 consumeMovieEvents()
 
 app.listen(port, () => {
