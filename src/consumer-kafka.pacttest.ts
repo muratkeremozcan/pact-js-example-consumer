@@ -10,7 +10,7 @@ const { like, eachLike, term } = Matchers
 
 describe('Kafka Movie Event Consumer', () => {
   const messagePact = new MessageConsumerPact({
-    dir: path.resolve(process.cwd(), 'pacts'), // we save it in a different location than the contract test
+    dir: path.resolve(process.cwd(), 'pacts'),
     consumer: 'WebConsumer-event-consumer',
     provider: 'MoviesAPI-event-producer'
     // logLevel: 'debug'
@@ -41,7 +41,7 @@ describe('Kafka Movie Event Consumer', () => {
 
   it('should receive a movie-created event from Kafka', async () => {
     await messagePact
-      .given('No movies exist')
+      // .given('No movies exist')
       .expectsToReceive('a movie-created event')
       .withContent({
         topic: term({ generate: 'movie-created', matcher }),
@@ -55,7 +55,7 @@ describe('Kafka Movie Event Consumer', () => {
 
   it('should receive a movie-updated event from Kafka', async () => {
     await messagePact
-      .given('An existing movie exists')
+      // .given('An existing movie exists')
       .expectsToReceive('a movie-updated event')
       .withContent({
         topic: term({ generate: 'movie-updated', matcher }),
@@ -69,7 +69,7 @@ describe('Kafka Movie Event Consumer', () => {
 
   it('should receive a movie-deleted event from Kafka', async () => {
     await messagePact
-      .given('An existing movie exists')
+      // .given('An existing movie exists')
       .expectsToReceive('a movie-deleted event')
       .withContent({
         topic: term({ generate: 'movie-deleted', matcher }),
