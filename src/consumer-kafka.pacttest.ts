@@ -10,7 +10,7 @@ const { like, eachLike, term } = Matchers
 
 describe('Kafka Movie Event Consumer', () => {
   const messagePact = new MessageConsumerPact({
-    dir: path.resolve(process.cwd(), 'pacts'), // we save it in a different location than the contract test
+    dir: path.resolve(process.cwd(), 'pacts'),
     consumer: 'WebConsumer-event-consumer',
     provider: 'MoviesAPI-event-producer'
     // logLevel: 'debug'
