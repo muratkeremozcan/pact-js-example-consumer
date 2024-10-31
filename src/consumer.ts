@@ -17,7 +17,6 @@ export type Movie = {
   rating: number
 }
 
-// Error response type
 export type ErrorResponse = {
   error: string
 }
@@ -60,8 +59,8 @@ export const getMovieByName = (
     .then(yieldData)
     .catch(handleError)
 
-// Add a new movie (don't specify id)
-export const addMovie = async (
+// Create a new movie
+export const addMovie = (
   url: string,
   data: Omit<Movie, 'id'>
 ): Promise<CreateMovieResponse | ConflictMovieResponse> =>
@@ -70,7 +69,7 @@ export const addMovie = async (
     .then(yieldData)
     .catch(handleError)
 
-// Delete a movie by ID
+// Delete movie by ID
 export const deleteMovieById = (
   url: string,
   id: number
@@ -80,13 +79,12 @@ export const deleteMovieById = (
     .then(yieldData)
     .catch(handleError)
 
-export const updateMovie = async (
+// Update movie by ID
+export const updateMovie = (
   url: string,
   id: number,
   data: Partial<Omit<Movie, 'id'>>
-): Promise<
-  UpdateMovieResponse | MovieNotFoundResponse | ConflictMovieResponse
-> =>
+): Promise<UpdateMovieResponse | MovieNotFoundResponse> =>
   axios
     .put(`${url}/movies/${id}`, data, commonHeaders)
     .then(yieldData)

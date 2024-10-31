@@ -38,7 +38,7 @@ declare global {
        * ```
        */
       addMovie(
-        data: Omit<Movie, 'id'>,
+        body: Omit<Movie, 'id'>,
         url?: string
       ): Chainable<Response<Omit<Movie, 'id'>> & Messages>
 

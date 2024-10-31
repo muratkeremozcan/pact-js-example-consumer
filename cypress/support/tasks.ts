@@ -45,9 +45,10 @@ export default function tasks(on: Cypress.PluginEvents) {
     }: {
       url: string
       id: number
-      data: Omit<Movie, 'id'>
+      data: Partial<Omit<Movie, 'id'>>
     }) => updateMovie(url, id, data)
   })
+
   // we can add them all together in one 'task', or separately
   on('task', {
     deleteMovieById: ({ url, id }: { url: string; id: number }) =>
