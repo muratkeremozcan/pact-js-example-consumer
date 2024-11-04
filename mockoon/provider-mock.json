@@ -235,7 +235,7 @@
       "responses": [
         {
           "uuid": "9761b7db-e860-4e9e-b99e-4562c1ca4fc8",
-          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"tabella cupressus demitto\",\n    \"year\": 1985,\n    \"rating\": 7.5\n  }\n}",
+          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"tabella cupressus demitto\",\n    \"year\": 1985,\n    \"rating\": 7.5,\n    \"director\": \"Christopher Nolan\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -305,7 +305,7 @@
       "responses": [
         {
           "uuid": "2547396b-ba7a-4a77-9344-d0539e20bfdb",
-          "body": "{\n  \"status\": 200,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"tabella cupressus demitto\",\n      \"year\": 1985,\n      \"rating\": 7.5\n    }\n  ]\n}",
+          "body": "{\n  \"status\": 200,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"tabella cupressus demitto\",\n      \"year\": 1985,\n      \"rating\": 7.5,\n      \"director\": \"Christopher Nolan\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -402,7 +402,7 @@
       "responses": [
         {
           "uuid": "87ad459d-4144-4e5a-bea4-2f62c5661eae",
-          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"tabella cupressus demitto\",\n    \"year\": 1985,\n    \"rating\": 7.5\n  }\n}",
+          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"tabella cupressus demitto\",\n    \"year\": 1985,\n    \"rating\": 7.5,\n    \"director\": \"Christopher Nolan\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -472,7 +472,7 @@
       "responses": [
         {
           "uuid": "65729f6d-ab7c-4f86-88a5-63345e52511d",
-          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Updated Name\",\n    \"year\": 2000,\n    \"rating\": 7.5\n  }\n}",
+          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Updated Name\",\n    \"year\": 2000,\n    \"rating\": 7.5,\n    \"director\": \"Christopher Nolan\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",

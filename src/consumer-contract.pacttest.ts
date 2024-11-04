@@ -126,7 +126,8 @@ describe('Movies API', () => {
               id: integer(movieWithId.id),
               name: string(movieWithId.name),
               year: integer(movieWithId.year),
-              rating: decimal(movieWithId.rating)
+              rating: decimal(movieWithId.rating),
+              director: string(movieWithId.director)
             }
           })
         )
@@ -171,7 +172,8 @@ describe('Movies API', () => {
               id: integer(testId),
               name: string(movieWithTestId100.name),
               year: integer(movieWithTestId100.year),
-              rating: decimal(movieWithTestId100.rating)
+              rating: decimal(movieWithTestId100.rating),
+              director: string(movieWithTestId100.director)
             }
           })
         )
