@@ -1,6 +1,3 @@
-// in the real world, this file which is from the server side
-// would be published in a package and installed here
-
 import type { z } from 'zod'
 import type {
   CreateMovieResponseSchema,
@@ -12,6 +9,8 @@ import type {
   UpdateMovieSchema,
   UpdateMovieResponseSchema
 } from './schema'
+
+// Zod Key feature 2: link the schemas to the types
 
 export type CreateMovieRequest = z.infer<typeof CreateMovieSchema>
 

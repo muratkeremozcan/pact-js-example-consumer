@@ -1,6 +1,3 @@
-// in the real world, this file which is from the server side
-// would be published in a package and installed here
-
 import { z } from 'zod'
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 
@@ -14,7 +11,11 @@ extendZodWithOpenApi(z)
 
 export const CreateMovieSchema = z
   .object({
-    id: z.number().optional().openapi({ example: 1, description: 'Movie ID' }),
+    id: z
+      .number()
+      .int()
+      .optional()
+      .openapi({ example: 1, description: 'Movie ID ' }),
     name: z
       .string()
       .min(1)
@@ -24,7 +25,12 @@ export const CreateMovieSchema = z
       .int()
       .min(1900)
       .max(2024)
-      .openapi({ example: 2010, description: 'Release year' })
+      .openapi({ example: 2010, description: 'Release year' }),
+    rating: z.number().openapi({ example: 7.5, description: 'Rating' }),
+    director: z.string().min(1).openapi({
+      example: 'Christopher Nolan',
+      description: 'Director'
+    })
   })
   .openapi('CreateMovieRequest')
 
@@ -34,15 +40,21 @@ export const CreateMovieResponseSchema = z
       .number()
       .int()
       .openapi({ example: 200, description: 'Response status code' }),
-    data: z
-      .object({
-        id: z.number().openapi({ example: 1, description: 'Movie ID' }),
-        name: z
-          .string()
-          .openapi({ example: 'Inception', description: 'Movie name' }),
-        year: z.number().openapi({ example: 2010, description: 'Release year' })
+    data: z.object({
+      id: z.number().int().openapi({ example: 1, description: 'Movie ID' }),
+      name: z
+        .string()
+        .openapi({ example: 'Inception', description: 'Movie name' }),
+      year: z
+        .number()
+        .int()
+        .openapi({ example: 2010, description: 'Release year' }),
+      rating: z.number().openapi({ example: 7.5, description: 'Rating' }),
+      director: z.string().openapi({
+        example: 'Christopher Nolan',
+        description: 'Director'
       })
-      .openapi({ description: 'Movie data' }),
+    }),
     error: z
       .string()
       .optional()
@@ -63,7 +75,12 @@ export const ConflictMovieResponseSchema = z.object({
 const movieObj = {
   id: z.number().openapi({ example: 1, description: 'Movie ID' }),
   name: z.string().openapi({ example: 'Inception', description: 'Movie name' }),
-  year: z.number().openapi({ example: 2010, description: 'Release year' })
+  year: z.number().openapi({ example: 2010, description: 'Release year' }),
+  rating: z.number().openapi({ example: 7.5, description: 'Rating' }),
+  director: z.string().openapi({
+    example: 'Christopher Nolan',
+    description: 'Director'
+  })
 }
 
 export const GetMovieResponseUnionSchema = z
@@ -78,14 +95,20 @@ export const GetMovieResponseUnionSchema = z
         .nullable()
         .openapi({
           description: 'Movie details or null if not found',
-          example: { id: 1, name: 'Inception', year: 2010 }
+          example: {
+            id: 1,
+            name: 'Inception',
+            year: 2010,
+            rating: 7.5,
+            director: 'Christopher Nolan'
+          }
         }),
       z.array(z.object(movieObj)).openapi({
         description: 'List of movies or an empty array if no movies exist',
         example: []
       })
     ]),
-    error: z.string().nullable().openapi({
+    error: z.string().nullable().optional().openapi({
       description: 'Error message if an error occurred, otherwise null',
       example: null
     })
@@ -102,18 +125,16 @@ export const MovieNotFoundResponseSchema = z.object({
     .openapi({ example: 'Movie not found', description: 'Error message' })
 })
 
-export const DeleteMovieResponseSchema = z
-  .object({
-    status: z
-      .number()
-      .int()
-      .openapi({ example: 200, description: 'Response status code' }),
-    message: z.string().openapi({
-      example: 'Movie {id} has been deleted',
-      description: 'Success message for the deleted movie'
-    })
+export const DeleteMovieResponseSchema = z.object({
+  status: z
+    .number()
+    .int()
+    .openapi({ example: 200, description: 'Response status code' }),
+  message: z.string().openapi({
+    example: 'Movie {id} has been deleted',
+    description: 'Success message for the deleted movie'
   })
-  .openapi('DeleteMovieResponse')
+})
 
 export const UpdateMovieSchema = z
   .object({
@@ -129,7 +150,15 @@ export const UpdateMovieSchema = z
       .min(1900)
       .max(2024)
       .optional()
-      .openapi({ example: 2010, description: 'Release year' })
+      .openapi({ example: 2010, description: 'Release year' }),
+    rating: z
+      .number()
+      .optional()
+      .openapi({ example: 7.5, description: 'Rating' }),
+    director: z.string().min(1).optional().openapi({
+      example: 'Christopher Nolan',
+      description: 'Director'
+    })
   })
   .openapi('UpdateMovieRequest')
 
@@ -145,7 +174,14 @@ export const UpdateMovieResponseSchema = z
         name: z
           .string()
           .openapi({ example: 'Inception', description: 'Movie name' }),
-        year: z.number().openapi({ example: 2010, description: 'Release year' })
+        year: z
+          .number()
+          .openapi({ example: 2010, description: 'Release year' }),
+        rating: z.number().openapi({ example: 7.5, description: 'Rating' }),
+        director: z.string().openapi({
+          example: 'Christopher Nolan',
+          description: 'Director'
+        })
       })
       .openapi({ description: 'Updated movie data' }),
     error: z
@@ -153,4 +189,4 @@ export const UpdateMovieResponseSchema = z
       .optional()
       .openapi({ description: 'Error message, if any' })
   })
-  .openapi('UpdateMovieResponse')
+  .openapi('UpdatedMovieResponse')
