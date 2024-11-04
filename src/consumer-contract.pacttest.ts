@@ -202,7 +202,8 @@ describe('Movies API', () => {
               id: integer(), // if the example value is omitted, a random number is used
               name: string(movieWithoutId.name),
               year: integer(movieWithoutId.year),
-              rating: decimal(movieWithoutId.rating)
+              rating: decimal(movieWithoutId.rating),
+              director: string(movieWithoutId.director)
             }
           })
         )
@@ -214,7 +215,8 @@ describe('Movies API', () => {
               id: expect.any(Number),
               name: movieWithoutId.name,
               year: movieWithoutId.year,
-              rating: movieWithoutId.rating
+              rating: movieWithoutId.rating,
+              director: movieWithoutId.director
             }
           })
         })
