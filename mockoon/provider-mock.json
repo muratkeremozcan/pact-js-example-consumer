@@ -365,7 +365,7 @@
         },
         {
           "uuid": "38f35f4b-8dae-42e0-9975-bec2823df3a4",
-          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"tabella cupressus demitto\",\n    \"year\": 1985,\n    \"rating\": 7.5\n  }\n}",
+          "body": "{\n  \"status\": 200,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"tabella cupressus demitto\",\n    \"year\": 1985,\n    \"rating\": 7.5,\n    \"director\": \"Christopher Nolan\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
