@@ -57,7 +57,7 @@ describe('Movies API', () => {
     director: 'John Doe'
   }
 
-  const willRespondWithData = (movieEntity: Movie | Omit<Movie, 'id'>) => ({
+  const propMatcherNoId = (movieEntity: Movie | Omit<Movie, 'id'>) => ({
     name: string(movieEntity.name),
     year: integer(movieEntity.year),
     rating: decimal(movieEntity.rating),
@@ -131,7 +131,7 @@ describe('Movies API', () => {
             status: 200,
             data: {
               id: integer(movieWithId.id),
-              ...willRespondWithData(movieWithId)
+              ...propMatcherNoId(movieWithId)
             }
           })
         )
@@ -174,7 +174,7 @@ describe('Movies API', () => {
             status: 200,
             data: {
               id: integer(testId),
-              ...willRespondWithData(movieWithTestId100)
+              ...propMatcherNoId(movieWithTestId100)
             }
           })
         )
@@ -201,7 +201,7 @@ describe('Movies API', () => {
             status: 200,
             data: {
               id: integer(), // if the example value is omitted, a random number is used
-              ...willRespondWithData(movieWithoutId)
+              ...propMatcherNoId(movieWithoutId)
             }
           })
         )
@@ -269,7 +269,7 @@ describe('Movies API', () => {
             status: 200,
             data: {
               id: integer(testId),
-              ...willRespondWithData(updatedMovieData)
+              ...propMatcherNoId(updatedMovieData)
             }
           })
         )
