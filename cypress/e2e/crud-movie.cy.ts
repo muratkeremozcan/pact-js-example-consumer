@@ -11,7 +11,7 @@ describe('CRUD movie', () => {
     year: spok.number,
     rating: spok.number,
     director: spok.string,
-    oscar: spok.boolean
+    oscar: spok.type('boolean')
   }
 
   retryableBefore(() => {
