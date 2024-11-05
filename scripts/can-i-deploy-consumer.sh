@@ -7,8 +7,8 @@ set -e
 . ./scripts/env-setup.sh
 
 # Wait longer for provider verification
-RETRY_WHILE_UNKNOWN=30  # Number of retries
-RETRY_INTERVAL=20       # Seconds between retries
+RETRY_WHILE_UNKNOWN=10  # Number of retries
+RETRY_INTERVAL=30       # Seconds between retries
 
 # Check if WebConsumer can be deployed
 pact-broker can-i-deploy \
