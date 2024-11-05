@@ -34,7 +34,7 @@ const pact = new PactV4({
   // logLevel: 'debug'
 })
 
-describe('Movies API', () => {
+describe('WebConsumer vs Movies API', () => {
   const movieWithId: Movie = {
     id: 1,
     name: 'My movie',
