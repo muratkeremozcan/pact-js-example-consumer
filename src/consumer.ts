@@ -16,7 +16,6 @@ export type Movie = {
   year: number
   rating: number
   director: string
-  oscar: boolean
 }
 
 export type ErrorResponse = {
