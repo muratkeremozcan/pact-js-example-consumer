@@ -46,13 +46,15 @@ describe('Consumer API functions', () => {
     name: 'My movie',
     year: 1999,
     rating: 8.5,
-    director: 'John Doe'
+    director: 'John Doe',
+    oscar: true
   }
   const movieWithoutId: Omit<Movie, 'id'> = {
     name: 'New movie',
     year: 1999,
     rating: 8.5,
-    director: 'John Doe'
+    director: 'John Doe',
+    oscar: true
   }
 
   describe('getMovies, getMovieByName', () => {
@@ -162,7 +164,8 @@ describe('Consumer API functions', () => {
       name: 'Updated movie',
       year: 2000,
       rating: 8.5,
-      director: 'Steven Spielberg'
+      director: 'Steven Spielberg',
+      oscar: false
     }
     it('should update an existing movie successfully', async () => {
       const testId = 1
