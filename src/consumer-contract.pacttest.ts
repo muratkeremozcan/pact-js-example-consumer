@@ -19,7 +19,7 @@ import type {
 
 // full list of matchers:
 // https://docs.pact.io/implementation_guides/javascript/docs/matching#v3-matching-rules
-const { like, eachLike, integer, decimal, string, boolean } = MatchersV3
+const { like, eachLike, integer, decimal, string } = MatchersV3
 
 // 1) Setup the mock provider for the consumer
 // 2) Register the consumer's expectations against the (mock) provider
@@ -34,14 +34,13 @@ const pact = new PactV4({
   // logLevel: 'debug'
 })
 
-describe('Movies API', () => {
+describe('WebConsumer vs Movies API', () => {
   const movieWithId: Movie = {
     id: 1,
     name: 'My movie',
     year: 1999,
     rating: 8.5,
-    director: 'John Doe',
-    oscar: true
+    director: 'John Doe'
   }
   const testId = 100
   const movieWithTestId100: Movie = {
@@ -49,23 +48,20 @@ describe('Movies API', () => {
     name: 'My movie',
     year: 1999,
     rating: 8.5,
-    director: 'John Doe',
-    oscar: true
+    director: 'John Doe'
   }
   const movieWithoutId: Omit<Movie, 'id'> = {
     name: 'New movie',
     year: 1999,
     rating: 8.5,
-    director: 'John Doe',
-    oscar: true
+    director: 'John Doe'
   }
 
   const propMatcherNoId = (movieEntity: Movie | Omit<Movie, 'id'>) => ({
     name: string(movieEntity.name),
     year: integer(movieEntity.year),
     rating: decimal(movieEntity.rating),
-    director: string(movieEntity.director),
-    oscar: boolean(movieEntity.oscar)
+    director: string(movieEntity.director)
   })
 
   describe('When a GET request is made to /movies', () => {
@@ -218,8 +214,7 @@ describe('Movies API', () => {
               name: movieWithoutId.name,
               year: movieWithoutId.year,
               rating: movieWithoutId.rating,
-              director: movieWithoutId.director,
-              oscar: movieWithoutId.oscar
+              director: movieWithoutId.director
             }
           })
         })
@@ -255,8 +250,7 @@ describe('Movies API', () => {
         name: 'Updated movie',
         year: 2000,
         rating: 8.5,
-        director: 'Steven Spielberg',
-        oscar: false
+        director: 'Steven Spielberg'
       }
 
       const [stateName, stateParams] = createProviderState({
@@ -293,8 +287,7 @@ describe('Movies API', () => {
               name: updatedMovieData.name,
               year: updatedMovieData.year,
               rating: updatedMovieData.rating,
-              director: updatedMovieData.director,
-              oscar: updatedMovieData.oscar
+              director: updatedMovieData.director
             }
           })
         })
