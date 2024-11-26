@@ -34,9 +34,9 @@
     "@pact-foundation/pact-cli": "16.0.4",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.13",
-    "@types/node": "22.9.3",
-    "@typescript-eslint/eslint-plugin": "8.15.0",
-    "@typescript-eslint/parser": "8.15.0",
+    "@types/node": "22.10.0",
+    "@typescript-eslint/eslint-plugin": "8.16.0",
+    "@typescript-eslint/parser": "8.16.0",
     "cy-spok": "1.6.2",
     "cypress": "13.16.0",
     "cypress-data-session": "2.8.5",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "7.2.0",
-    "axios": "1.7.7",
+    "axios": "1.7.8",
     "zod": "3.23.8",
     "express": "4.21.1",
     "kafkajs": "2.2.4"
