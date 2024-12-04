@@ -56,14 +56,14 @@
     "lodash": "4.17.21",
     "nock": "13.5.6",
     "npm-run-all2": "7.0.1",
-    "prettier": "3.4.1",
+    "prettier": "3.4.2",
     "ts-jest": "29.2.5",
     "tsx": "4.19.2",
     "typescript": "5.7.2"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "7.2.0",
-    "axios": "1.7.8",
+    "axios": "1.7.9",
     "zod": "3.23.8",
     "express": "4.21.1",
     "kafkajs": "2.2.4"
