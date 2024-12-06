@@ -29,7 +29,7 @@
     "@esbuild-plugins/node-globals-polyfill": "0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "0.2.2",
     "@faker-js/faker": "8.4.1",
-    "@mockoon/cli": "9.0.0",
+    "@mockoon/cli": "9.1.0",
     "@pact-foundation/pact": "13.2.0",
     "@pact-foundation/pact-cli": "16.0.4",
     "@types/jest": "29.5.14",
@@ -65,7 +65,7 @@
     "@asteasolutions/zod-to-openapi": "7.2.0",
     "axios": "1.7.9",
     "zod": "3.23.8",
-    "express": "4.21.1",
+    "express": "4.21.2",
     "kafkajs": "2.2.4"
   }
 }
