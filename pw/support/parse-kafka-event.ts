@@ -6,32 +6,21 @@ import type {
 } from '../../src/events/movie-event-types'
 
 /**
- * Reshapes the Kafka event entry into a simplified format for easier processing.
- *
- * @param {MovieEvent} entry - The Kafka event entry containing topic and message details.
- * @returns {{ topic: string; key: string; movie: Movie }} - Returns a simplified object with the topic, key, and movie details.
- */
-const reshape = (entry: MovieEvent) => ({
-  topic: entry.topic,
-  key: entry.messages[0]?.key,
-  movie: JSON.parse(entry.messages[0]?.value as unknown as string)
-})
-
-/**
  * Filters Kafka event entries by topic and movieId.
  *
  * @param {number} movieId - The ID of the movie to filter by.
  * @param {string} topic - The Kafka topic to filter by.
- * @param {Array<ReturnType<typeof reshape>>} entries - The list of reshaped Kafka event entries.
- * @returns {Array} - Filtered entries based on the topic and movieId.
+ * @param {Array<MovieEvent>} entries - The list of Kafka event entries.
+ * @returns {Array<MovieEvent>} - Filtered entries based on the topic and movieId.
  */
 const filterByTopicAndId = (
   movieId: number,
-  topic: string,
-  entries: ReturnType<typeof reshape>[]
+  topic: `movie-${MovieAction}`,
+  entries: MovieEvent[]
 ) =>
   entries.filter(
-    (entry) => entry.topic === topic && entry.movie?.id === movieId
+    // @ts-expect-error can't figure it out
+    (entry: MovieEvent) => entry.topic === topic && entry.id === movieId
   )
 
 /**
@@ -40,29 +29,30 @@ const filterByTopicAndId = (
  * @param {number} movieId - The ID of the movie to filter for.
  * @param {`movie-${MovieAction}`} topic - The Kafka topic to filter by.
  * @param {string} [filePath=logFilePath] - Optional file path for the Kafka event log file.
- * @returns {Promise<Array>} - A promise that resolves to the matching events.
+ * @returns {Promise<MovieEvent[]>} - A promise that resolves to the matching events.
  */
 export const parseKafkaEvent = async (
   movieId: number,
   topic: `movie-${MovieAction}`,
   filePath = logFilePath
-) => {
+): Promise<MovieEvent[]> => {
   try {
-    // Read and process the Kafka log file
+    // Read the log file content
     const fileContent = await fs.readFile(filePath, 'utf-8')
-    const entries = fileContent
+    const entries: MovieEvent[] = fileContent
       .trim()
       .split('\n')
-      .map((line) => JSON.parse(line))
-      .map(reshape)
+      .map((line) => JSON.parse(line) as MovieEvent)
 
     // Filter the entries by topic and movie ID
-    return filterByTopicAndId(movieId, topic, entries)
+    const filteredEntries = filterByTopicAndId(movieId, topic, entries)
+
+    return filteredEntries
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error parsing Kafka event log: ${error.message}`)
     } else {
-      console.error('An unknown error occurred')
+      console.error('An unknown error occurred:', error)
     }
     throw error
   }

@@ -15,7 +15,7 @@ export default merge({}, baseConfig, {
     baseURL: BASE_URL
   },
   webServer: {
-    command: 'npm run start',
+    command: 'npm run mock:server',
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe'

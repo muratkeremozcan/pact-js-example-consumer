@@ -1,4 +1,6 @@
 import { test, expect } from '../support/fixtures'
+import { runCommand } from '../support/utils/run-command'
+import { recurseWithExpect } from '../support/utils/recurse-with-expect'
 import {
   getMovies,
   getMovieById,
@@ -14,8 +16,10 @@ import type {
   UpdateMovieResponse,
   DeleteMovieResponse
 } from '../../src/provider-schema/movie-types'
+import { parseKafkaEvent } from '../support/parse-kafka-event'
 
-const apiUrl = 'http://localhost:3001'
+const serverPort = process.env.SERVERPORT || 3001
+const apiUrl = `http://localhost:${serverPort}`
 
 test.describe('CRUD movie', () => {
   const movie = generateMovie()
@@ -28,6 +32,13 @@ test.describe('CRUD movie', () => {
   }
 
   test.beforeAll('should get server status', async ({ apiRequest }) => {
+    const responseCode = runCommand(
+      `curl -s -o /dev/null -w "%{http_code}" ${process.env.KAFKA_UI_URL}`
+    )
+    if (responseCode !== '200') {
+      test.skip()
+    }
+
     const {
       body: { message }
     } = await apiRequest<{ message: string }>({
@@ -35,6 +46,10 @@ test.describe('CRUD movie', () => {
       url: '/'
     })
     expect(message).toBe('Server is running')
+  })
+
+  test('should', () => {
+    console.log('work')
   })
 
   test('should crud', async () => {
@@ -48,12 +63,32 @@ test.describe('CRUD movie', () => {
 
     const movieId = addMovieData.id
 
+    // Wait for 'movie-created' Kafka event using recurseWithExpect
+    await recurseWithExpect(
+      async () => {
+        const topic = 'movie-created'
+        const events = await parseKafkaEvent(movieId, topic)
+
+        // Assert the structure of the Kafka event
+        expect(events).toEqual([
+          {
+            topic,
+            id: movieId,
+            ...movieProps
+          }
+        ])
+      },
+      { timeout: 10000, interval: 500 }
+    )
+
     // Get all movies and verify the new movie exists
     const { status: getMoviesStatus, data: getMoviesData } =
       await getMovies(apiUrl)
     expect(getMoviesStatus).toBe(200)
     expect(getMoviesData).toEqual(
-      expect.arrayContaining([expect.objectContaining({ id: movieId })])
+      expect.arrayContaining([
+        expect.objectContaining({ id: movieId, name: movie.name })
+      ])
     )
 
     // Get the movie by ID
@@ -85,11 +120,45 @@ test.describe('CRUD movie', () => {
       ...updatedMovie
     })
 
+    await recurseWithExpect(
+      async () => {
+        const topic = 'movie-updated'
+        const event = await parseKafkaEvent(movieId, topic)
+
+        // Perform assertions on the event content
+        expect(event).toEqual([
+          {
+            topic,
+            id: movieId,
+            ...movieProps
+          }
+        ])
+      },
+      { timeout: 10000, interval: 500 }
+    )
+
     // Delete the movie
     const { status: deleteMovieStatus, message: deleteMovieMessage } =
       (await deleteMovieById(apiUrl, movieId)) as DeleteMovieResponse
     expect(deleteMovieStatus).toBe(200)
     expect(deleteMovieMessage).toBe(`Movie ${movieId} has been deleted`)
+
+    await recurseWithExpect(
+      async () => {
+        const topic = 'movie-deleted'
+        const event = await parseKafkaEvent(movieId, topic)
+
+        // Perform assertions on the event content
+        expect(event).toEqual([
+          {
+            topic,
+            id: movieId,
+            ...movieProps
+          }
+        ])
+      },
+      { timeout: 10000, interval: 500 }
+    )
 
     // Verify the movie no longer exists
     const allMoviesAfterDelete = await getMovies(apiUrl)
