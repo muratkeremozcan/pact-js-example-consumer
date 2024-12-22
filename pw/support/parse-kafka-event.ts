@@ -1,6 +1,9 @@
 import { promises as fs } from 'fs'
 import { logFilePath } from '../../src/events/log-file-path'
-import type { MovieEvent, MovieAction } from '../../src/@types'
+import type {
+  MovieAction,
+  MovieEvent
+} from '../../src/events/movie-event-types'
 
 /**
  * Reshapes the Kafka event entry into a simplified format for easier processing.
