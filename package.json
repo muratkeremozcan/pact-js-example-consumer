@@ -20,7 +20,13 @@
     "record:consumer:deployment": ". ./scripts/record-consumer-deployment.sh",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.jest.json",
     "lint": "eslint --ext=.js,.ts,.tsx --fix",
-    "start": "tsx ./src/events/events-listen.ts"
+    "start": "tsx ./src/events/events-listen.ts",
+    "pw:open": "npx playwright test --ui",
+    "pw:open-local": "npx playwright test --ui --config=pw/config/local.config.ts",
+    "pw:open-local-debug": "PWDEBUG=1 npx playwright test --ui --config=pw/config/local.config.ts",
+    "pw:run-local": "npx playwright test --config=pw/config/local.config.ts",
+    "pw:run-local-trace": "npx playwright test --trace on && npx playwright show-report --config=pw/config/local.config.ts",
+    "pw:open-local-trace": "npx playwright show-trace --config=pw/config/local.config.ts"
   },
   "devDependencies": {
     "@bahmutov/cy-api": "2.2.8",
@@ -32,6 +38,7 @@
     "@mockoon/cli": "9.1.0",
     "@pact-foundation/pact": "13.2.0",
     "@pact-foundation/pact-cli": "16.0.4",
+    "@playwright/test": "^1.49.1",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.13",
     "@types/node": "22.10.2",
@@ -64,8 +71,8 @@
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "7.3.0",
     "axios": "1.7.9",
-    "zod": "3.24.1",
     "express": "4.21.2",
-    "kafkajs": "2.2.4"
+    "kafkajs": "2.2.4",
+    "zod": "3.24.1"
   }
 }
