@@ -22,11 +22,11 @@
     "lint": "eslint --ext=.js,.ts,.tsx --fix",
     "start": "tsx ./src/events/events-listen.ts",
     "pw:open": "npx playwright test --ui",
-    "pw:open-local": "npx playwright test --ui --config=pw/config/local.config.ts",
-    "pw:open-local-debug": "PWDEBUG=1 npx playwright test --ui --config=pw/config/local.config.ts",
-    "pw:run-local": "npx playwright test --config=pw/config/local.config.ts",
-    "pw:run-local-trace": "npx playwright test --trace on && npx playwright show-report --config=pw/config/local.config.ts",
-    "pw:open-local-trace": "npx playwright show-trace --config=pw/config/local.config.ts"
+    "pw:open-local": "npx playwright test --ui -c pw/config/local.config.ts",
+    "pw:open-local-debug": "PWDEBUG=1 npx playwright test --ui -c pw/config/local.config.ts",
+    "pw:run-local": "npx playwright test -c pw/config/local.config.ts",
+    "pw:run-local-trace": "npx playwright test --trace on && npx playwright show-report -c pw/config/local.config.ts",
+    "pw:open-local-trace": "npx playwright show-trace -c pw/config/local.config.ts"
   },
   "devDependencies": {
     "@bahmutov/cy-api": "2.2.8",
