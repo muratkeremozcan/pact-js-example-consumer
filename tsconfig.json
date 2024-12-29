@@ -6,8 +6,7 @@
     "./.eslintrc.js",
     "cypress",
     "cypress/index.ts",
-    "pw",
-    "playwright.config.ts"
+    "pw"
   ],
   "exclude": ["node_modules", "coverage", "dist", "**/*.*test.ts*"],
   "compilerOptions": {

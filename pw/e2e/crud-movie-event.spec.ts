@@ -31,7 +31,7 @@ test.describe('CRUD movie', () => {
     director: expect.any(String)
   }
 
-  test.beforeAll('should get server status', async ({ apiRequest }) => {
+  test.beforeAll(async ({ apiRequest }) => {
     const responseCode = runCommand(
       `curl -s -o /dev/null -w "%{http_code}" ${process.env.KAFKA_UI_URL}`
     )
@@ -46,10 +46,6 @@ test.describe('CRUD movie', () => {
       url: '/'
     })
     expect(message).toBe('Server is running')
-  })
-
-  test('should', () => {
-    console.log('work')
   })
 
   test('should crud', async () => {
