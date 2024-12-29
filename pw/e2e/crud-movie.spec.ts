@@ -15,7 +15,8 @@ import type {
   DeleteMovieResponse
 } from '../../src/provider-schema/movie-types'
 
-const apiUrl = 'http://localhost:3001'
+const serverPort = process.env.SERVERPORT || 3001
+const apiUrl = `http:localhost:${serverPort}`
 
 test.describe('CRUD movie', () => {
   const movie = generateMovie()
@@ -27,7 +28,7 @@ test.describe('CRUD movie', () => {
     director: expect.any(String)
   }
 
-  test.beforeAll('should get server status', async ({ apiRequest }) => {
+  test.beforeAll(async ({ apiRequest }) => {
     const {
       body: { message }
     } = await apiRequest<{ message: string }>({
