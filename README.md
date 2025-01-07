@@ -152,6 +152,17 @@ npm run test:watch # watch mode
 npm run cy:open-local # open mode
 npm run cy:run-local  # run mode
 npm run cy:run-local-fast  # no video or screen shots
+
+# PW scripts
+npm run pw:open-local       # open mode (local config)
+npm run pw:open-local-debug # open with debug (local config)
+
+npm run pw:run-local        # run mode (local config)
+npm run pw:run-local-debug  # run with debug (local config)
+
+npm run pw:trace            # inspect a trace.zip file
+npm run pw:clear            # remove all temporary PW files
+
 ```
 
 #### Consumer specific scripts
