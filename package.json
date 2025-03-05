@@ -37,7 +37,7 @@
     "@faker-js/faker": "8.4.1",
     "@mockoon/cli": "9.1.0",
     "@pact-foundation/pact": "13.2.0",
-    "@pact-foundation/pact-cli": "16.0.5",
+    "@pact-foundation/pact-cli": "16.0.6",
     "@playwright/test": "^1.49.1",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.16",
