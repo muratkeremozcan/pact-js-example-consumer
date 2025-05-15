@@ -64,7 +64,7 @@
     "nock": "14.0.4",
     "npm-run-all2": "8.0.1",
     "prettier": "3.5.3",
-    "ts-jest": "29.3.2",
+    "ts-jest": "29.3.3",
     "tsx": "4.19.4",
     "typescript": "5.8.3"
   },
