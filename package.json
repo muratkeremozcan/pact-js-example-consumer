@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@bahmutov/cy-api": "2.2.8",
-    "@bahmutov/cypress-esbuild-preprocessor": "2.2.4",
+    "@bahmutov/cypress-esbuild-preprocessor": "2.2.5",
     "@cypress/skip-test": "2.6.1",
     "@esbuild-plugins/node-globals-polyfill": "0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "0.2.2",
@@ -46,7 +46,7 @@
     "@typescript-eslint/parser": "8.32.1",
     "cy-spok": "1.6.2",
     "cypress": "14.3.3",
-    "cypress-data-session": "2.8.6",
+    "cypress-data-session": "2.8.7",
     "cypress-map": "1.47.0",
     "cypress-recurse": "1.35.3",
     "dotenv": "16.5.0",
