@@ -41,9 +41,9 @@
     "@playwright/test": "^1.49.1",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.17",
-    "@types/node": "22.15.21",
-    "@typescript-eslint/eslint-plugin": "8.32.1",
-    "@typescript-eslint/parser": "8.32.1",
+    "@types/node": "22.15.23",
+    "@typescript-eslint/eslint-plugin": "8.33.0",
+    "@typescript-eslint/parser": "8.33.0",
     "cy-spok": "1.6.2",
     "cypress": "14.4.0",
     "cypress-data-session": "2.8.7",
@@ -73,6 +73,6 @@
     "axios": "1.9.0",
     "express": "5.1.0",
     "kafkajs": "2.2.4",
-    "zod": "3.25.30"
+    "zod": "3.25.32"
   }
 }
