@@ -45,7 +45,7 @@
     "@typescript-eslint/eslint-plugin": "8.33.1",
     "@typescript-eslint/parser": "8.33.1",
     "cy-spok": "1.6.2",
-    "cypress": "14.4.0",
+    "cypress": "14.4.1",
     "cypress-data-session": "2.8.7",
     "cypress-map": "1.48.1",
     "cypress-recurse": "1.35.3",
@@ -73,6 +73,6 @@
     "axios": "1.9.0",
     "express": "5.1.0",
     "kafkajs": "2.2.4",
-    "zod": "3.25.49"
+    "zod": "3.25.50"
   }
 }
