@@ -47,8 +47,8 @@
     "cy-spok": "1.6.2",
     "cypress": "14.4.1",
     "cypress-data-session": "2.8.7",
-    "cypress-map": "1.48.1",
-    "cypress-recurse": "1.35.3",
+    "cypress-map": "1.49.0",
+    "cypress-recurse": "1.36.0",
     "dotenv": "16.5.0",
     "eslint": "8.57.1",
     "eslint-config-prettier": "10.1.5",
@@ -65,14 +65,14 @@
     "npm-run-all2": "8.0.4",
     "prettier": "3.5.3",
     "ts-jest": "29.4.0",
-    "tsx": "4.20.2",
+    "tsx": "4.20.3",
     "typescript": "5.8.3"
   },
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "7.3.3",
-    "axios": "1.9.0",
+    "@asteasolutions/zod-to-openapi": "7.3.4",
+    "axios": "1.10.0",
     "express": "5.1.0",
     "kafkajs": "2.2.4",
-    "zod": "3.25.63"
+    "zod": "3.25.64"
   }
 }
