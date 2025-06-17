@@ -41,14 +41,14 @@
     "@playwright/test": "^1.49.1",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.17",
-    "@types/node": "22.15.31",
-    "@typescript-eslint/eslint-plugin": "8.34.0",
-    "@typescript-eslint/parser": "8.34.0",
+    "@types/node": "22.15.32",
+    "@typescript-eslint/eslint-plugin": "8.34.1",
+    "@typescript-eslint/parser": "8.34.1",
     "cy-spok": "1.6.2",
     "cypress": "14.4.1",
     "cypress-data-session": "2.8.7",
     "cypress-map": "1.49.0",
-    "cypress-recurse": "1.36.0",
+    "cypress-recurse": "1.37.1",
     "dotenv": "16.5.0",
     "eslint": "8.57.1",
     "eslint-config-prettier": "10.1.5",
@@ -73,6 +73,6 @@
     "axios": "1.10.0",
     "express": "5.1.0",
     "kafkajs": "2.2.4",
-    "zod": "3.25.64"
+    "zod": "3.25.67"
   }
 }
