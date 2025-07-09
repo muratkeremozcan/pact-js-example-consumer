@@ -41,7 +41,7 @@
     "@playwright/test": "^1.49.1",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.20",
-    "@types/node": "22.16.0",
+    "@types/node": "22.16.2",
     "@typescript-eslint/eslint-plugin": "8.36.0",
     "@typescript-eslint/parser": "8.36.0",
     "cy-spok": "1.6.2",
@@ -73,6 +73,6 @@
     "axios": "1.10.0",
     "express": "5.1.0",
     "kafkajs": "2.2.4",
-    "zod": "3.25.75"
+    "zod": "3.25.76"
   }
 }
