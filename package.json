@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "7.3.4",
-    "axios": "1.10.0",
+    "axios": "1.11.0",
     "express": "5.1.0",
     "kafkajs": "2.2.4",
     "zod": "3.25.76"
