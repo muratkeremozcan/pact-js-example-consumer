@@ -36,7 +36,7 @@
     "@esbuild-plugins/node-modules-polyfill": "0.2.2",
     "@faker-js/faker": "10.0.0",
     "@mockoon/cli": "9.3.0",
-    "@pact-foundation/pact": "13.2.0",
+    "@pact-foundation/pact": "15.0.1",
     "@pact-foundation/pact-cli": "16.1.2",
     "@playwright/test": "^1.49.1",
     "@types/jest": "30.0.0",
